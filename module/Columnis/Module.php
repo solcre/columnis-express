@@ -12,6 +12,12 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+         
+        // get the cache listener service
+        $cacheListener = $e->getApplication()->getServiceManager()->get('CacheListener');
+
+        // attach the listeners to the event manager
+        $e->getApplication()->getEventManager()->attach($cacheListener);
     }
     public function getConfig()
     {

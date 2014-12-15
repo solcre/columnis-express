@@ -14,6 +14,7 @@ return array(
                         '__NAMESPACE__' => 'Columnis\Controller',
                         'controller'    => 'Page',
                         'action'        => 'index',
+                        'cache'         => true
                     ),
                 ),
                 'may_terminate' => true,
@@ -34,7 +35,12 @@ return array(
             ),
         ),
     ),
-    /*'service_manager' => array(
+   'service_manager' => array(
+       'factories' => array(
+            'Zend\Cache' => 'Zend\Cache\Service\StorageCacheFactory',
+            'HtmlCache' => 'Columnis\Service\Factory\HtmlCacheFactory',
+            'CacheListener' => 'Columnis\Service\Factory\CacheListenerFactory',
+        ),
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
@@ -52,7 +58,7 @@ return array(
                 'pattern'  => '%s.mo',
             ),
         ),
-    ),*/
+    ),
     'controllers' => array(
         'invokables' => array(
             'Columnis\Controller\Page' => 'Columnis\Controller\PageController'
@@ -71,5 +77,11 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../../../public/templates',
         ),
-    )
+    ),
+    'cache' => array(
+        'adapter' => 'htmlcache',
+        'options' => array(
+            'cache_dir' => 'data/cache/fullpage'
+        )
+    ),
 );
