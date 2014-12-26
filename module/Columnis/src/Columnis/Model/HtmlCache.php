@@ -17,29 +17,17 @@ use ArrayObject;
 use Zend\Cache\Storage\Adapter\FilesystemOptions;
 
 class HtmlCache extends Filesystem {
+    
+    protected $extension = '.html';
+    
+    function getExtension() {
+        return $this->extension;
+    }
+    function setExtension($extension) {
+        $this->extension = $extension;
+    }
 
-    /**
-     * Buffered total space in bytes
-     *
-     * @var null|int|float
-     */
-    protected $totalSpace;
-
-    /**
-     * An identity for the last filespec
-     * (cache directory + namespace prefix + key + directory level)
-     *
-     * @var string
-     */
-    protected $lastFileSpecId = '';
-
-    /**
-     * The last used filespec
-     *
-     * @var string
-     */
-    protected $lastFileSpec = '';
-
+        
     /**
      * Set options.
      *
@@ -123,7 +111,7 @@ class HtmlCache extends Filesystem {
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_FILEINFO;
         $path  = $options->getCacheDir()
             . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-            . DIRECTORY_SEPARATOR . $prefix . '*.html';
+            . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
         $glob = new GlobIterator($path, $flags);
         $time = time();
         $ttl  = $options->getTtl();
@@ -197,7 +185,7 @@ class HtmlCache extends Filesystem {
             if ($rem) {
                 unlink($pathname);
 
-                $datPathname = substr($pathname, 0, -4) . '.html';
+                $datPathname = substr($pathname, 0, -4) . $this->getExtension();
                 if (file_exists($datPathname)) {
                     unlink($datPathname);
                 }
@@ -221,7 +209,7 @@ class HtmlCache extends Filesystem {
         $prefix    = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
         $path      = $options->getCacheDir()
             . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-            . DIRECTORY_SEPARATOR . $prefix . '*.html';
+            . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
         return new FilesystemIterator($this, $path, $prefix);
     }
 
@@ -244,11 +232,11 @@ class HtmlCache extends Filesystem {
 
         try {
             $filespec = $this->getFileSpec($normalizedKey);
-            $data     = $this->getFileContent($filespec . '.html');
+            $data     = $this->getFileContent($filespec . $this->getExtension());
 
             // use filemtime + filesize as CAS token
             if (func_num_args() > 2) {
-                $casToken = filemtime($filespec . '.html') . filesize($filespec . '.html');
+                $casToken = filemtime($filespec . $this->getExtension()) . filesize($filespec . $this->getExtension());
             }
             $success  = true;
             return $data;
@@ -284,7 +272,7 @@ class HtmlCache extends Filesystem {
                 }
 
                 $filespec = $this->getFileSpec($key);
-                $data     = $this->getFileContent($filespec . '.html', $nonBlocking, $wouldblock);
+                $data     = $this->getFileContent($filespec . $this->getExtension(), $nonBlocking, $wouldblock);
                 if ($nonBlocking && $wouldblock) {
                     continue;
                 } else {
@@ -303,7 +291,7 @@ class HtmlCache extends Filesystem {
 
     protected function internalHasItem(& $normalizedKey)
     {
-        $file = $this->getFileSpec($normalizedKey) . '.html';
+        $file = $this->getFileSpec($normalizedKey) . $this->getExtension();
         if (!file_exists($file)) {
             return false;
         }
@@ -372,7 +360,7 @@ class HtmlCache extends Filesystem {
 
         $options  = $this->getOptions();
         $filespec = $this->getFileSpec($normalizedKey);
-        $file     = $filespec . '.html';
+        $file     = $filespec . $this->getExtension();
 
         $metadata = array(
             'filespec' => $filespec,
@@ -404,7 +392,7 @@ class HtmlCache extends Filesystem {
 
         foreach ($normalizedKeys as $normalizedKey) {
             $filespec = $this->getFileSpec($normalizedKey);
-            $file     = $filespec . '.html';
+            $file     = $filespec . $this->getExtension();
 
             $metadata = array(
                 'filespec' => $filespec,
@@ -440,14 +428,14 @@ class HtmlCache extends Filesystem {
 
         // write data in non-blocking mode
         $wouldblock = null;
-        $this->putFileContent($filespec . '.html', $value, true, $wouldblock);
+        $this->putFileContent($filespec . $this->getExtension(), $value, true, $wouldblock);
 
         // delete related tag file (if present)
         $this->unlink($filespec . '.tag');
 
         // Retry writing data in blocking mode if it was blocked before
         if ($wouldblock) {
-            $this->putFileContent($filespec . '.html', $value);
+            $this->putFileContent($filespec . $this->getExtension(), $value);
         }
 
         return true;
@@ -470,8 +458,8 @@ class HtmlCache extends Filesystem {
             $filespec = $this->getFileSpec($key);
             $this->prepareDirectoryStructure($filespec);
 
-            // *.html file
-            $contents[$filespec . '.html'] = & $value;
+            // *.ext file
+            $contents[$filespec . $this->getExtension()] = & $value;
 
             // *.tag file
             $this->unlink($filespec . '.tag');
@@ -536,7 +524,7 @@ class HtmlCache extends Filesystem {
         }
 
         // use filemtime + filesize as CAS token
-        $file  = $this->getFileSpec($normalizedKey) . '.html';
+        $file  = $this->getFileSpec($normalizedKey) . $this->getExtension();
         $check = filemtime($file) . filesize($file);
         if ($token !== $check) {
             return false;
@@ -603,10 +591,10 @@ class HtmlCache extends Filesystem {
         $filespec = $this->getFileSpec($normalizedKey);
 
         ErrorHandler::start();
-        $touch = touch($filespec . '.html');
+        $touch = touch($filespec . $this->getExtension());
         $error = ErrorHandler::stop();
         if (!$touch) {
-            throw new Exception\RuntimeException("Error touching file '{$filespec}.html'", 0, $error);
+            throw new Exception\RuntimeException("Error touching file '{$filespec}.'" . $this->getExtension(), 0, $error);
         }
 
         return true;
@@ -664,10 +652,10 @@ class HtmlCache extends Filesystem {
     protected function internalRemoveItem(& $normalizedKey)
     {
         $filespec = $this->getFileSpec($normalizedKey);
-        if (!file_exists($filespec . '.html')) {
+        if (!file_exists($filespec . $this->getExtension())) {
             return false;
         } else {
-            $this->unlink($filespec . '.html');
+            $this->unlink($filespec . $this->getExtension());
             $this->unlink($filespec . '.tag');
         }
         return true;

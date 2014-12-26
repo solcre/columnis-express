@@ -1,4 +1,10 @@
 RewriteEngine On
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_URI} ^/(espanol|english|portugues)/(.+)-(\d+)$
+#RewriteCond %{DOCUMENT_ROOT}/pages/%1/%3\.html -f
+#RewriteRule ^(.*)$ /pages/%1/%3\.html [NC,L]
+
 # The following rule tells Apache that if the requested filename
 # exists, simply serve it.
 RewriteCond %{REQUEST_FILENAME} -s [OR]

@@ -1,3 +1,3 @@
 {include file="../header.tpl"}
-{$prueba}
+<div>{$prueba}</div>
 {include file="../footer.tpl"}

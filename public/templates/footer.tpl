@@ -1,2 +1,2 @@
-<br />
-FUNCA EL FOOTER
+    </body>
+</html>

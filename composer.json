@@ -1,16 +1,18 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
+    "name": "solcre/columnis-express",
+    "description": "Content Management System that consumes Columnis API and assigns the data to a template engine.",
     "license": "BSD-3-Clause",
     "keywords": [
-        "framework",
-        "zf2"
+        "Solcre",
+        "Columnis",
+        "Express"
     ],
-    "homepage": "http://framework.zend.com/",
+    "homepage": "http://www.columnis.com/",
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.3",
         "zendframework/zftool": "dev-master",
-        "gkralik/gk-smarty": "dev-master"
+        "gkralik/gk-smarty": "dev-master",
+        "rwoverdijk/assetmanager": "dev-master"
     }
 }
