@@ -67,6 +67,9 @@ class CacheListener extends AbstractListenerAggregate {
     }
  
  
+    /**
+     * @param \Zend\Mvc\Router\RouteMatch $match
+     */
     protected function genCacheName($match) {
         return str_replace('/', '-', $match->getMatchedRouteName());
     }

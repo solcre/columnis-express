@@ -3,7 +3,6 @@ namespace Columnis;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\View\ViewEvent;
 
 class Module
 {
