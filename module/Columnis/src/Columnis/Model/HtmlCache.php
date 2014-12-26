@@ -31,7 +31,7 @@ class HtmlCache extends Filesystem {
     /**
      * Set options.
      *
-     * @param  array|\Traversable|FilesystemOptions $options
+     * @param  FilesystemOptions $options
      * @return Filesystem
      * @see    getOptions()
      */
@@ -220,7 +220,7 @@ class HtmlCache extends Filesystem {
      * @param  string  $normalizedKey
      * @param  bool $success
      * @param  mixed   $casToken
-     * @return mixed Data on success, null on failure
+     * @return null|string Data on success, null on failure
      * @throws Exception\ExceptionInterface
      */
     protected function internalGetItem(& $normalizedKey, & $success = null, & $casToken = null)
