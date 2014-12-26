@@ -67,24 +67,17 @@ class CacheListener extends AbstractListenerAggregate {
             $this->cacheService->setItem($cacheKey, $data);
         }
     }
-<<<<<<< HEAD
 
     protected function setCacheDir(RouteMatch $match) {
         $params = $match->getParams();
         $lang = $params['lang'];
         $options = $this->cacheService->getOptions();
         $options->setNamespace($lang);
-=======
- 
+    }
  
     /**
      * @param \Zend\Mvc\Router\RouteMatch $match
      */
-    protected function genCacheName($match) {
-        return str_replace('/', '-', $match->getMatchedRouteName());
->>>>>>> 5a91f9b5702e2ad1a6b7f508868b4acb7d831291
-    }
-
     protected function genCacheName(RouteMatch $match) {
         $params = $match->getParams();
         $pageId = $params['pageId'];
