@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/?branch=master)
+
 Columnis Express
 =======================
 
