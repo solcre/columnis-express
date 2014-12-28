@@ -83,7 +83,7 @@ return array(
                 ),
             ),
             'paths' => array(
-                __DIR__ . '/../../../public',
+                realpath(__DIR__ . '/../../../public'),
             ),
         ),
         'resolvers' => array(

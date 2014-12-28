@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1-DEV, created on 2014-11-23 15:56:30
+<?php /* Smarty version Smarty-3.1-DEV, created on 2014-12-27 07:41:05
          compiled from "/var/www/columnis-express/public/templates/home/main.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:4658622785472566bdd3fd2-45790890%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'bfe6659d515656d2fe6645d0e63c8e1f6ec62eec' => 
     array (
       0 => '/var/www/columnis-express/public/templates/home/main.tpl',
-      1 => 1416779786,
+      1 => 1419686200,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_5472566be58c07_62883331')) {function content_5472566be58c07_62883331($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ("../header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0);?>
 
-<?php echo $_smarty_tpl->tpl_vars['prueba']->value;?>
-
+<div><?php echo $_smarty_tpl->tpl_vars['prueba']->value;?>
+</div>
 <?php echo $_smarty_tpl->getSubTemplate ("../footer.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0);?>
 <?php }} ?>
