@@ -76,14 +76,9 @@ return array(
     ),
     'asset_manager' => array(
         'resolver_configs' => array(
-            'collections' => array(
-                'css/fixed.css' => array(
-                    'css/style.css',
-                    'css/prueba.css',
-                ),
-            ),
             'paths' => array(
-                realpath(__DIR__ . '/../../../public'),
+                __DIR__ . '/../../../public/css',
+                __DIR__ . '/../../../public/js',
             ),
         ),
         'resolvers' => array(

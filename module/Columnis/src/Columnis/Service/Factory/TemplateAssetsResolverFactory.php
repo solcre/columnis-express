@@ -18,16 +18,14 @@ class TemplateAssetsResolverFactory implements FactoryInterface
         $template = 'home';
         
         $config      = $serviceLocator->get('Config');
-        $collections = array();
-
-        if (isset($config['asset_manager']['resolver_configs']['collections'])) {
-            $collections = $config['asset_manager']['resolver_configs']['collections'];
-        }
-        if (isset($config['view_manager']['template_path_stack'])) {
-            $templatesPath = $config['view_manager']['template_path_stack'];
-        }
         
-        $templateAssetsResolver = new TemplateAssetsResolver($templatesPath, $template, $collections);
+        if (isset($config['view_manager']['template_path_stack'])) {
+            $templatesPathStack = $config['view_manager']['template_path_stack'];
+        }
+        if (isset($config['asset_manager']['resolver_configs']['paths'])) {
+            $assetsPaths = $config['asset_manager']['resolver_configs']['paths'];
+        }
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack, $template);
 
         return $templateAssetsResolver;
     }
