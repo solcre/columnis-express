@@ -9,7 +9,9 @@ tools:
     php_code_sniffer: true
     sensiolabs_security_checker: true
     external_code_coverage: true
-    php_pdepend: true
+    code_rating: true
+    duplication: true
+    php_pdepend: true    
     php_loc:
         enabled: true
         excluded_dirs: [vendor, tests]
