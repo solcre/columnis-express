@@ -133,7 +133,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * 
-     * @param type $name The path to the asset
+     * @param string $name The path to the asset
      * @return boolean If the asset is in an allowed path will return true.
      */
     protected function inAllowedPaths($name) {
@@ -152,6 +152,9 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return $rpath !== false && $rsubpath !== false && (strpos($rsubpath, $rpath) === 0);
     }
     
+    /**
+     * @param string $template
+     */
     protected function getTemplatePaths($template) {
         $ret = array();
         $templatesPathStack = $this->getTemplatesPathStack();
@@ -163,6 +166,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     
     /**
      * Generate the collections of assets for the a template.
+     * @param string $extension
      * @return array|Traversable collections of assets
      */
     protected function generateCollection($paths, $extension) {

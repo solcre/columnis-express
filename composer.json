@@ -13,6 +13,7 @@
         "zendframework/zendframework": "2.3.3",
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
-        "rwoverdijk/assetmanager": "dev-master"
+        "rwoverdijk/assetmanager": "dev-master",
+        "guzzle/guzzle": "3.9.*@dev"
     }
 }
