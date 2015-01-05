@@ -9,7 +9,7 @@ return array(
                     'route' => '/:lang/:seo{-}-:pageId',
                     'constraints' => array(
                         'lang' => 'espanol|english|portugues',
-                        'seo' => '[a-zA-Z-_]+',
+                        'seo' => '[a-zA-Z0-9-_]+',
                         'pageId' => '\d+',
                     ),
                     'defaults' => array(
