@@ -24,7 +24,7 @@ class PageControllerTest extends AbstractHttpControllerTestCase {
         $seoFriendlyName = implode('', array_splice($randNameAr, rand(0,(count($randNameAr)-1))));        
         $pageId = rand(0,1000);        
         $route = '/' . $lang . '/' . $seoFriendlyName . '-' . $pageId;
-        
+
         $this->dispatch($route);
         $this->assertResponseStatusCode(200);
 
