@@ -146,6 +146,9 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return false;
     }
 
+    /**
+     * @param string $subpath
+     */
     protected function is_subpath($path, $subpath) {
         $rpath = realpath($path);
         $rsubpath = realpath($subpath);
