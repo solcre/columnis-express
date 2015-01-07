@@ -1,6 +1,10 @@
 [![Build Status](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/build.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/solcre/columnis-express/version.svg)](https://packagist.org/packages/solcre/columnis-express)
+[![Latest Unstable Version](https://poser.pugx.org/solcre/columnis-express/v/unstable.svg)](//packagist.org/packages/solcre/columnis-express)
+[![Total Downloads](https://poser.pugx.org/solcre/columnis-express/downloads.svg)](https://packagist.org/packages/solcre/columnis-express)
+[![License](https://poser.pugx.org/solcre/columnis-express/license.svg)](https://packagist.org/packages/solcre/columnis-express)
 
 Columnis Express
 =======================
