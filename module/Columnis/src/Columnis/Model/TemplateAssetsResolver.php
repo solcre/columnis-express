@@ -17,7 +17,7 @@ use SplFileInfo;
  */
 class TemplateAssetsResolver extends CollectionResolver implements MimeResolverAwareInterface {
 
-    /** 
+    /**
      * The assets paths
      * 
      * @var array  
@@ -96,24 +96,42 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * Instantiate, set the assets paths, templates paths and the current template
      * @param array $assetsPaths
      * @param array $templatesPathStack
-     * @param string $template
      */
-    public function __construct(Array $assetsPaths, Array $templatesPathStack, $template) {
+    public function __construct(Array $assetsPaths, Array $templatesPathStack) {
+        parent::__construct();
         $this->setAssetsPaths($assetsPaths);
         $this->setTemplatesPathStack($templatesPathStack);
-        $collections['css/fixed/minified.css'] = $this->generateCollection($this->getAssetsPaths(), 'css');
-        $collections['js/fixed/minified.js'] = $this->generateCollection($this->getAssetsPaths(), 'js');
-        $templateCss = 'templates/' . $template . '/minified.css';
-        $templateJs = 'templates/' . $template . '/minified.js';
-        $collections[$templateCss] = $this->generateCollection($this->getTemplatePaths($template), 'css');
-        $collections[$templateJs] = $this->generateCollection($this->getTemplatePaths($template), 'js');
-        parent::__construct($collections);
+        $this->addToCollections('css/fixed/minified.css', $this->generateCollection($this->getAssetsPaths(), 'css'));
+        $this->addToCollections('js/fixed/minified.js', $this->generateCollection($this->getAssetsPaths(), 'js'));
+    }
+
+    protected function addToCollections($alias, Array $assets) {
+        $collections = $this->getCollections();
+        $collections[$alias] = $assets;
+        $this->setCollections($collections);
     }
 
     /**
      * {@inheritDoc}
      */
     public function resolve($name) {
+        $pattern = '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/';
+        if (preg_match($pattern, $name, $matches)) {
+            $template = $matches[1];
+            $extension = $matches[2];
+        }
+        if ($this->templateExists($template)) {
+            switch ($extension) {
+                case 'css' :
+                    $templateCss = 'templates/' . $template . '/minified.css';
+                    $this->addToCollections($templateCss, $this->generateCollection($this->getTemplatePaths($template), 'css'));
+                    break;
+                case 'js' :
+                    $templateJs = 'templates/' . $template . '/minified.js';
+                    $this->addToCollections($templateJs, $this->generateCollection($this->getTemplatePaths($template), 'js'));
+                    break;
+            }
+        }
         if ($name === realpath($name)) {
             if (!$this->inAllowedPaths($name)) {
                 return null;
@@ -129,6 +147,10 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
             }
         }
         return parent::resolve($name);
+    }
+
+    protected function templateExists($templateName) {
+        return $templateName == 'home';
     }
 
     /**
@@ -151,7 +173,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         $rsubpath = realpath($subpath);
         return $rpath !== false && $rsubpath !== false && (strpos($rsubpath, $rpath) === 0);
     }
-    
+
     /**
      * @param string $template
      */
@@ -163,7 +185,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         }
         return $ret;
     }
-    
+
     /**
      * Generate the collections of assets for the a template.
      * @param string $extension

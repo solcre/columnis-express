@@ -61,8 +61,9 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
-            'error/404' => __DIR__ . '/../view/error/404.phtml',
-            'error/index' => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout' => __DIR__ . '/../../../public/templates/layout.tpl',
+            'error/404' => __DIR__ . '/../../../public/templates/404.tpl',
+            'error/index' => __DIR__ . '/../../../public/templates/error.tpl',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../../../public/templates',

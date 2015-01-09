@@ -14,8 +14,7 @@ class TemplateAssetsResolverFactory implements FactoryInterface
      * @return TemplateAssetsResolver
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $template = 'home';
+    {       
         
         $config      = $serviceLocator->get('Config');
         
@@ -25,7 +24,7 @@ class TemplateAssetsResolverFactory implements FactoryInterface
         if (isset($config['asset_manager']['resolver_configs']['paths'])) {
             $assetsPaths = $config['asset_manager']['resolver_configs']['paths'];
         }
-        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack, $template);
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
 
         return $templateAssetsResolver;
     }

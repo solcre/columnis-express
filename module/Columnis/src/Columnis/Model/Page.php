@@ -2,7 +2,7 @@
 
 namespace Columnis\Model;
 
-class PageEntity {
+class Page {
 
     protected $id;
     protected $template;
