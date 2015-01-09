@@ -9,8 +9,8 @@ return array(
     'modules' => array(
         'GkSmarty',
         'Application',
-        'Columnis',
-        'AssetManager'
+        'AssetManager',
+        'Columnis'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
