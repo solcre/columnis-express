@@ -2,6 +2,7 @@
 
 namespace ColumnisTest;
 
+
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
@@ -61,6 +62,7 @@ class Bootstrap
         $vendorPath = static::findParentPath('vendor');
 
         $zf2Path = getenv('ZF2_PATH');
+        
         if (!$zf2Path) {
             if (defined('ZF2_PATH')) {
                 $zf2Path = ZF2_PATH;

@@ -14,6 +14,6 @@
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
         "rwoverdijk/assetmanager": "dev-master",
-        "guzzle/guzzle": "3.9.*@dev"
+        "guzzle/guzzle": "dev-master"
     }
 }

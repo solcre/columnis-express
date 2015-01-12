@@ -149,7 +149,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return parent::resolve($name);
     }
 
-    protected function templateExists($templateName) {
+    public function templateExists($templateName) {
         return $templateName == 'home';
     }
 
@@ -158,7 +158,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param string $name The path to the asset
      * @return boolean If the asset is in an allowed path will return true.
      */
-    protected function inAllowedPaths($name) {
+    public function inAllowedPaths($name) {
         $allowedPaths = array_merge($this->getTemplatesPathStack(), $this->getAssetsPaths());
         foreach ($allowedPaths as $path) {
             if ($this->is_subpath($path, $name)) {
@@ -168,10 +168,10 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return false;
     }
 
-    protected function is_subpath($path, $subpath) {
+    public function is_subpath($path, $subpath) {
         $rpath = realpath($path);
         $rsubpath = realpath($subpath);
-        return $rpath !== false && $rsubpath !== false && (strpos($rsubpath, $rpath) === 0);
+        return $rpath != false && $rsubpath != false && (strpos($rsubpath, $rpath) === 0);
     }
 
     /**
