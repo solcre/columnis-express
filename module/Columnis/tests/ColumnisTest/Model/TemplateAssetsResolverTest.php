@@ -6,28 +6,39 @@ use PHPUnit_Framework_TestCase;
 use Columnis\Model\TemplateAssetsResolver;
 
 class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
+    protected $config;
+    
+    public function setUp() {
+        $configPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/module.config.php';
+        $this->config = include($configPath);
+    }
 
     public function testTemplateExists() {
-
-        $assetsPaths = array();
-        $templatesPathStack = array("folder", "other_folder");
+        
+        $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
+        $templatesPathStack = $this->config['view_manager']['template_path_stack'];
 
         $arrayPaths = $templatesPathStack[array_rand($templatesPathStack)];
 
         $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
 
-        $templateNameArray = array('home', 'other', 'another');
-        $templateName = $templateNameArray[array_rand($templateNameArray)];
+        $randNameAr = array_merge(range('a','z'),range(0,9),array('-','_'));
+        shuffle($randNameAr);
+        $templateName = implode('', array_splice($randNameAr, rand(0,(count($randNameAr)-1))));
+
+        $this->assertEquals(is_readable($arrayPaths), true);
 
         $templatePath = $arrayPaths . DIRECTORY_SEPARATOR . $templateName;
-        
+
         $res = mkdir($templatePath);
 
         $this->assertEquals($res, true);
 
         if ($res) {
             $exists = $templateAssetsResolver->templateExists($templateName);
-            $this->assertEquals(true,$exists);
+            $this->assertEquals(true, $exists);
+            
+            rmdir($templatePath);
         }
     }
 

@@ -68,7 +68,7 @@ class CacheListener extends AbstractListenerAggregate {
         }
     }
 
-    protected function setCacheDir(RouteMatch $match) {
+    public function setCacheDir(RouteMatch $match) {
         $params = $match->getParams();
         $lang = $params['lang'];
         $options = $this->cacheService->getOptions();
@@ -78,7 +78,7 @@ class CacheListener extends AbstractListenerAggregate {
     /**
      * @param \Zend\Mvc\Router\RouteMatch $match
      */
-    protected function genCacheName(RouteMatch $match) {
+    public function genCacheName(RouteMatch $match) {
         $params = $match->getParams();
         $pageId = $params['pageId'];
         return $pageId;

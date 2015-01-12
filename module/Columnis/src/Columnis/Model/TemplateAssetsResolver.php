@@ -150,7 +150,13 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     public function templateExists($templateName) {
-        return $templateName == 'home';
+        $paths = $this->getTemplatesPathStack();
+        foreach($paths as $path) {
+            if (is_dir($path . DIRECTORY_SEPARATOR . $templateName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
