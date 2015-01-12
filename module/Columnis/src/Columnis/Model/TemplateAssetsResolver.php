@@ -183,7 +183,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * @param string $template
      */
-    protected function getTemplatePaths($template) {
+    public function getTemplatePaths($template) {
         $ret = array();
         $templatesPathStack = $this->getTemplatesPathStack();
         foreach ($templatesPathStack as $templatePath) {

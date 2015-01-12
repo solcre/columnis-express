@@ -42,26 +42,46 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    /*
-      public function testIs_subpath(){
-      $assetsPaths = array();
-      $templatesPathStack = array("./");
-      $path = "";
-      $subpath = "";
+    public function testIs_subpath() {
+        $assetsPaths = array();
+        $templatesPathStack = array("./");
+        $path = "folder";
+        $subpath = "folder/other";
 
-      $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
-      $res = $templateAssetsResolver->is_subpath($path, $subpath);
-      $this->assertEquals($res,true);
-      }
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+        $res = $templateAssetsResolver->is_subpath($path, $subpath);
+        $this->assertEquals($res, true);
+    }
 
-      public function testInAllowedPaths(){
-      $assetsPaths = array();
-      $templatesPathStack = array("./");
-      $name = "aaa";
+    public function testInAllowedPaths() {
+        $assetsPaths = array();
+        $templatesPathStack = array("./");
+        //el array allowed paths solo tiene './'
+        $name = "./";
 
-      $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
-      $res = $templateAssetsResolver->inAllowedPaths($name);
-      $this->assertEquals($res,true);
-      }
-     */
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+        $res = $templateAssetsResolver->inAllowedPaths($name);
+        $this->assertEquals($res, true);
+    }
+    
+    public function testGetTemplatePaths(){
+        $assetsPaths = array();
+        $templatesPathStack = array("./");
+        //el array allowed paths solo tiene './'
+        $template = "error.phtml";
+
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+        
+        $t = count($templateAssetsResolver->getTemplatePaths($template));
+        
+        $this->assertEquals($t,true);
+    }
+    
+    private function dbg($p,$die=false){
+        echo"<pre>";
+        print_r($p);
+        if($die){
+            die();
+        }
+    }
 }
