@@ -78,14 +78,13 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
 
     public function testResolve() {
 
-        $templateAssetsResolver = $this->getTemplateAssetsResolver();
+       /* $templateAssetsResolver = $this->getTemplateAssetsResolver();
 
         $name = "a";
 
-        $res = $templateAssetsResolver->resolve($name);
+        $res = $templateAssetsResolver->resolve($name);*/
 
-        //$this->dbg($res,true);
-        //$this->assertEquals($res,true);
+        
     }
 
     public function getTemplateAssetsResolver() {
@@ -97,12 +96,6 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         return new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
     }
 
-    private function dbg($p, $die = false) {
-        echo"<pre>";
-        print_r($p);
-        if ($die) {
-            die();
-        }
-    }
+    
 
 }
