@@ -83,7 +83,6 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $name = "a";
 
         $res = $templateAssetsResolver->resolve($name);*/
-
         
     }
 
