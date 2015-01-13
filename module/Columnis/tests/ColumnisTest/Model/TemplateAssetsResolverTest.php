@@ -6,82 +6,134 @@ use PHPUnit_Framework_TestCase;
 use Columnis\Model\TemplateAssetsResolver;
 
 class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
+
     protected $config;
-    
+
     public function setUp() {
         $configPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/module.config.php';
         $this->config = include($configPath);
     }
 
+    private function getRandString() {
+        $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
+        shuffle($randNameAr);
+        return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
+    }
+
     public function testTemplateExists() {
-        
+
         $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
         $templatesPathStack = $this->config['view_manager']['template_path_stack'];
 
-        $arrayPaths = $templatesPathStack[array_rand($templatesPathStack)];
+        $randomTemplatePath = $templatesPathStack[array_rand($templatesPathStack)];
+        $readable = is_readable($randomTemplatePath);
+        $this->assertEquals($readable, true);
 
-        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
-
-        $randNameAr = array_merge(range('a','z'),range(0,9),array('-','_'));
-        shuffle($randNameAr);
-        $templateName = implode('', array_splice($randNameAr, rand(0,(count($randNameAr)-1))));
-
-        $this->assertEquals(is_readable($arrayPaths), true);
-
-        $templatePath = $arrayPaths . DIRECTORY_SEPARATOR . $templateName;
+        $templateName = $this->getRandString();
+        $templatePath = $randomTemplatePath . DIRECTORY_SEPARATOR . $templateName;
 
         $res = mkdir($templatePath);
 
         $this->assertEquals($res, true);
 
-        if ($res) {
-            $exists = $templateAssetsResolver->templateExists($templateName);
-            $this->assertEquals(true, $exists);
-            
-            rmdir($templatePath);
-        }
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+        $exists = $templateAssetsResolver->templateExists($templateName);
+        $this->assertEquals($exists, true);
+
+        $deleted = rmdir($templatePath);
+        $this->assertEquals($deleted, true);
     }
 
     public function testIs_subpath() {
-        $assetsPaths = array();
-        $templatesPathStack = array("./");
-        $path = "folder";
-        $subpath = "folder/other";
+        $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
+        $templatesPathStack = $this->config['view_manager']['template_path_stack'];
+
+        $folder = $this->getRandString();
+        $subfolder = $this->getRandString();
+        $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $folder;
+        $subpath = $path . DIRECTORY_SEPARATOR . $subfolder;
+
+        $create = mkdir($path);
+        $this->assertEquals($create, true);
+
+        $create2 = mkdir($subpath);
+        $this->assertEquals($create2, true);
 
         $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
         $res = $templateAssetsResolver->is_subpath($path, $subpath);
         $this->assertEquals($res, true);
+
+        $deleted = rmdir($subpath);
+        $this->assertEquals($deleted, true);
+
+        $deleted2 = rmdir($path);
+        $this->assertEquals($deleted2, true);
     }
 
     public function testInAllowedPaths() {
-        $assetsPaths = array();
-        $templatesPathStack = array("./");
-        //el array allowed paths solo tiene './'
-        $name = "./";
+        $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
+        $templatesPathStack = $this->config['view_manager']['template_path_stack'];
+
+        $allowedPaths = array_merge($assetsPaths, $templatesPathStack);
+
+        $randomAllowedPath = $allowedPaths[array_rand($allowedPaths)];
+        $readable = is_readable($randomAllowedPath);
+        $this->assertEquals($readable, true);
+        
+        $create = false;
+        if (in_array($randomAllowedPath, $templatesPathStack)) {
+            // It is a template asset
+            $templateName = $this->getRandString();
+            $randomAllowedPath .= DIRECTORY_SEPARATOR . $templateName;
+            $create = mkdir($randomAllowedPath);
+            
+            $this->assertEquals($create, true);
+        }
+        
+        $extensions = array('js', 'css');
+        $randomAssetName = $this->getRandString() . '.' . $extensions[array_rand($extensions)];
+        $assetPath = $randomAllowedPath . DIRECTORY_SEPARATOR . $randomAssetName;
+        $assetData = '* { font-size:100px; }';
+                
+        $createAsset = file_put_contents($assetPath, $assetData) !== false;        
+
+        $this->assertEquals($createAsset, true);
 
         $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
-        $res = $templateAssetsResolver->inAllowedPaths($name);
+        $res = $templateAssetsResolver->inAllowedPaths($assetPath);
         $this->assertEquals($res, true);
-    }
-    
-    public function testGetTemplatePaths(){
-        $assetsPaths = array();
-        $templatesPathStack = array("./");
-        //el array allowed paths solo tiene './'
-        $template = "error.phtml";
 
-        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+        $deletedAsset = unlink($assetPath);
+        $this->assertEquals($deletedAsset, true);
         
-        $t = count($templateAssetsResolver->getTemplatePaths($template));
-        
-        $this->assertEquals($t,true);
-    }
-    
-    private function dbg($p,$die=false){
-        echo"<pre>";
-        print_r($p);
-        if($die){
-            die();
+        if ($create) {
+            $deleted = rmdir($randomAllowedPath);
+            $this->assertEquals($deleted, true);
         }
     }
+
+    public function testGetTemplatePaths() {
+        $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
+        $templatesPathStack = array(
+            'some/path/with/templates',
+            'another/path/with/templates',
+            'one/more/path/with/templates'
+        );
+
+        $templateName = $this->getRandString();
+        
+        $templatesPathsExpected = array(
+            'some/path/with/templates' . DIRECTORY_SEPARATOR . $templateName . DIRECTORY_SEPARATOR,
+            'another/path/with/templates' . DIRECTORY_SEPARATOR . $templateName . DIRECTORY_SEPARATOR,
+            'one/more/path/with/templates' . DIRECTORY_SEPARATOR . $templateName . DIRECTORY_SEPARATOR
+        );
+
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
+
+        $templatePaths = $templateAssetsResolver->getTemplatePaths($templateName);
+        
+        $equals = ($templatesPathsExpected === $templatePaths);
+        $this->assertEquals($equals, true);
+    }
+
 }
