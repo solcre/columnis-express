@@ -59,6 +59,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $create2 = mkdir($subpath);
         $this->assertEquals($create2, true);
 
+        $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
         $res = $templateAssetsResolver->is_subpath($path, $subpath);
         $this->assertEquals($res, true);
 
