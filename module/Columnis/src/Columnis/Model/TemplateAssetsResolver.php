@@ -37,6 +37,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     protected $templatesPathStack = array();
 
     /**
+     *
+     * @var string The name of the folder inside the assets paths that will generate the global.css and global.js
+     */
+    protected $globalFolderName;
+
+    /**
      * Get the Paths where assets are allowed
      * 
      * @return array 
@@ -91,6 +97,24 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
+     * Get the name of the global folder
+     * 
+     * @return string 
+     */
+    function getGlobalFolderName() {
+        return $this->globalFolderName;
+    }
+
+    /**
+     * Set the name of the global folder
+     *
+     * @param string $globalFolderName
+     */
+    function setGlobalFolderName($globalFolderName = '') {
+        $this->globalFolderName = $globalFolderName;
+    }
+
+    /**
      * Constructor
      *
      * Instantiate, set the assets paths, templates paths and the current template
@@ -101,10 +125,15 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         parent::__construct();
         $this->setAssetsPaths($assetsPaths);
         $this->setTemplatesPathStack($templatesPathStack);
-        $this->addToCollections('css/fixed/minified.css', $this->generateCollection($this->getAssetsPaths(), 'css'));
-        $this->addToCollections('js/fixed/minified.js', $this->generateCollection($this->getAssetsPaths(), 'js'));
+        $this->setGlobalFolderName('fixed');
     }
 
+    /**
+     *  Adds a collection of assets with an alias
+     * 
+     * @param string $alias
+     * @param array $assets
+     */
     protected function addToCollections($alias, Array $assets) {
         $collections = $this->getCollections();
         $collections[$alias] = $assets;
@@ -112,32 +141,102 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the template name if the requested asset belongs to a template
+     * 
+     * @param type $name
+     * @return boolean|array
      */
-    public function resolve($name) {
+    public function matchTemplate($name) {
         $pattern = '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/';
+        $matches = array();
         if (preg_match($pattern, $name, $matches)) {
-            $template = $matches[1];
-            $extension = $matches[2];
+            return $matches[1];
         }
-        if ($this->templateExists($template)) {
-            switch ($extension) {
-                case 'css' :
-                    $templateCss = 'templates/' . $template . '/minified.css';
-                    $this->addToCollections($templateCss, $this->generateCollection($this->getTemplatePaths($template), 'css'));
-                    break;
-                case 'js' :
-                    $templateJs = 'templates/' . $template . '/minified.js';
-                    $this->addToCollections($templateJs, $this->generateCollection($this->getTemplatePaths($template), 'js'));
-                    break;
-            }
-        }
-        if ($name === realpath($name)) {
-            if (!$this->inAllowedPaths($name)) {
-                return null;
-            }
-            $file = new SplFileInfo($name);
+        return false;
+    }
 
+    /**
+     * Returns true if the asset belongs to a template
+     * 
+     * @param type $name
+     * @return boolean
+     */
+    public function isTemplateAsset($name) {
+        $template = $this->matchTemplate($name);
+        if (!$template) {
+            return false;
+        }
+        return $this->templateExists($template);
+    }
+
+    /**
+     * Returns true if the asset is used globally
+     * 
+     * @param string $name
+     * @return boolean
+     */
+    public function isGlobalAsset($name) {
+        $pattern = '/^(css|js)\/fixed\/.+\.(css|js)$/';
+        return (preg_match($pattern, $name) > 0);
+    }
+
+    /**
+     * Returns the generated alias for the global assets collection
+     * 
+     * @param string $name
+     * @return string
+     */
+    public function getGlobalCollectionAlias($name) {
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        $globalFolderName = $this->getGlobalFolderName();
+        return $extension . DIRECTORY_SEPARATOR . $globalFolderName . DIRECTORY_SEPARATOR . 'minified.' . $extension;
+    }
+
+    /**
+     * Generates the collection of global assets by iterating over the assets in the global assets directory and adds it to the Resolver
+     * 
+     * @param string $name
+     */
+    public function loadGlobalCollection($name) {
+        $asset = $this->getGlobalCollectionAlias($name);
+        $globalAssetsPaths = $this->getGlobalAssetsPaths();
+        $this->addToCollections($asset, $this->generateCollection($globalAssetsPaths, 'css'));
+    }
+
+    /**
+     * Returns the generated alias for the template assets collection
+     * 
+     * @param string $name
+     * @return string
+     */
+    public function getTemplateCollectionAlias($name) {
+        $template = $this->matchTemplate($name);
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        return 'templates/' . $template . '/minified.' . $extension;
+    }
+
+    /**
+     * Generates the collection of the template assets by iterating over the assets in the template directory and adds it to the Resolver
+     * 
+     * @param string $name
+     */
+    public function loadTemplateCollection($name) {
+        $template = $this->matchTemplate($name);
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        $asset = $this->getTemplateCollectionAlias($name);
+        $templatePaths = $this->getTemplatePaths($template);
+        $this->addToCollections($asset, $this->generateCollection($templatePaths, $extension));
+    }
+
+    /**
+     * Resolves assets with absolute path
+     * 
+     * @param string $name
+     * @return FileAsset
+     */
+    public function resolveAbsolutePath($name) {
+        if ($this->inAllowedPaths($name)) {
+            $file = new SplFileInfo($name);
             if ($file->isReadable() && !$file->isDir()) {
                 $filePath = $file->getRealPath();
                 $mimeType = $this->getMimeResolver()->getMimeType($filePath);
@@ -146,12 +245,32 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
                 return $asset;
             }
         }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function resolve($name) {
+        // Check if it is an asset that is used globally in all pages
+        if ($this->isGlobalAsset($name)) {
+            $this->loadGlobalCollection($name);
+        }
+        // Check if it is an asset from a template
+        if ($this->isTemplateAsset($name)) {
+            $this->loadTemplateCollection($name);
+        }
+        // Check if we are resolving an asset defined with an absolute path
+        if ($name === realpath($name)) {
+            return $this->resolveAbsolutePath($name);
+        }
+
         return parent::resolve($name);
     }
 
     public function templateExists($templateName) {
         $paths = $this->getTemplatesPathStack();
-        foreach($paths as $path) {
+        foreach ($paths as $path) {
             if (is_dir($path . DIRECTORY_SEPARATOR . $templateName)) {
                 return true;
             }
@@ -160,6 +279,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
+     * Returns true if the asset is in an allowed path
      * 
      * @param string $name The path to the asset
      * @return boolean If the asset is in an allowed path will return true.
@@ -174,6 +294,13 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return false;
     }
 
+    /**
+     * Checks if a path is inside another
+     * 
+     * @param string $path
+     * @param string $subpath
+     * @return boolean
+     */
     public function is_subpath($path, $subpath) {
         $rpath = realpath($path);
         $rsubpath = realpath($subpath);
@@ -181,13 +308,31 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
+     * Returns an array with the global assets path
+     * 
+     * @return array
+     */
+    public function getGlobalAssetsPaths() {
+        $ret = array();
+        $assetsPaths = $this->getAssetsPaths();
+        $globalFolderName = $this->getGlobalFolderName();
+        foreach ($assetsPaths as $assetsPath) {
+            $ret[] = $assetsPath . DIRECTORY_SEPARATOR . $globalFolderName . DIRECTORY_SEPARATOR;
+        }
+        return $ret;
+    }
+
+    /**
+     * Returns an array with the template paths where assets are
+     * 
      * @param string $template
+     * @return array
      */
     public function getTemplatePaths($template) {
         $ret = array();
         $templatesPathStack = $this->getTemplatesPathStack();
-        foreach ($templatesPathStack as $templatePath) {
-            $ret[] = $templatePath . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR;
+        foreach ($templatesPathStack as $templatesPath) {
+            $ret[] = $templatesPath . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR;
         }
         return $ret;
     }
