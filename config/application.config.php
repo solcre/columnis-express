@@ -8,7 +8,6 @@
 return array(
     'modules' => array(
         'GkSmarty',
-        'Application',
         'AssetManager',
         'Columnis'
     ),
