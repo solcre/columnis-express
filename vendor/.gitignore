@@ -2,8 +2,11 @@
 .composer
 bin
 composer
+cssmin
 gkralik
 guzzle
+kriswallsmith
+mrclay
 rwoverdijk
 smarty
 symfony
