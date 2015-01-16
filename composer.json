@@ -8,12 +8,21 @@
         "Express"
     ],
     "homepage": "http://www.columnis.com/",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/solcre/gk-smarty"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.3",
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
         "rwoverdijk/assetmanager": "dev-master",
-        "guzzle/guzzle": "dev-master"
+        "guzzle/guzzle": "dev-master",
+        "cssmin/cssmin": "*",
+        "mrclay/minify": "*"
+        
     }
 }

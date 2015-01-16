@@ -1,5 +1,11 @@
 !.gitignore
 .composer
+bin
 composer
+gkralik
+guzzle
+rwoverdijk
+smarty
+symfony
 zendframework
 autoload.php

@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3eac8a2b91c0638f19a0970f4758b9f9",
+    "hash": "3e045fb9ccd1601c53b47829a37bdcc2",
     "packages": [
         {
             "name": "gkralik/gk-smarty",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/gkralik/gk-smarty.git",
-                "reference": "3e90e0d17bd0780d180278fcd7d34ec79e789a66"
+                "url": "https://github.com/solcre/gk-smarty.git",
+                "reference": "c7e2a13e66d51e71356320a6ff57510e8f47f0c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gkralik/gk-smarty/zipball/3e90e0d17bd0780d180278fcd7d34ec79e789a66",
-                "reference": "3e90e0d17bd0780d180278fcd7d34ec79e789a66",
+                "url": "https://api.github.com/repos/solcre/gk-smarty/zipball/c7e2a13e66d51e71356320a6ff57510e8f47f0c3",
+                "reference": "c7e2a13e66d51e71356320a6ff57510e8f47f0c3",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,6 @@
                     "GkSmarty\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -52,7 +51,10 @@
                 "smarty",
                 "zf2"
             ],
-            "time": "2014-04-01 10:21:09"
+            "support": {
+                "source": "https://github.com/solcre/gk-smarty/tree/master"
+            },
+            "time": "2015-01-13 19:29:58"
         },
         {
             "name": "guzzle/guzzle",
