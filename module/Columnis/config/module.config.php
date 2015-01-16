@@ -28,6 +28,8 @@ return array(
             'Zend\Cache' => 'Zend\Cache\Service\StorageCacheFactory',
             'HtmlCache' => 'Columnis\Service\Factory\HtmlCacheFactory',
             'CacheListener' => 'Columnis\Service\Factory\CacheListenerFactory',
+            'PageService' => 'Columnis\Service\Factory\PageServiceFactory',
+            'TemplateService' => 'Columnis\Service\Factory\TemplateServiceFactory',
             'TemplateAssetsResolver' => 'Columnis\Service\Factory\TemplateAssetsResolverFactory',
         ),
         'abstract_factories' => array(
@@ -60,10 +62,10 @@ return array(
         'doctype' => 'HTML5',
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
-        'template_map' => array(
-            'layout/layout' => __DIR__ . '/../../../public/templates/layout.tpl',
-            'error/404' => __DIR__ . '/../../../public/templates/404.tpl',
-            'error/index' => __DIR__ . '/../../../public/templates/error.tpl',
+        'template_map' => array(            
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../../../public/templates',

@@ -6,8 +6,8 @@ use AssetManager\Resolver\CollectionResolver;
 use AssetManager\Resolver\MimeResolverAwareInterface;
 use AssetManager\Service\MimeResolver;
 use Assetic\Asset\FileAsset;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Assetic\Filter\CssMinFilter;
+use Columnis\Utils\Directory as DirectoryUtils;
 use SplFileInfo;
 
 /**
@@ -47,7 +47,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * 
      * @return array 
      */
-    function getAssetsPaths() {
+    public function getAssetsPaths() {
         return $this->assetsPaths;
     }
 
@@ -56,7 +56,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @param array $assetsPaths
      */
-    function setAssetsPaths(Array $assetsPaths = null) {
+    public function setAssetsPaths(Array $assetsPaths = null) {
         $this->assetsPaths = $assetsPaths;
     }
 
@@ -83,7 +83,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * 
      * @return array
      */
-    function getTemplatesPathStack() {
+    public function getTemplatesPathStack() {
         return $this->templatesPathStack;
     }
 
@@ -92,7 +92,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * 
      * @param array $templatesPathStack
      */
-    function setTemplatesPathStack(Array $templatesPathStack) {
+    public function setTemplatesPathStack(Array $templatesPathStack) {
         $this->templatesPathStack = $templatesPathStack;
     }
 
@@ -101,7 +101,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * 
      * @return string 
      */
-    function getGlobalFolderName() {
+    public function getGlobalFolderName() {
         return $this->globalFolderName;
     }
 
@@ -110,7 +110,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @param string $globalFolderName
      */
-    function setGlobalFolderName($globalFolderName = '') {
+    public function setGlobalFolderName($globalFolderName = '') {
         $this->globalFolderName = $globalFolderName;
     }
 
@@ -134,7 +134,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param string $alias
      * @param array $assets
      */
-    protected function addToCollections($alias, Array $assets) {
+    public function addToCollections($alias, Array $assets) {
         $collections = $this->getCollections();
         $collections[$alias] = $assets;
         $this->setCollections($collections);
@@ -146,7 +146,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param type $name
      * @return boolean|array
      */
-    public function matchTemplate($name) {
+    public function matchTemplateName($name) {
         $pattern = '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/';
         $matches = array();
         if (preg_match($pattern, $name, $matches)) {
@@ -162,11 +162,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @return boolean
      */
     public function isTemplateAsset($name) {
-        $template = $this->matchTemplate($name);
+        $template = $this->matchTemplateName($name);
         if (!$template) {
             return false;
         }
-        return $this->templateExists($template);
+        $templatePath = $this->getExistantTemplatePath($template);
+        return $this->validTemplate($templatePath);
     }
 
     /**
@@ -178,19 +179,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     public function isGlobalAsset($name) {
         $pattern = '/^(css|js)\/fixed\/.+\.(css|js)$/';
         return (preg_match($pattern, $name) > 0);
-    }
-
-    /**
-     * Returns the generated alias for the global assets collection
-     * 
-     * @param string $name
-     * @return string
-     */
-    public function getGlobalCollectionAlias($name) {
-        $extension = pathinfo($name, PATHINFO_EXTENSION);
-        $globalFolderName = $this->getGlobalFolderName();
-        return $extension . DIRECTORY_SEPARATOR . $globalFolderName . DIRECTORY_SEPARATOR . 'minified.' . $extension;
-    }
+    }    
 
     /**
      * Generates the collection of global assets by iterating over the assets in the global assets directory and adds it to the Resolver
@@ -198,21 +187,11 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param string $name
      */
     public function loadGlobalCollection($name) {
-        $asset = $this->getGlobalCollectionAlias($name);
-        $globalAssetsPaths = $this->getGlobalAssetsPaths();
-        $this->addToCollections($asset, $this->generateCollection($globalAssetsPaths, 'css'));
-    }
+        $paths = $this->getGlobalAssetsPaths();
 
-    /**
-     * Returns the generated alias for the template assets collection
-     * 
-     * @param string $name
-     * @return string
-     */
-    public function getTemplateCollectionAlias($name) {
-        $template = $this->matchTemplate($name);
         $extension = pathinfo($name, PATHINFO_EXTENSION);
-        return 'templates/' . $template . '/minified.' . $extension;
+        $files = $this->generateCollection($paths, $extension);
+        $this->addToCollections($name, $files);
     }
 
     /**
@@ -221,12 +200,19 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param string $name
      */
     public function loadTemplateCollection($name) {
-        $template = $this->matchTemplate($name);
-        $extension = pathinfo($name, PATHINFO_EXTENSION);
-        $asset = $this->getTemplateCollectionAlias($name);
-        $templatePaths = $this->getTemplatePaths($template);
-        $this->addToCollections($asset, $this->generateCollection($templatePaths, $extension));
+        $templateName = $this->matchTemplateName($name);
+        $path = $this->getExistantTemplatePath($templateName);
+
+        $template = new Template();
+        $template->setName($templateName);
+        $template->setPath($path);
+        
+        $extension = pathinfo($name, PATHINFO_EXTENSION);        
+        $files = $template->getAssets($extension);
+        
+        $this->addToCollections($name, $files);
     }
+
 
     /**
      * Resolves assets with absolute path
@@ -242,6 +228,9 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
                 $mimeType = $this->getMimeResolver()->getMimeType($filePath);
                 $asset = new FileAsset($filePath);
                 $asset->mimetype = $mimeType;
+                if ($file->getExtension() == 'css') {
+                    $asset->ensureFilter(new CssMinFilter());
+                }
                 return $asset;
             }
         }
@@ -268,15 +257,35 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         return parent::resolve($name);
     }
 
-    public function templateExists($templateName) {
+    /**
+     * Return the FIRST paths that contain a template with the specified name
+     * (There should not be more than one posible template path)
+     * 
+     * @param string $templateName
+     * @return string
+     */
+    public function getExistantTemplatePath($templateName) {
         $paths = $this->getTemplatesPathStack();
         foreach ($paths as $path) {
-            if (is_dir($path . DIRECTORY_SEPARATOR . $templateName)) {
-                return true;
+            $templatePath = $path . DIRECTORY_SEPARATOR . $templateName;
+            if ($this->validTemplate($templatePath)) {
+                return $templatePath;
             }
         }
-        return false;
+        return null;
     }
+
+    /**
+     * Returns true if it is a valid template
+     * 
+     * @param string $templatePath
+     * @return boolean
+     */
+    public function validTemplate($templatePath) {
+        $template = new Template();
+        $template->setPath($templatePath);
+        return $template->isValid();
+    }    
 
     /**
      * Returns true if the asset is in an allowed path
@@ -287,25 +296,13 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     public function inAllowedPaths($name) {
         $allowedPaths = array_merge($this->getTemplatesPathStack(), $this->getAssetsPaths());
         foreach ($allowedPaths as $path) {
-            if ($this->is_subpath($path, $name)) {
+            if (DirectoryUtils::is_subpath($path, $name)) {
                 return true;
             }
         }
         return false;
     }
-
-    /**
-     * Checks if a path is inside another
-     * 
-     * @param string $path
-     * @param string $subpath
-     * @return boolean
-     */
-    public function is_subpath($path, $subpath) {
-        $rpath = realpath($path);
-        $rsubpath = realpath($subpath);
-        return $rpath != false && $rsubpath != false && (strpos($rsubpath, $rpath) === 0);
-    }
+    
 
     /**
      * Returns an array with the global assets path
@@ -323,42 +320,20 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
-     * Returns an array with the template paths where assets are
-     * 
-     * @param string $template
-     * @return array
-     */
-    public function getTemplatePaths($template) {
-        $ret = array();
-        $templatesPathStack = $this->getTemplatesPathStack();
-        foreach ($templatesPathStack as $templatesPath) {
-            $ret[] = $templatesPath . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR;
-        }
-        return $ret;
-    }
-
-    /**
      * Generate the collections of assets for the a template.
      * @param string $extension
      * @return array|Traversable collections of assets
      */
-    protected function generateCollection($paths, $extension) {
-        $files = array();
+    public function generateCollection($paths, $extension) {
+        $ret = array();
         foreach ($paths as $path) {
-            if (!is_dir($path)) {
-                continue;
-            }
-
-            $directory = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-            $iterator = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::LEAVES_ONLY);
-
-            foreach ($iterator as $fileinfo) {
-                if ($fileinfo->getExtension() == $extension) {
-                    $files[] = realpath($fileinfo->getPathname());
-                }
-            }
+            $files = DirectoryUtils::recursiveSearchByExtension($path, $extension);
+            $ret = array_merge($ret, $files);
         }
-        return $files;
+        sort($ret);
+        return $ret;
     }
+
+    
 
 }

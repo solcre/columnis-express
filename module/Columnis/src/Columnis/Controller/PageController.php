@@ -4,27 +4,40 @@ namespace Columnis\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\View\ViewEvent;
+use Columnis\Model\Page;
 
 class PageController extends AbstractActionController {
 
     public function indexAction() {
-        $page = 'home-1.html';
-        $pagePath = getcwd() . DIRECTORY_SEPARATOR . 'public/pages' . DIRECTORY_SEPARATOR . $page;        
-        $template = 'home';
-        $templatePath = $template . DIRECTORY_SEPARATOR . 'main.tpl';
-        
-        $serviceManager = $this->getServiceLocator();
-        
-        $viewVariables = array(
-            'prueba' => 'prueba loca funca'
-        );
-        $view = new ViewModel();
-        $view->setTemplate($templatePath);
-        $view->setVariables($viewVariables);
-        $view->setTerminal(true);
+        $pageId = $this->params()->fromRoute('pageId');
+        $page = $this->fetchPage($pageId);
 
-        return $view;
+        if ($page instanceof Page) {
+            $viewVariables = $page->getData();
+            $template = $page->getTemplate();            
+            if ($template->isValid()) {                
+                $view = new ViewModel();
+                $view->setTemplate($template->getMainFile(false));
+                $view->setVariables($viewVariables);
+                $view->setTerminal(true);
+                return $view;
+            }
+        }
+        $this->getResponse()->setStatusCode(404);
+    }
+
+    protected function fetchPage($pageId) {
+        $page = new Page();
+        $page->setId($pageId);
+
+        $serviceManager = $this->getServiceLocator();
+        $pageService = $serviceManager->get('PageService');
+        /* @var $pageService \Columnis\Service\PageService */
+
+        if (!$pageService->fetch($page)) {
+            $page = null;
+        }
+        return $page;
     }
 
 }

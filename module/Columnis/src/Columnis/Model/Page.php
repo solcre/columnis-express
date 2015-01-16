@@ -5,8 +5,13 @@ namespace Columnis\Model;
 class Page {
 
     protected $id;
-    protected $template;
     protected $updated;
+    protected $data;
+    
+    /**
+     * @var Template $template
+     */
+    protected $template;
 
     public function __construct() {
         
@@ -18,22 +23,33 @@ class Page {
 
     public function setId($id) {
         $this->id = $id;
-    }
+    }   
 
-    function getTemplate() {
-        return $this->template;
-    }
-
-    function getUpdated() {
+    public function getUpdated() {
         return $this->updated;
     }
 
-    function setTemplate($template) {
-        $this->template = $template;
-    }
-
-    function setUpdated($updated) {
+    public function setUpdated($updated) {
         $this->updated = $updated;
     }
-
+    
+    function getData() {
+        return $this->data;
+    }
+    
+    function setData($data) {
+        $this->data = $data;
+    }
+    
+    /**
+     * @return Template
+     */
+    public function getTemplate() {
+        return $this->template;
+    }
+    public function setTemplate(Template $template) {
+        $this->template = $template;
+    }
+    
+    
 }
