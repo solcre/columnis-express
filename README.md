@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/solcre/columnis-express)](https://travis-ci.org/solcre/columnis-express.svg?branch=master)
+[![Build Status](https://api.travis-ci.org/solcre/columnis-express.svg?branch=master)](https://travis-ci.org/solcre/columnis-express)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/solcre/columnis-express/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/solcre/columnis-express/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/solcre/columnis-express/version.svg)](https://packagist.org/packages/solcre/columnis-express)
