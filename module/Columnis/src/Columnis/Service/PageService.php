@@ -138,13 +138,16 @@ class PageService {
                 if (isset($data['pagina']['template'])) {
                     $templateName = $data['pagina']['template'];
                 }
+                else {
+                    throw new Exception("Template not found");
+                }
                 if (isset($data['pagina']['template_path'])) {
                     $path = $data['pagina']['template_path'];
                 }
                 else {
                     $templateService = $this->getTemplateService();
                     $path = $templateService->getExistantTemplatePath($templateName);
-                }
+                }                
                 $template = new \Columnis\Model\Template();                
                 $template->setName($templateName);
                 $template->setPath($path);

@@ -19,6 +19,7 @@ class PageServiceFactory implements FactoryInterface
         $clientNumber = '001';
         $httpClient = new GuzzleClient('http://api.columnis.com/');        
         $templateService = $serviceLocator->get('TemplateService');
+        /* @var \Columnis\Service\TemplateService $templateService */
         
         return new PageService($templateService, $httpClient, $clientNumber);
     }

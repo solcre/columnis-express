@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -12,22 +12,23 @@ use Exception as BaseException;
 use GlobIterator;
 use Zend\Cache\Exception;
 use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\Adapter\FilesystemOptions;
+use Zend\Cache\Storage\Adapter\FilesystemIterator;
 use Zend\Stdlib\ErrorHandler;
 use ArrayObject;
-use Zend\Cache\Storage\Adapter\FilesystemOptions;
 
 class HtmlCache extends Filesystem {
-    
+
     protected $extension = '.html';
-    
-    function getExtension() {
+
+    public function getExtension() {
         return $this->extension;
     }
-    function setExtension($extension) {
+
+    public function setExtension($extension) {
         $this->extension = $extension;
     }
 
-        
     /**
      * Set options.
      *
@@ -35,8 +36,7 @@ class HtmlCache extends Filesystem {
      * @return Filesystem
      * @see    getOptions()
      */
-    public function setOptions($options)
-    {
+    public function setOptions($options) {
         if (!$options instanceof FilesystemOptions) {
             $options = new FilesystemOptions($options);
         }
@@ -50,8 +50,7 @@ class HtmlCache extends Filesystem {
      * @return FilesystemOptions
      * @see setOptions()
      */
-    public function getOptions()
-    {
+    public function getOptions() {
         if (!$this->options) {
             $this->setOptions(new FilesystemOptions());
         }
@@ -66,10 +65,9 @@ class HtmlCache extends Filesystem {
      * @throws Exception\RuntimeException
      * @return bool
      */
-    public function flush()
-    {
+    public function flush() {
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_PATHNAME;
-        $dir   = $this->getOptions()->getCacheDir();
+        $dir = $this->getOptions()->getCacheDir();
         $clearFolder = null;
         $clearFolder = function ($dir) use (& $clearFolder, $flags) {
             $it = new GlobIterator($dir . DIRECTORY_SEPARATOR . '*', $flags);
@@ -102,19 +100,18 @@ class HtmlCache extends Filesystem {
      *
      * @triggers clearExpired.exception(ExceptionEvent)
      */
-    public function clearExpired()
-    {
-        $options   = $this->getOptions();
+    public function clearExpired() {
+        $options = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix    = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
+        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
 
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_FILEINFO;
-        $path  = $options->getCacheDir()
-            . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-            . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
+        $path = $options->getCacheDir()
+                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
+                . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
         $glob = new GlobIterator($path, $flags);
         $time = time();
-        $ttl  = $options->getTtl();
+        $ttl = $options->getTtl();
 
         ErrorHandler::start();
         foreach ($glob as $entry) {
@@ -133,19 +130,14 @@ class HtmlCache extends Filesystem {
         if ($error) {
             $result = false;
             return $this->triggerException(
-                __FUNCTION__,
-                new ArrayObject(),
-                $result,
-                new Exception\RuntimeException('Failed to clear expired items', 0, $error)
+                            __FUNCTION__, new ArrayObject(), $result, new Exception\RuntimeException('Failed to clear expired items', 0, $error)
             );
         }
 
         return true;
     }
 
-    
-
-        /**
+    /**
      * Remove items matching given tags.
      *
      * If $disjunction only one of the given tags must match
@@ -155,27 +147,26 @@ class HtmlCache extends Filesystem {
      * @param  bool  $disjunction
      * @return bool
      */
-    public function clearByTags(array $tags, $disjunction = false)
-    {
+    public function clearByTags(array $tags, $disjunction = false) {
         if (!$tags) {
             return true;
         }
 
-        $tagCount  = count($tags);
-        $options   = $this->getOptions();
+        $tagCount = count($tags);
+        $options = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix    = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
+        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
 
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_PATHNAME;
-        $path  = $options->getCacheDir()
-            . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-            . DIRECTORY_SEPARATOR . $prefix . '*.tag';
+        $path = $options->getCacheDir()
+                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
+                . DIRECTORY_SEPARATOR . $prefix . '*.tag';
         $glob = new GlobIterator($path, $flags);
 
         foreach ($glob as $pathname) {
             $diff = array_diff($tags, explode("\n", $this->getFileContent($pathname)));
 
-            $rem  = false;
+            $rem = false;
             if ($disjunction && count($diff) < $tagCount) {
                 $rem = true;
             } elseif (!$disjunction && !$diff) {
@@ -202,17 +193,15 @@ class HtmlCache extends Filesystem {
      *
      * @return FilesystemIterator
      */
-    public function getIterator()
-    {
-        $options   = $this->getOptions();
+    public function getIterator() {
+        $options = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix    = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
-        $path      = $options->getCacheDir()
-            . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-            . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
+        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
+        $path = $options->getCacheDir()
+                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
+                . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
         return new FilesystemIterator($this, $path, $prefix);
     }
-
 
     /**
      * Internal method to get an item.
@@ -223,8 +212,7 @@ class HtmlCache extends Filesystem {
      * @return null|string Data on success, null on failure
      * @throws Exception\ExceptionInterface
      */
-    protected function internalGetItem(& $normalizedKey, & $success = null, & $casToken = null)
-    {
+    protected function internalGetItem(& $normalizedKey, & $success = null, & $casToken = null) {
         if (!$this->internalHasItem($normalizedKey)) {
             $success = false;
             return null;
@@ -232,15 +220,14 @@ class HtmlCache extends Filesystem {
 
         try {
             $filespec = $this->getFileSpec($normalizedKey);
-            $data     = $this->getFileContent($filespec . $this->getExtension());
+            $data = $this->getFileContent($filespec . $this->getExtension());
 
             // use filemtime + filesize as CAS token
             if (func_num_args() > 2) {
                 $casToken = filemtime($filespec . $this->getExtension()) . filesize($filespec . $this->getExtension());
             }
-            $success  = true;
+            $success = true;
             return $data;
-
         } catch (BaseException $e) {
             $success = false;
             throw $e;
@@ -254,15 +241,14 @@ class HtmlCache extends Filesystem {
      * @return array Associative array of keys and values
      * @throws Exception\ExceptionInterface
      */
-    protected function internalGetItems(array & $normalizedKeys)
-    {
-        $keys    = $normalizedKeys; // Don't change argument passed by reference
-        $result  = array();
+    protected function internalGetItems(array & $normalizedKeys) {
+        $keys = $normalizedKeys; // Don't change argument passed by reference
+        $result = array();
         while ($keys) {
 
             // LOCK_NB if more than one items have to read
             $nonBlocking = count($keys) > 1;
-            $wouldblock  = null;
+            $wouldblock = null;
 
             // read items
             foreach ($keys as $i => $key) {
@@ -272,7 +258,7 @@ class HtmlCache extends Filesystem {
                 }
 
                 $filespec = $this->getFileSpec($key);
-                $data     = $this->getFileContent($filespec . $this->getExtension(), $nonBlocking, $wouldblock);
+                $data = $this->getFileContent($filespec . $this->getExtension(), $nonBlocking, $wouldblock);
                 if ($nonBlocking && $wouldblock) {
                     continue;
                 } else {
@@ -289,8 +275,7 @@ class HtmlCache extends Filesystem {
         return $result;
     }
 
-    protected function internalHasItem(& $normalizedKey)
-    {
+    protected function internalHasItem(& $normalizedKey) {
         $file = $this->getFileSpec($normalizedKey) . $this->getExtension();
         if (!file_exists($file)) {
             return false;
@@ -319,8 +304,7 @@ class HtmlCache extends Filesystem {
      * @param string $key
      * @return array|bool Metadata on success, false on failure
      */
-    public function getMetadata($key)
-    {
+    public function getMetadata($key) {
         $options = $this->getOptions();
         if ($options->getReadable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -336,8 +320,7 @@ class HtmlCache extends Filesystem {
      * @param array $options
      * @return array Associative array of keys and metadata
      */
-    public function getMetadatas(array $keys, array $options = array())
-    {
+    public function getMetadatas(array $keys, array $options = array()) {
         $options = $this->getOptions();
         if ($options->getReadable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -352,19 +335,18 @@ class HtmlCache extends Filesystem {
      * @param string $normalizedKey
      * @return array|bool Metadata on success, false on failure
      */
-    protected function internalGetMetadata(& $normalizedKey)
-    {
+    protected function internalGetMetadata(& $normalizedKey) {
         if (!$this->internalHasItem($normalizedKey)) {
             return false;
         }
 
-        $options  = $this->getOptions();
+        $options = $this->getOptions();
         $filespec = $this->getFileSpec($normalizedKey);
-        $file     = $filespec . $this->getExtension();
+        $file = $filespec . $this->getExtension();
 
         $metadata = array(
             'filespec' => $filespec,
-            'mtime'    => filemtime($file)
+            'mtime' => filemtime($file)
         );
 
         if (!$options->getNoCtime()) {
@@ -385,18 +367,17 @@ class HtmlCache extends Filesystem {
      * @return array Associative array of keys and metadata
      * @throws Exception\ExceptionInterface
      */
-    protected function internalGetMetadatas(array & $normalizedKeys)
-    {
+    protected function internalGetMetadatas(array & $normalizedKeys) {
         $options = $this->getOptions();
-        $result  = array();
+        $result = array();
 
         foreach ($normalizedKeys as $normalizedKey) {
             $filespec = $this->getFileSpec($normalizedKey);
-            $file     = $filespec . $this->getExtension();
+            $file = $filespec . $this->getExtension();
 
             $metadata = array(
                 'filespec' => $filespec,
-                'mtime'    => filemtime($file),
+                'mtime' => filemtime($file),
             );
 
             if (!$options->getNoCtime()) {
@@ -421,8 +402,7 @@ class HtmlCache extends Filesystem {
      * @return bool
      * @throws Exception\ExceptionInterface
      */
-    protected function internalSetItem(& $normalizedKey, & $value)
-    {
+    protected function internalSetItem(& $normalizedKey, & $value) {
         $filespec = $this->getFileSpec($normalizedKey);
         $this->prepareDirectoryStructure($filespec);
 
@@ -448,10 +428,8 @@ class HtmlCache extends Filesystem {
      * @return array Array of not stored keys
      * @throws Exception\ExceptionInterface
      */
-    protected function internalSetItems(array & $normalizedKeyValuePairs)
-    {
-        $oldUmask    = null;
-
+    protected function internalSetItems(array & $normalizedKeyValuePairs) {
+        
         // create an associated array of files and contents to write
         $contents = array();
         foreach ($normalizedKeyValuePairs as $key => & $value) {
@@ -468,7 +446,7 @@ class HtmlCache extends Filesystem {
         // write to disk
         while ($contents) {
             $nonBlocking = count($contents) > 1;
-            $wouldblock  = null;
+            $wouldblock = null;
 
             foreach ($contents as $file => & $content) {
                 $this->putFileContent($file, $content, $nonBlocking, $wouldblock);
@@ -496,8 +474,7 @@ class HtmlCache extends Filesystem {
      * @see    getItem()
      * @see    setItem()
      */
-    public function checkAndSetItem($token, $key, $value)
-    {
+    public function checkAndSetItem($token, $key, $value) {
         $options = $this->getOptions();
         if ($options->getWritable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -517,14 +494,13 @@ class HtmlCache extends Filesystem {
      * @see    getItem()
      * @see    setItem()
      */
-    protected function internalCheckAndSetItem(& $token, & $normalizedKey, & $value)
-    {
+    protected function internalCheckAndSetItem(& $token, & $normalizedKey, & $value) {
         if (!$this->internalHasItem($normalizedKey)) {
             return false;
         }
 
         // use filemtime + filesize as CAS token
-        $file  = $this->getFileSpec($normalizedKey) . $this->getExtension();
+        $file = $this->getFileSpec($normalizedKey) . $this->getExtension();
         $check = filemtime($file) . filesize($file);
         if ($token !== $check) {
             return false;
@@ -544,8 +520,7 @@ class HtmlCache extends Filesystem {
      * @triggers touchItem.post(PostEvent)
      * @triggers touchItem.exception(ExceptionEvent)
      */
-    public function touchItem($key)
-    {
+    public function touchItem($key) {
         $options = $this->getOptions();
         if ($options->getWritable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -565,8 +540,7 @@ class HtmlCache extends Filesystem {
      * @triggers touchItems.post(PostEvent)
      * @triggers touchItems.exception(ExceptionEvent)
      */
-    public function touchItems(array $keys)
-    {
+    public function touchItems(array $keys) {
         $options = $this->getOptions();
         if ($options->getWritable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -582,8 +556,7 @@ class HtmlCache extends Filesystem {
      * @return bool
      * @throws Exception\ExceptionInterface
      */
-    protected function internalTouchItem(& $normalizedKey)
-    {
+    protected function internalTouchItem(& $normalizedKey) {
         if (!$this->internalHasItem($normalizedKey)) {
             return false;
         }
@@ -611,8 +584,7 @@ class HtmlCache extends Filesystem {
      * @triggers removeItem.post(PostEvent)
      * @triggers removeItem.exception(ExceptionEvent)
      */
-    public function removeItem($key)
-    {
+    public function removeItem($key) {
         $options = $this->getOptions();
         if ($options->getWritable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -632,8 +604,7 @@ class HtmlCache extends Filesystem {
      * @triggers removeItems.post(PostEvent)
      * @triggers removeItems.exception(ExceptionEvent)
      */
-    public function removeItems(array $keys)
-    {
+    public function removeItems(array $keys) {
         $options = $this->getOptions();
         if ($options->getWritable() && $options->getClearStatCache()) {
             clearstatcache();
@@ -649,8 +620,7 @@ class HtmlCache extends Filesystem {
      * @return bool
      * @throws Exception\ExceptionInterface
      */
-    protected function internalRemoveItem(& $normalizedKey)
-    {
+    protected function internalRemoveItem(& $normalizedKey) {
         $filespec = $this->getFileSpec($normalizedKey);
         if (!file_exists($filespec . $this->getExtension())) {
             return false;
@@ -668,5 +638,5 @@ class HtmlCache extends Filesystem {
         $path = $options->getCacheDir() . DIRECTORY_SEPARATOR;
         return $path . $prefix . DIRECTORY_SEPARATOR . $normalizedKey;
     }
-    
+
 }

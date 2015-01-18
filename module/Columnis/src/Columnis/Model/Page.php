@@ -33,11 +33,11 @@ class Page {
         $this->updated = $updated;
     }
     
-    function getData() {
+    public function getData() {
         return $this->data;
     }
     
-    function setData($data) {
+    public function setData($data) {
         $this->data = $data;
     }
     

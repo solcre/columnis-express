@@ -15,6 +15,8 @@ class TemplateServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {   
+        $templatesPathStack = array();
+        
         $config      = $serviceLocator->get('Config');
         
         if (isset($config['view_manager']['template_path_stack'])) {

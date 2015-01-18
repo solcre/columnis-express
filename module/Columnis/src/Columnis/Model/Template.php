@@ -73,11 +73,11 @@ class Template {
         if (!is_dir($templatePath)) {
             return false;
         }
-        $definitionFile = $this->getDefinitionFile($templatePath);
+        $definitionFile = $this->getDefinitionFile();
         if (!is_file($definitionFile)) {
             return false;
         }
-        $mainFile = $this->getMainFile($templatePath);
+        $mainFile = $this->getMainFile();
         if (!is_file($mainFile)) {
             return false;
         }

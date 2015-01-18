@@ -143,7 +143,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Returns the template name if the requested asset belongs to a template
      * 
-     * @param type $name
+     * @param string $name
      * @return boolean|array
      */
     public function matchTemplateName($name) {
