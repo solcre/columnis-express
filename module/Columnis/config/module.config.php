@@ -77,6 +77,12 @@ return array(
             'cache_dir' => 'public/pages'
         )
     ),
+    'guzzle_cache' => array(
+        'adapter' => 'filesystem',
+        'options' => array(
+            'cache_dir' => 'data/api'
+        )
+    ),
     'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
