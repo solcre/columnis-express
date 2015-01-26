@@ -80,7 +80,7 @@ return array(
     'guzzle_cache' => array(
         'adapter' => 'filesystem',
         'options' => array(
-            'cache_dir' => 'data/api'
+            'cache_dir' => 'data/cache/api'
         )
     ),
     'asset_manager' => array(
