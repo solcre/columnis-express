@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e36fa86479e6bde4b681b06e7d7a789",
+    "hash": "ad7ff81c174d392a95d387b46ddc2cce",
     "packages": [
         {
             "name": "cssmin/cssmin",
@@ -281,12 +281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/RWOverdijk/AssetManager.git",
-                "reference": "865eebdd404fc47dfa961f7ae3453c70712e3857"
+                "reference": "128dfa4396ce9b4011859217ce2eab1626f2cf86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RWOverdijk/AssetManager/zipball/865eebdd404fc47dfa961f7ae3453c70712e3857",
-                "reference": "865eebdd404fc47dfa961f7ae3453c70712e3857",
+                "url": "https://api.github.com/repos/RWOverdijk/AssetManager/zipball/128dfa4396ce9b4011859217ce2eab1626f2cf86",
+                "reference": "128dfa4396ce9b4011859217ce2eab1626f2cf86",
                 "shasum": ""
             },
             "require": {
@@ -334,7 +334,7 @@
                 "zend framework 2",
                 "zf2"
             ],
-            "time": "2014-09-17 04:18:07"
+            "time": "2015-01-20 14:40:36"
         },
         {
             "name": "smarty/smarty",
@@ -780,7 +780,8 @@
         "zendframework/zftool": 20,
         "gkralik/gk-smarty": 20,
         "rwoverdijk/assetmanager": 20,
-        "guzzle/guzzle": 20
+        "guzzle/guzzle": 20,
+        "guzzle/plugin-cache": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

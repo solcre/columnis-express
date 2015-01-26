@@ -30,6 +30,7 @@
         "gkralik/gk-smarty": "dev-master",
         "rwoverdijk/assetmanager": "dev-master",
         "guzzle/guzzle": "dev-master",
+        "guzzle/plugin-cache" : "dev-master",
         "cssmin/cssmin": "*",
         "mrclay/minify": "*"
         
