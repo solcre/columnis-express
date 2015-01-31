@@ -60,7 +60,7 @@ class Template {
      * @return string
      */
     public function getMainFile($withPath = true) {
-        return ($withPath ? $this->getPath()  .  DIRECTORY_SEPARATOR : $this->getName() . DIRECTORY_SEPARATOR) . self::MAIN_FILE;
+        return ($withPath ? $this->getPath() : $this->getName()) . DIRECTORY_SEPARATOR . self::MAIN_FILE;
     }
 
     /**
