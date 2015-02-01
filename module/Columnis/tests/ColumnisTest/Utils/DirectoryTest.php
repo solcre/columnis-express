@@ -4,36 +4,47 @@ namespace ColumnisTest\Utils;
 
 use PHPUnit_Framework_TestCase;
 use Columnis\Utils\Directory as DirectoryUtils;
+use ColumnisTest\Bootstrap;
 
 class DirectoryTest extends PHPUnit_Framework_TestCase {
-
-    private function getRandString() {
-        $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
-        shuffle($randNameAr);
-        return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
+    
+    public function testRecursiveSearchByExtension() {
+        $files = array(
+            Bootstrap::getTestFilesDir() . 'directory-tests/somefilefor.test',
+            Bootstrap::getTestFilesDir() . 'directory-tests/anotherfilefor.test',
+            Bootstrap::getTestFilesDir() . 'directory-tests/for-recursive/recursivefilefor.test',
+            Bootstrap::getTestFilesDir() . 'directory-tests/for-recursive/anotherfilefor.test',
+            Bootstrap::getTestFilesDir() . 'directory-tests/for-recursive/more-recursive/morerecursivefilefor.test',
+            Bootstrap::getTestFilesDir() . 'directory-tests/for-recursive/more-recursive/anotherfilefor.test'
+        );
+        
+        $search = DirectoryUtils::recursiveSearchByExtension(Bootstrap::getTestFilesDir(), 'test');
+        sort($search);
+        sort($files);
+        $this->assertEquals($files, $search);
     }
-
+    
     public function testIs_subpath() {
-        $folder = $this->getRandString();
-        $subfolder = $this->getRandString();
+        $folder = Bootstrap::getRandString();
+        $subfolder = Bootstrap::getRandString();
         $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $folder;
         $subpath = $path . DIRECTORY_SEPARATOR . $subfolder;
 
         $create = mkdir($path);
-        $this->assertEquals($create, true);
+        $this->assertTrue($create);
 
         $create2 = mkdir($subpath);
-        $this->assertEquals($create2, true);
+        $this->assertTrue($create2);
 
 
         $res = DirectoryUtils::is_subpath($path, $subpath);
-        $this->assertEquals($res, true);
+        $this->assertTrue($res);
 
         $deleted = rmdir($subpath);
-        $this->assertEquals($deleted, true);
+        $this->assertTrue($deleted);
 
         $deleted2 = rmdir($path);
-        $this->assertEquals($deleted2, true);
+        $this->assertTrue($deleted2);
     }
 
 }

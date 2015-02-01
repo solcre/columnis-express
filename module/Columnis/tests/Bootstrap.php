@@ -108,7 +108,9 @@ class Bootstrap
         }
         return $dir . '/' . $path;
     }
-    
+    public static function getTestFilesDir() {
+        return dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
+    }
     public static function getRandString() {
         $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
         shuffle($randNameAr);
