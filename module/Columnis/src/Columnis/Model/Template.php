@@ -3,6 +3,7 @@
 namespace Columnis\Model;
 
 use Columnis\Utils\Directory as DirectoryUtils;
+use Columnis\Exception\Templates\PathNotFoundException;
 
 class Template {
     const DEFINITION_FILE = 'def.json';
@@ -12,10 +13,20 @@ class Template {
     protected $path;
     protected $parsedDefinition;
     
+    /*
+     * Returns the name of the template
+     * 
+     * @return string
+     */
     public function getName() {
         return $this->name;
     }
     
+    /**
+     * Sets the name of the template
+     * 
+     * @param string $name
+     */
     public function setName($name) {
         $this->name = $name;
     }  
@@ -29,10 +40,25 @@ class Template {
         return $this->path;
     }
     
+    /**
+     * Sets the path of the template
+     * 
+     * @param string $path
+     * @throws PathNotFoundException
+     */
     public function setPath($path) {
-        $this->path = realpath($path);
+        $absPath = realpath($path);
+        if (!$absPath) {
+            throw new PathNotFoundException('Path: ' . $path . 'does not exist.');
+        }        
+        $this->path = $absPath;
     }
     
+    /**
+     * Returns the definition of the template. If it is not parsed yet, it will call parseDefinition to parse it.
+     * 
+     * @return array
+     */
     public function getParsedDefinition() {
         if (!$this->parsedDefinition) {
             $this->parsedDefinition = $this->parseDefinition();
@@ -40,6 +66,9 @@ class Template {
         return $this->parsedDefinition;
     }
     
+    /**
+     * Constructor with no parameters needed
+     */
     public function __construct() {
         
     }    

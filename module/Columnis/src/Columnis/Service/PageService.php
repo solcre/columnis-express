@@ -15,62 +15,40 @@
 namespace Columnis\Service;
 
 use Columnis\Model\Page;
-use Guzzle\Http\Client as GuzzleClient;
 
 class PageService {
 
     /**
-     * Guzzle Client
-     * @var \Guzzle\Http\Client $httpClient
+     * Api Service
+     * @var ApiService $apiService
      */
-    protected $httpClient;
-
-    /*
-     * Columnis Api Client Number
-     * @var string $clientNumber
-     */
-    protected $clientNumber;
+    protected $apiService;
     
     /**
-     * Factory creation of template class
+     * Template Service
      * @var TemplateService $templateService
      */
     protected $templateService;
 
     /**
-     * Returns the Guzzle Client
-     * @return \Guzzle\Http\Client
+     * Returns the Api Service
+     * @return ApiService
      */
-    public function getHttpClient() {
-        return $this->httpClient;
+    public function getApiService() {
+        return $this->apiService;
     }
 
     /**
-     * Sets the Guzzle Client 
-     * @param \Guzzle\Http\Client $httpClient
+     * Sets the Api Service
+     * @param ApiService $apiService
      */
-    public function setHttpClient(GuzzleClient $httpClient) {
-        $this->httpClient = $httpClient;
-    }
+    public function setApiService(ApiService $apiService) {
+        $this->apiService = $apiService;
+    }    
+   
     
     /**
-     * Returns the Client Number of Columnis Api
-     * @return string
-     */
-    public function getClientNumber() {
-        return $this->clientNumber;
-    }
-    
-    /**
-     * Sets the Client Number of Columnis Api
-     * @param string $clientNumber
-     */
-    public function setClientNumber($clientNumber) {
-        $this->clientNumber = $clientNumber;
-    }
-    
-    /**
-     * Returns the Template Factory
+     * Returns the Template Service
      * @return TemplateService
      */
     public function getTemplateService() {
@@ -78,7 +56,7 @@ class PageService {
     }
     
     /**
-     * Sets the Template Factory
+     * Sets the Template Service
      * @param TemplateService $templateService
      */
     public function setTemplateService(TemplateService $templateService) {
@@ -87,39 +65,11 @@ class PageService {
     
     
 
-    public function __construct(TemplateService $templateService, GuzzleClient $httpClient, $clientNumber) {
+    public function __construct(TemplateService $templateService, ApiService $apiService) {
         $this->setTemplateService($templateService);
-        $this->setHttpClient($httpClient);
-        $this->setClientNumber($clientNumber);
+        $this->setApiService($apiService);
     }
-
-    /**
-     * Performs a request to Columnis api
-     * 
-     * @param string $uri
-     * @return \Guzzle\Http\Message\Response
-     * @trows \Guzzle\Common\Exception\GuzzleException
-     */
-    protected function request($uri) {
-        $headers = array(
-            'headers' => array(
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-        ));
-        $request = $this->getHttpClient()->get(urldecode($uri), $headers['headers']);
-        $response = $request->send();
-        return $response;
-    }
-    
-    /**
-     * Gets the Uri for the desire enpoint
-     * @param string $endpoint
-     * @return string
-     */
-    public function getUri($endpoint) {
-        return $this->getClientNumber() . '/columnis' . $endpoint;
-    }
-    
+     
     /**
      * Fetchs the page content from Columnis Api
      * 
@@ -129,35 +79,24 @@ class PageService {
     public function fetch(Page $page) {
         $id = $page->getId();
         $endpoint = '/pages/' . $id . '/generate';
-        $uri = $this->getUri($endpoint);
+        $uri = $this->getApiService()->getUri($endpoint);
         try {
-            $ret = $this->request($uri);
+            $ret = $this->getApiService()->request($uri);
             if ($ret->getStatusCode() == 200) {
                 $data = $ret->json();
                 $page->setData($data);
-                if (isset($data['pagina']['template'])) {
-                    $templateName = $data['pagina']['template'];
-                }
-                else {
-                    throw new Exception("Template not found");
-                }
-                if (isset($data['pagina']['template_path'])) {
-                    $path = $data['pagina']['template_path'];
-                }
-                else {
-                    $templateService = $this->getTemplateService();
-                    $path = $templateService->getExistantTemplatePath($templateName);
-                }                
-                $template = new \Columnis\Model\Template();                
-                $template->setName($templateName);
-                $template->setPath($path);
-                $page->setTemplate($template);
                 
+                $templateService = $this->getTemplateService();
+                $template = $templateService->createFromData($data['pagina']);
+                
+                $page->setTemplate($template);                
             }
-        } catch (\Guzzle\Common\Exception\GuzzleException $e) {
+        } 
+        catch (\Guzzle\Common\Exception\GuzzleException $e) {
             return false;
         }
         return ($ret->getStatusCode() == 200);
     }
-
+    
+    
 }

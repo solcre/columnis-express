@@ -26,6 +26,16 @@ class TemplateAssetsResolverFactory implements FactoryInterface
         }
         $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
 
+        if (isset($config['template_assets_resolver']['match_patterns']['template_name'])) {
+            $templateAssetsResolver->setPatternTemplateName($config['template_assets_resolver']['match_patterns']['template_name']);
+        }
+        if (isset($config['template_assets_resolver']['match_patterns']['global_asset'])) {
+            $templateAssetsResolver->setPatternGlobalAssets($config['template_assets_resolver']['match_patterns']['global_asset']);
+        }
+        if (isset($config['template_assets_resolver']['global_folder_name'])) {
+            $templateAssetsResolver->setGlobalFolderName($config['template_assets_resolver']['global_folder_name']);
+        }
+        
         return $templateAssetsResolver;
     }
 }

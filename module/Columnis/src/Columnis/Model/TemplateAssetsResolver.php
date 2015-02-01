@@ -42,6 +42,18 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      */
     protected $globalFolderName;
 
+    /*
+     * @var string Regex Pattern to match (first group) the template name
+     */
+    
+    protected $patternTemplateName;
+    
+     /*
+     * @var string Regex Pattern to match (in any group) if a filename is inside a global assets folder
+     */
+    protected $patternGlobalAssets;
+    
+    
     /**
      * Get the Paths where assets are allowed
      * 
@@ -113,7 +125,43 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     public function setGlobalFolderName($globalFolderName = '') {
         $this->globalFolderName = $globalFolderName;
     }
+    
+    /**
+     * Get the pattern to match the template name
+     * 
+     * @return string
+     */
+    public function getPatternTemplateName() {
+        return $this->patternTemplateName;
+    }
+    
+    /**
+     * Get the pattern to match if a file is a global asset
+     * 
+     * @return string
+     */
+    public function getPatternGlobalAssets() {
+        return $this->patternGlobalAssets;
+    }
+    /**
+     * Set the pattern to match the template name
+     * 
+     * @param string $patternTemplateName
+     */
+    public function setPatternTemplateName($patternTemplateName) {
+        $this->patternTemplateName = $patternTemplateName;
+    }
+    
+    /**
+     * Set the pattern to match if a file is a global asset
+     * 
+     * @param string $patternGlobalAssets
+     */
+    public function setPatternGlobalAssets($patternGlobalAssets) {
+        $this->patternGlobalAssets = $patternGlobalAssets;
+    }
 
+    
     /**
      * Constructor
      *
@@ -125,7 +173,6 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         parent::__construct();
         $this->setAssetsPaths($assetsPaths);
         $this->setTemplatesPathStack($templatesPathStack);
-        $this->setGlobalFolderName('fixed');
     }
 
     /**
@@ -147,7 +194,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @return boolean|array
      */
     public function matchTemplateName($name) {
-        $pattern = '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/';
+        $pattern = $this->getPatternTemplateName();
         $matches = array();
         if (preg_match($pattern, $name, $matches)) {
             return $matches[1];
@@ -177,7 +224,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @return boolean
      */
     public function isGlobalAsset($name) {
-        $pattern = '/^(css|js)\/fixed\/.+\.(css|js)$/';
+        $pattern = $this->getPatternGlobalAssets();
         return (preg_match($pattern, $name) > 0);
     }    
 
