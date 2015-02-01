@@ -12,4 +12,8 @@
  */
 
 return array(
+    'api_settings' => array(
+        'client_number' => '001',
+        'api_base_url' => 'http://api.columnis.com/'
+    )
 );

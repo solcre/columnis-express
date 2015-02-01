@@ -28,6 +28,7 @@ return array(
             'Zend\Cache' => 'Zend\Cache\Service\StorageCacheFactory',
             'HtmlCache' => 'Columnis\Service\Factory\HtmlCacheFactory',
             'CacheListener' => 'Columnis\Service\Factory\CacheListenerFactory',
+            'ApiService' => 'Columnis\Service\Factory\ApiServiceFactory',
             'PageService' => 'Columnis\Service\Factory\PageServiceFactory',
             'TemplateService' => 'Columnis\Service\Factory\TemplateServiceFactory',
             'TemplateAssetsResolver' => 'Columnis\Service\Factory\TemplateAssetsResolverFactory',
@@ -62,10 +63,10 @@ return array(
         'doctype' => 'HTML5',
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
-        'template_map' => array(            
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+        'template_map' => array(
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../../../public/templates',
@@ -93,5 +94,12 @@ return array(
         'resolvers' => array(
             'TemplateAssetsResolver' => 2000,
         ),
+    ),
+    'template_assets_resolver' => array(
+        'match_patterns' => array(
+            'template_name' => '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/',
+            'global_asset' => '/^(css|js)\/fixed\/.+\.(css|js)$/'
+        ),
+        'global_folder_name' => 'fixed'
     ),
 );
