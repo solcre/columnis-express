@@ -49,7 +49,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * @covers Template::parseDefinition
+     * @covers Columnis\Model\Template::parseDefinition
      */
     public function testGetParsedDefinition() {        
         $template = new Template();        
