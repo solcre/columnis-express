@@ -1,5 +1,7 @@
 <?php
 
+namespace ColumnisTest\Model;
+
 use PHPUnit_Framework_TestCase;
 use Columnis\Model\TemplateAssetsResolver;
 
@@ -10,12 +12,6 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $configPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/module.config.php';
         $this->config = include($configPath);
-    }
-
-    private function getRandString() {
-        $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
-        shuffle($randNameAr);
-        return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
     }
 
     public function testTemplateExists() {
@@ -56,7 +52,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $create = false;
         if (in_array($randomAllowedPath, $templatesPathStack)) {
             // It is a template asset
-            $templateName = $this->getRandString();
+            $templateName = \ColumnisTest\Bootstrap::getRandString();
             $randomAllowedPath .= DIRECTORY_SEPARATOR . $templateName;
             $create = mkdir($randomAllowedPath);
             
@@ -64,7 +60,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         }
         
         $extensions = array('js', 'css');
-        $randomAssetName = $this->getRandString() . '.' . $extensions[array_rand($extensions)];
+        $randomAssetName = \ColumnisTest\Bootstrap::getRandString() . '.' . $extensions[array_rand($extensions)];
         $assetPath = $randomAllowedPath . DIRECTORY_SEPARATOR . $randomAssetName;
         $assetData = '* { font-size:100px; }';
                 

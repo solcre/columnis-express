@@ -1,0 +1,14 @@
+{
+    "css" : [
+        "masterslider/style/masterslider.css",
+        "masterslider/skins/default/style.css",
+        "owlcarousel/owl.carousel.css",
+        "owlcarousel/owl.theme.css",
+        "jquery.bxsliderEDIT.css"
+    ],
+    "js" : [
+        "masterslider.min.js",
+        "jquery.bxslider.min.js",
+        "owl.carousel.js"
+    ]
+}

@@ -1,0 +1,609 @@
+
+
+/* HOME */
+
+/* SLIDER */
+
+#sliderPpal .titulo,
+#sliderPpal .strong,
+#sliderPpal .texto,
+#sliderPpal .vinculo{
+    text-align: center;
+    top:auto !important;
+    height: auto !important;
+    padding:0 20px !important;
+    color:#fff;
+    width:100%;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+#sliderPpal .titulo{
+    font-size:3.2em !important;
+    font-weight:900;
+    line-height:1 !important;
+    text-transform:uppercase;
+    bottom:78% !important;
+}
+#sliderPpal .strong{
+    font-size:1.5em !important;
+    text-transform:uppercase;
+    color:#f06f21;
+    bottom:55% !important;
+}
+#sliderPpal .strong:after{
+    content:"";
+    display:block;
+    width:80px;
+    height:0;
+    border-bottom:2px solid #f06f21;
+    margin:20px auto 0;
+}
+#sliderPpal .texto{
+    font-size:1.4em !important;
+    line-height:1.2 !important;
+    max-height:7em;
+    overflow:hidden;
+    top:49% !important;
+}
+#sliderPpal .vinculo{
+    font-size:10px !important;
+    top:79% !important;
+}
+#sliderPpal .vinculo .boton{
+    padding:12px 20px;
+}
+
+.ms-skin-default .ms-nav-next,
+.ms-skin-default .ms-nav-prev{
+    display:none !important;
+}
+.ms-bullets.ms-dir-h{
+    right:0 !important;
+    width:100% !important;
+    bottom:15px !important;
+    overflow:hidden;
+}
+.ms-bullets.ms-dir-h .ms-bullets-count{
+    position:relative;
+    float:left;
+    left:50%;
+}
+.ms-bullets.ms-dir-h .ms-bullets-count div{
+    position:relative;
+    float:left;
+    right:50%;
+}
+.ms-skin-default .ms-bullet{
+    height:3px !important;
+    width:60px !important;
+    margin:0 0 0 8px !important;
+    background:#fff !important;
+}
+.ms-skin-default .ms-bullet.ms-bullet-selected{
+    background:#f06f21 !important;
+}
+
+
+#sliderPpal .color-2 .strong{
+    color:#dd80ff;
+}
+#sliderPpal .color-2 .strong:after{
+    border-bottom: 2px solid #dd80ff;
+}
+#sliderPpal .color-2 .vinculo .boton{
+    background: #dd80ff;
+}
+#sliderPpal .color-3 .strong{
+    color:#74a555;
+}
+#sliderPpal .color-3 .strong:after{
+    border-bottom: 2px solid #74a555;
+}
+#sliderPpal .color-3 .vinculo .boton{
+    background: #74a555;
+}
+#sliderPpal .color-4 .strong{
+    color:#00e1ff;
+}
+#sliderPpal .color-4 .strong:after{
+    border-bottom: 2px solid #00e1ff;
+}
+#sliderPpal .color-4 .vinculo .boton{
+    background: #00e1ff;
+}
+
+
+/* PORTFOLIO */
+
+#proyectos .proyecto{
+    padding-right:2px;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+#proyectos .dummy{
+    width:100%;
+    height:20px;
+}
+
+
+/* PRODUCTOS */
+
+#productos{
+    padding-top:20px;
+}
+#productos [class*="columnas-"]{
+    margin-top:30px;
+}
+#productos .producto{
+    background:no-repeat center;
+    background-size:cover;
+    color:#fff;
+    text-align: left;
+    padding-top:45px;
+}
+#productos .producto h3{
+    color:inherit;
+    font-size:2.5em;
+    font-weight:900;
+    text-transform:uppercase;
+}
+#productos .producto h3 + p{
+    margin-top:0;
+    text-transform:uppercase;
+    font-size:1.5em;
+}
+
+
+/* ULTIMOS PROYECTOS */
+
+#ultimosProyectos{
+    background:#f06f21;
+    color:#fff;
+}
+#ultimosProyectos .wrapper{
+    padding:30px 0 20px;
+}
+#ultimosProyectos .wrapper *{
+    color:inherit;
+}
+#ultimosProyectos .icono,
+#ultimosProyectos h2,
+#ultimosProyectos ul li{
+    padding:0 20px;
+}
+#ultimosProyectos .icono{
+    font-size:80px;
+    width: 60px;
+    display: block;
+    text-indent: -10px;
+    float:left;
+    padding-right:10px;
+}
+#ultimosProyectos h2{
+    padding-top:13px;
+}
+
+#ultimosProyectos ul{
+    padding:0;
+}
+#ultimosProyectos ul li{
+}
+#ultimosProyectos ul li h3,
+#ultimaNoticia h3{
+    font-size:2em;
+    text-transform: uppercase;
+    margin:20px 0 0 0;
+}
+#ultimosProyectos ul li p,
+#ultimaNoticia p{
+    margin:10px 0 0 0;
+}
+
+#ultimosProyectos .bx-controls{
+    padding:10px 20px 0 5px;
+}
+#ultimosProyectos .bx-controls a{
+    display:inline-block;
+}
+#ultimosProyectos .bx-controls a:before{
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content:"\e600";
+    display: inline-block;
+    font-size: 22px;
+    width: 22px;
+    line-height: 22px;
+    padding: 10px;
+    
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+}
+#ultimosProyectos .bx-controls .bx-next:before{
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+}
+
+
+/* NOTICIA */
+
+#ultimaNoticia{
+    padding:45px 0 40px;
+    background:#5d5d5d;
+}
+#ultimaNoticia *{
+    color:#fff;
+}
+#ultimaNoticia h2{
+    font-size:2em;
+}
+#ultimaNoticia h3{
+    margin-top:12px;
+}
+.no-touch #ultimaNoticia h3 a:hover{
+    color:#f06f21;
+}
+/*#ultimaNoticia p span{
+    margin-right:10px;
+}
+#ultimaNoticia p .ampliar{
+    display:inline-block;
+}
+#ultimaNoticia p .ampliar:before{
+    content:"+";
+    font-size:15px;
+    display:inline-block;
+    width:20px;
+    height:20px;
+    line-height:18px;
+    border:1px solid #fff;
+    text-align:center;
+    border-radius:50%;
+}*/
+#ultimaNoticia .boton{
+    margin-top:20px;
+}
+
+#twitter{
+    padding:45px 0 40px;
+    background:#45abd9;
+    color:#fff;
+}
+#twitter span,
+#twitter strong{
+    display:block;
+    font-size:1.4em;
+    margin-top:10px;
+}
+#twitter .icono{
+    font-size:35px;
+    color:#ace8ff;
+    margin-top:0;
+}
+#twitter .user{
+    font-size:1.8em;
+    font-weight:700;
+}
+#twitter .fecha{
+    opacity:0.8;
+}
+#twitter .tweet{
+    font-weight:400;
+    margin-top:10px;
+}
+#twitter .tweet a{
+    color:#9fdfff;
+}
+
+#twitter .actions{
+    padding-top:2px;
+}
+#twitter .actions a{
+    display:inline-block;
+    font-size:1.4em;
+    vertical-align: top;
+    margin:8px 15px 0 0;
+}
+.no-touch #twitter .actions a:hover{
+    opacity:0.5;
+}
+#twitter .actions a span{
+    display:inline;
+    font-size:11px;
+    margin-right:5px;
+}
+#twitter .actions a.retweet span{
+    font-size:17px;
+}
+#twitter .actions a.fav span{
+    font-size:14px;
+}
+#twitter .actions a.more span{
+    font-size:16px;
+}
+
+
+
+/* ********************** de Mobile a TABLET ********************** */
+
+@media only screen and (min-width: 768px) {
+
+    /* SLIDER */
+
+    #sliderPpal .titulo,
+    #sliderPpal .strong,
+    #sliderPpal .texto,
+    #sliderPpal .vinculo{
+        padding:0 40px !important;
+    }
+    #sliderPpal .titulo{
+        font-size:6em !important;
+        bottom: 70% !important;
+    }
+    #sliderPpal .strong{
+        font-size:2em !important;
+        bottom: 55% !important;
+    }
+    #sliderPpal .texto{
+        font-size:1.8em !important;
+    }
+    #sliderPpal .vinculo {
+        top: 68% !important;
+    }
+    #sliderPpal .vinculo {
+        top: 68% !important;
+    }
+
+    .ms-bullets.ms-dir-h{
+        bottom:25px !important;
+    }
+    .ms-skin-default .ms-bullet{
+        width:140px !important;
+    }
+
+
+    /* SERVICIOS */
+
+    #servicios .columna{
+        padding:0 2px;
+
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;   
+    }
+    #servicios .servicio ul li{
+        padding-right:20px;
+    }
+
+
+    /* PRODUCTOS */
+
+    #productos .producto{
+        padding-top:65px;
+        height:280px;
+    }
+    #productos .producto:nth-child(odd) .semiWrapper{
+        padding:0 40px 0 0;
+    }
+    #productos .producto h3{
+        font-size:3em;
+    }
+    #productos .producto h3 + p{
+        font-size:1.8em;
+    }
+    
+    
+    /* ULTIMOS PROYECTOS */
+    
+    #ultimosProyectos{
+        overflow:hidden;
+    }
+    #ultimosProyectos .wrapper{
+        padding:50px 70px 55px 200px;
+        position:relative;
+    }
+    #ultimosProyectos .icono,
+    #ultimosProyectos h2,
+    #ultimosProyectos ul li{
+        padding:0;
+    }
+    #ultimosProyectos .icono{
+        font-size:180px;
+        text-indent: -25px;
+        width: 130px;
+        height:180px;
+        position:absolute;
+        top:50%;
+        left:20px;
+        padding: 0;
+        margin-top:-110px;
+    }
+    
+    #ultimosProyectos .bx-wrapper{
+        position:static;
+    }
+    #ultimosProyectos .bx-controls{
+        padding:0;
+    }
+    #ultimosProyectos .bx-controls a{
+        position:absolute;
+        top:50%;
+        left:-20px;
+    }
+    #ultimosProyectos .bx-controls .bx-next{
+        right:-20px;
+        left:auto;
+    }
+    #ultimosProyectos .bx-controls a:before{
+        font-size: 28px;
+        width: 28px;
+        line-height: 28px;
+        padding: 0;
+        margin-top:-14px;
+    }
+    
+    
+    /* NOTICIAS - TWITTER */
+    
+    #noticiaTwitter{
+        background:#45abd9;
+    }
+    #noticiaTwitter #ultimaNoticia,
+    #noticiaTwitter #twitter{
+        min-height:280px;
+    }
+    
+    #twitter{
+        padding-top:35px;
+    }
+    #twitter span,
+    #twitter strong,
+    #twitter .actions a{
+        font-size:1.6em;
+        margin-top:18px;
+    }
+    #twitter .user{
+        font-size:2em;
+    }
+    #twitter .actions{
+    }
+    
+
+}
+
+
+
+
+/* ********************** de Tablet a DESKTOP ********************** */
+
+@media only screen and (min-width: 980px) {
+
+    .no-touch body{
+        padding-top:0;
+    }
+    .no-touch #header{
+        position:relative;
+        top:auto;
+        left:auto;
+    }
+
+    .no-touch .fixedHeader{
+        padding-top:156px;
+    }
+    .no-touch .fixedHeader #header{
+        position:fixed;
+        top:0;
+        left:0;
+    }
+
+
+    /* SLIDER */
+
+    #sliderPpal .titulo,
+    #sliderPpal .strong,
+    #sliderPpal .texto,
+    #sliderPpal .vinculo{
+        width:900px;
+        left:50% !important;
+        margin-left:-450px !important;
+    }
+    #sliderPpal .titulo{
+        font-size:8em !important;
+    }
+    #sliderPpal .strong{
+        font-size:2.3em !important;
+        width:700px;
+        margin-left:-350px !important;
+    }
+    #sliderPpal .texto{
+        font-size:2em !important;
+    }
+    #sliderPpal .vinculo .boton{
+        padding:15px 25px;
+    }
+    .ms-skin-default .ms-bullet{
+        width: 220px !important;
+    }
+
+
+    /* PRODUCTOS */
+
+    #productos h2 + p{
+        font-size:2.6em;
+    }
+
+    #productos .producto{
+        height:330px;
+    }
+    #productos .producto h3{
+        font-size:3.8em;
+    }
+    #productos .producto h3 + p{
+        font-size:2em;
+    }
+    #productos .producto p{
+        font-size:1.8em;
+    }
+    
+    
+    /* ULTIMOS PROYECTOS */
+    
+    #ultimosProyectos .wrapper{
+        padding:55px 70px 75px 220px;
+    }
+    #ultimosProyectos .icono{
+        left:30px;
+    }
+    
+    #ultimosProyectos .bx-controls a{
+        left:-30px;
+    }
+    #ultimosProyectos .bx-controls .bx-next{
+        right:-30px;
+        left:auto;
+    }
+    #ultimosProyectos .bx-controls a:before{
+        font-size: 40px;
+        width: 40px;
+        line-height: 40px;
+        margin-top:-20px;
+    }
+    
+    #ultimosProyectos ul li h3,
+    #ultimaNoticia h3{
+        font-size:2.6em;
+    }
+    
+    
+    /* NOTICIAS - TWITTER */
+    
+    #ultimaNoticia,
+    #twitter{
+        padding:70px 0;
+    }
+    #noticiaTwitter #ultimaNoticia,
+    #noticiaTwitter #twitter{
+        min-height:none;
+    }
+    #ultimaNoticia h3{
+        margin-top:20px;
+    }
+    
+    #twitter .user{
+        font-size:2.2em;
+    }
+
+}

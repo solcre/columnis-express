@@ -1,5 +1,7 @@
 <?php
 
+namespace ColumnisTest\Utils;
+
 use PHPUnit_Framework_TestCase;
 use Columnis\Utils\Directory as DirectoryUtils;
 

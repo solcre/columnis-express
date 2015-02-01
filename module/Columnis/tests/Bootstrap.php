@@ -8,7 +8,7 @@ use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 use RuntimeException;
 
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 chdir(__DIR__);
 
 /**
@@ -107,6 +107,12 @@ class Bootstrap
             $previousDir = $dir;
         }
         return $dir . '/' . $path;
+    }
+    
+    public static function getRandString() {
+        $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
+        shuffle($randNameAr);
+        return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
     }
 }
 
