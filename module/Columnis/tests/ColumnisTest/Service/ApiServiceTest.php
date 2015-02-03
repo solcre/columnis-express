@@ -42,5 +42,17 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $apiResponse->getData());
         $this->assertEquals(200, $apiResponse->getStatusCode());
     }
-    
+    public function testGetUri() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        /* @var $apiService ApiService */
+        $apiService = $serviceManager->get('ApiService');
+        
+        $endpoint = "/" . Bootstrap::getRandString();
+        
+        $clientNumber = $apiService->getClientNumber();
+        
+        $this->assertEquals($clientNumber . '/columnis' . $endpoint, $apiService->getUri($endpoint));
+        
+    }
 }
