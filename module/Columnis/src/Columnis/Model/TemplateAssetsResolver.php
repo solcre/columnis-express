@@ -205,7 +205,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Returns true if the asset belongs to a template
      * 
-     * @param type $name
+     * @param string $name
      * @return boolean
      */
     public function isTemplateAsset($name) {
