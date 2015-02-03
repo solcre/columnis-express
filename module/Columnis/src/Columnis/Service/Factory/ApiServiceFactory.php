@@ -22,7 +22,6 @@ class ApiServiceFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator) {        
         $config = $serviceLocator->get('Config');
-        
         $apiConfig = isset($config['api_settings']) ? $config['api_settings'] : array();
         
         if (!isset($apiConfig['client_number'])) {

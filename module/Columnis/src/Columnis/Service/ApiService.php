@@ -15,6 +15,8 @@
 namespace Columnis\Service;
 
 use Guzzle\Http\Client as GuzzleClient;
+use Columnis\Model\ApiResponse;
+use Columnis\Exception\Api\ApiRequestException;
 
 class ApiService {
     /**
@@ -70,18 +72,24 @@ class ApiService {
      * Performs a request to Columnis api
      * 
      * @param string $uri
-     * @return \Guzzle\Http\Message\Response
-     * @trows \Guzzle\Common\Exception\GuzzleException
+     * @return ApiResponse
+     * @trows ApiRequestException
      */
-    public function request($uri) {
+    public function request($uri, $method = 'GET') {
         $headers = array(
             'headers' => array(
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
         ));
-        $request = $this->getHttpClient()->get(urldecode($uri), $headers['headers']);
-        $response = $request->send();
-        return $response;
+        try {
+            $request = $this->getHttpClient()->createRequest($method, $uri, $headers['headers']);
+            $response = $request->send();
+            $apiResponse = new ApiResponse($response);
+        } 
+        catch (\Guzzle\Common\Exception\GuzzleException $e) {
+            throw new ApiRequestException('Api Request failed: ' . $e->getMessage(), 0, $e);
+        }
+        return $apiResponse;
     }
     
     /**

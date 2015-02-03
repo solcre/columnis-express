@@ -15,6 +15,8 @@
 namespace Columnis\Service;
 
 use Columnis\Model\Page;
+use Columnis\Model\ApiResponse;
+use Columnis\Exception\Api\ApiRequestException;
 
 class PageService {
 
@@ -81,21 +83,21 @@ class PageService {
         $endpoint = '/pages/' . $id . '/generate';
         $uri = $this->getApiService()->getUri($endpoint);
         try {
-            $ret = $this->getApiService()->request($uri);
-            if ($ret->getStatusCode() == 200) {
-                $data = $ret->json();
-                $page->setData($data);
-                
-                $templateService = $this->getTemplateService();
-                $template = $templateService->createFromData($data['pagina']);
-                
-                $page->setTemplate($template);                
-            }
+            $response = $this->getApiService()->request($uri);
+            /* @var $response ApiResponse */
+            
+            $data = $response->getData();
+            $page->setData($data);
+
+            $templateService = $this->getTemplateService();
+            $template = $templateService->createFromData($data['pagina']);
+
+            $page->setTemplate($template);
         } 
-        catch (\Guzzle\Common\Exception\GuzzleException $e) {
+        catch (ApiRequestException $e) {
             return false;
         }
-        return ($ret->getStatusCode() == 200);
+        return ($response->getStatusCode() == 200);
     }
     
     
