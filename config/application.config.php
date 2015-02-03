@@ -5,6 +5,9 @@
  *
  * @see https://github.com/zendframework/ZFTool
  */
+
+$env = getenv('REDIRECT_APP_ENV') ?: 'production';
+
 return array(
     'modules' => array(
         'GkSmarty',
@@ -17,12 +20,13 @@ return array(
             './vendor'
         ),
         'config_glob_paths' => array(
-            'config/autoload/{,*.}{global,local}.php'
+            sprintf('config/autoload/{,*.}{global,%s,local}.php', $env)
         ),
-        //'config_cache_enabled' => true, 
+        'config_cache_enabled' => ($env == 'production'),
         'config_cache_key' => 'config-cache', 
-        'module_map_cache_enabled' => true, 
+        'module_map_cache_enabled' => ($env == 'production'),
         'module_map_cache_key' => 'module-map', 
         'cache_dir' => 'data/cache/module',
+        'check_dependencies' => ($env != 'production'),
     )
 );
