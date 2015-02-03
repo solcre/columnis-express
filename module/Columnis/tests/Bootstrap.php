@@ -2,7 +2,6 @@
 
 namespace ColumnisTest;
 
-
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
@@ -14,12 +13,11 @@ chdir(__DIR__);
 /**
  * Test bootstrap, for setting up autoloading
  */
-class Bootstrap
-{
+class Bootstrap {
+
     protected static $serviceManager;
 
-    public static function init()
-    {
+    public static function init() {
         $zf2ModulePaths = array(dirname(dirname(__DIR__)));
         if (($path = static::findParentPath('vendor'))) {
             $zf2ModulePaths[] = $path;
@@ -30,14 +28,17 @@ class Bootstrap
 
         static::initAutoloader();
 
-        // use ModuleManager to load this module and it's dependencies
+        // use ModuleManager to load this module and it's dependenciesç
         $config = array(
             'module_listener_options' => array(
                 'module_paths' => $zf2ModulePaths,
+                'config_glob_paths' => array(
+                    'config/autoload/{,*.}{global,testing}.php',
+                ),
             ),
             'modules' => array(
                 'Columnis'
-            )
+            ),
         );
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
@@ -46,23 +47,20 @@ class Bootstrap
         static::$serviceManager = $serviceManager;
     }
 
-    public static function chroot()
-    {
+    public static function chroot() {
         $rootPath = dirname(static::findParentPath('module'));
         chdir($rootPath);
     }
 
-    public static function getServiceManager()
-    {
+    public static function getServiceManager() {
         return static::$serviceManager;
     }
 
-    protected static function initAutoloader()
-    {
+    protected static function initAutoloader() {
         $vendorPath = static::findParentPath('vendor');
 
         $zf2Path = getenv('ZF2_PATH');
-        
+
         if (!$zf2Path) {
             if (defined('ZF2_PATH')) {
                 $zf2Path = ZF2_PATH;
@@ -75,8 +73,8 @@ class Bootstrap
 
         if (!$zf2Path) {
             throw new RuntimeException(
-                'Unable to load ZF2. Run `php composer.phar install` or'
-                . ' define a ZF2_PATH environment variable.'
+            'Unable to load ZF2. Run `php composer.phar install` or'
+            . ' define a ZF2_PATH environment variable.'
             );
         }
 
@@ -95,8 +93,7 @@ class Bootstrap
         ));
     }
 
-    protected static function findParentPath($path)
-    {
+    protected static function findParentPath($path) {
         $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
@@ -108,14 +105,17 @@ class Bootstrap
         }
         return $dir . '/' . $path;
     }
+
     public static function getTestFilesDir() {
         return dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
     }
+
     public static function getRandString() {
         $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
         shuffle($randNameAr);
         return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
     }
+
 }
 
 Bootstrap::init();

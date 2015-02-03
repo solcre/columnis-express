@@ -39,7 +39,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * @expectedException \Columnis\Exception\Template\PathNotFoundException
+     * @expectedException \Columnis\Exception\Templates\PathNotFoundException
      */
     public function testSetPathMustReceiveValidPath() {
         $template = new Template();

@@ -19,5 +19,7 @@ use PHPUnit_Framework_TestCase;
 use ColumnisTest\Bootstrap;
 
 class PageServiceTest extends PHPUnit_Framework_TestCase {
-    
+    public function testFetch() {
+        
+    }
 }
