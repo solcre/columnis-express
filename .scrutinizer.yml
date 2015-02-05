@@ -1,6 +1,6 @@
 filter:
     paths: [module/*]
-    excluded_paths: [vendor/*, tests/*]
+    excluded_paths: [vendor/*, tests/*, module/Columnis/tests/*]
 before_commands:
     - 'composer install --dev --prefer-source'
 checks:
