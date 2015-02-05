@@ -8,10 +8,6 @@ use Columnis\Model\TemplateAssetsResolver;
 
 class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
 
-    /**
-     * @covers TemplateAssetsResolver::getCollections
-     * @covers TemplateAssetsResolver::setCollections
-     */
     public function testAddToCollections() {
         $serviceManager = Bootstrap::getServiceManager();
 
