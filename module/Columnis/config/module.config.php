@@ -40,6 +40,12 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+        'shared' => array(
+            'ApiService' => false,
+            'PageService' => false,
+            'TemplateService' => false,
+            'TemplateAssetsResolver' => false
+        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -78,12 +84,6 @@ return array(
             'cache_dir' => 'public/pages'
         )
     ),
-    'guzzle_cache' => array(
-        'adapter' => 'filesystem',
-        'options' => array(
-            'cache_dir' => 'data/cache/api'
-        )
-    ),
     'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
@@ -97,7 +97,7 @@ return array(
     ),
     'template_assets_resolver' => array(
         'match_patterns' => array(
-            'template_name' => '/^templates\/([a-zA-Z0-9-_]+)\/.+\.(css|js)$/',
+            'template_name' => '/^templates\/([a-zA-Z0-9-_]+)\/(css|js)\/minified\.(css|js)$/',
             'global_asset' => '/^(css|js)\/fixed\/.+\.(css|js)$/'
         ),
         'global_folder_name' => 'fixed'
