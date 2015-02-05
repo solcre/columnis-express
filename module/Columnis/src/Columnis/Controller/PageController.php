@@ -5,6 +5,7 @@ namespace Columnis\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Columnis\Model\Page;
+use Columnis\Exception\Page\PageWithoutTemplateException;
 
 class PageController extends AbstractActionController {
 
@@ -35,7 +36,12 @@ class PageController extends AbstractActionController {
         /* @var $pageService \Columnis\Service\PageService */
 
         if (!$pageService->fetch($page)) {
-            $page = null;
+            return null;
+        }
+        try {
+            $pageService->fetch($page);
+        } catch (PageWithoutTemplateException $e) {
+            
         }
         return $page;
     }

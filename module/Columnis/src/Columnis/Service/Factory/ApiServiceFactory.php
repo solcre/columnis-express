@@ -30,18 +30,19 @@ class ApiServiceFactory implements FactoryInterface {
         if (!isset($apiConfig['api_base_url'])) {
             throw new ApiBaseUrlNotSetException("There is no api_base_url set in local.php config file.");
         }
+        
         $clientNumber = $apiConfig['client_number'];
         $apiUrl = $apiConfig['api_base_url'];
         $httpClient = new GuzzleClient($apiUrl);
         
         $cacheConfig = isset($config['guzzle_cache']) ? $config['guzzle_cache'] : array();
-        $cache = StorageFactory::factory($cacheConfig);
-        $adapter = new Zf2CacheAdapter($cache);
-        $cachePlugin = new CachePlugin($adapter);
+        if (isset($cacheConfig['adapter'])) {
+            $cache = StorageFactory::factory($cacheConfig);
+            $adapter = new Zf2CacheAdapter($cache);
+            $cachePlugin = new CachePlugin($adapter);
+            $httpClient->addSubscriber($cachePlugin);
+        }
         
-        $httpClient->addSubscriber($cachePlugin);
-
-
         return new ApiService($httpClient, $clientNumber);
     }
 

@@ -47,9 +47,12 @@ class Template {
      * @throws PathNotFoundException
      */
     public function setPath($path) {
+        if ($path === null) {
+            throw new PathNotFoundException('Path can not be null.');
+        }
         $absPath = realpath($path);
         if (!$absPath) {
-            throw new PathNotFoundException('Path: ' . $path . 'does not exist.');
+            throw new PathNotFoundException('Path: ' . $path . ' does not exist.');
         }        
         $this->path = $absPath;
     }

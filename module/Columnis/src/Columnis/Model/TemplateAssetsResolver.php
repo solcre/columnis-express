@@ -188,13 +188,13 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Returns the template name if the requested asset belongs to a template
      * 
-     * @param string $name
+     * @param string $alias
      * @return boolean|array
      */
-    public function matchTemplateName($name) {
+    public function matchTemplateName($alias) {
         $pattern = $this->getPatternTemplateName();
         $matches = array();
-        if (preg_match($pattern, $name, $matches)) {
+        if (preg_match($pattern, $alias, $matches)) {
             return $matches[1];
         }
         return false;
@@ -203,16 +203,15 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Returns true if the asset belongs to a template
      * 
-     * @param string $name
+     * @param string $alias
      * @return boolean
      */
-    public function isTemplateAsset($name) {
-        $template = $this->matchTemplateName($name);
+    public function isTemplateAsset($alias) {
+        $template = $this->matchTemplateName($alias);
         if (!$template) {
             return false;
         }
-        $templatePath = $this->getExistantTemplatePath($template);
-        return $this->validTemplate($templatePath);
+        return ($this->getExistantTemplatePath($template) !== null);
     }
 
     /**
@@ -229,46 +228,46 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Generates the collection of global assets by iterating over the assets in the global assets directory and adds it to the Resolver
      * 
-     * @param string $name
+     * @param string $alias
      */
-    public function loadGlobalCollection($name) {
+    public function loadGlobalCollection($alias) {
         $paths = $this->getGlobalAssetsPaths();
 
-        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        $extension = pathinfo($alias, PATHINFO_EXTENSION);
         $files = $this->generateCollection($paths, $extension);
-        $this->addToCollections($name, $files);
+        $this->addToCollections($alias, $files);
     }
 
     /**
      * Generates the collection of the template assets by iterating over the assets in the template directory and adds it to the Resolver
      * 
-     * @param string $name
+     * @param string $alias
      */
-    public function loadTemplateCollection($name) {
-        $templateName = $this->matchTemplateName($name);
+    public function loadTemplateCollection($alias) {
+        $templateName = $this->matchTemplateName($alias);
         if ($templateName !== false) {
             $path = $this->getExistantTemplatePath($templateName);
+            if ($path !== null) {
+                $template = new Template();
+                $template->setName($templateName);
+                $template->setPath($path);
 
-            $template = new Template();
-            $template->setName($templateName);
-            $template->setPath($path);
-
-            $extension = pathinfo($name, PATHINFO_EXTENSION);
-            $files = $template->getAssets($extension);
-
-            $this->addToCollections($name, $files);
+                $extension = pathinfo($alias, PATHINFO_EXTENSION);
+                $files = $template->getAssets($extension);
+                $this->addToCollections($alias, $files);
+            }
         }
     }
 
     /**
      * Resolves assets with absolute path
      * 
-     * @param string $name
+     * @param string $path
      * @return FileAsset
      */
-    public function resolveAbsolutePath($name) {
-        if ($this->inAllowedPaths($name)) {
-            $file = new SplFileInfo($name);
+    public function resolveAbsolutePath($path) {
+        if ($this->inAllowedPaths($path)) {
+            $file = new SplFileInfo($path);
             if ($file->isReadable() && !$file->isDir()) {
                 $filePath = $file->getRealPath();
                 $mimeType = $this->getMimeResolver()->getMimeType($filePath);
@@ -286,23 +285,22 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * {@inheritDoc}
      */
-    public function resolve($name) {
-        // Check if it is an asset that is used globally in all pages
-        if ($this->isGlobalAsset($name)) {
-            $this->loadGlobalCollection($name);
-        }
-        // Check if it is an asset from a template
-        if ($this->isTemplateAsset($name)) {
-            $this->loadTemplateCollection($name);
-        }
+    public function resolve($name) {        
         // Check if we are resolving an asset defined with an absolute path
         if ($name === realpath($name)) {
             return $this->resolveAbsolutePath($name);
+        }        
+        // Check if it is an asset that is used globally in all pages
+        elseif ($this->isGlobalAsset($name)) {
+            $this->loadGlobalCollection($name);
         }
-
+        // Check if it is an asset from a template
+        elseif ($this->isTemplateAsset($name)) {
+            $this->loadTemplateCollection($name);
+        }
         return parent::resolve($name);
     }
-
+        
     /**
      * Return the FIRST paths that contain a template with the specified name
      * (There should not be more than one posible template path)
@@ -328,6 +326,9 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @return boolean
      */
     public function validTemplate($templatePath) {
+        if (!is_dir($templatePath)) {
+            return false;
+        }
         $template = new Template();
         $template->setPath($templatePath);
         return $template->isValid();
@@ -372,6 +373,9 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     public function generateCollection($paths, $extension) {
         $ret = array();
         foreach ($paths as $path) {
+            if (!is_dir($path)) {
+                continue;
+            }
             $files = DirectoryUtils::recursiveSearchByExtension($path, $extension);
             $ret = array_merge($ret, $files);
         }

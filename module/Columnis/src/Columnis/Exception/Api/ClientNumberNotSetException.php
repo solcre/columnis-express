@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of PathNotFoundException
+ * Description of ClientNumberNotSetException
  *
  * @author matias
  */

@@ -75,17 +75,16 @@ class TemplateService {
      * @return Template
      */
     public function createFromData(Array $data) {
-        if (isset($data['template'])) {
+        if (isset($data['template']) && !empty($data['template'])) {
             $templateName = $data['template'];
         } else {
             throw new TemplateNameNotSetException("Template not set in page response.");
         }
-        if (isset($data['template_path'])) {
+        if (isset($data['template_path']) && !empty($data['template_path'])) {
             $path = $data['template_path'];
         } else {
             $path = $this->getExistantTemplatePath($templateName);
         }
-        
         $template = new Template();
         $template->setName($templateName);
         $template->setPath($path);

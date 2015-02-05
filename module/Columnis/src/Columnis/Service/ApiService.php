@@ -85,7 +85,7 @@ class ApiService {
             $request = $this->getHttpClient()->createRequest($method, $uri, $headers['headers']);
             $response = $request->send();
             $apiResponse = new ApiResponse($response);
-        } 
+        }
         catch (\Guzzle\Common\Exception\GuzzleException $e) {
             throw new ApiRequestException('Api Request failed: ' . $e->getMessage(), 0, $e);
         }

@@ -17,6 +17,9 @@ namespace Columnis\Service;
 use Columnis\Model\Page;
 use Columnis\Model\ApiResponse;
 use Columnis\Exception\Api\ApiRequestException;
+use Columnis\Exception\Templates\PathNotFoundException;
+use Columnis\Exception\Templates\TemplateNameNotSetException;
+use Columnis\Exception\Page\PageWithoutTemplateException;
 
 class PageService {
 
@@ -25,7 +28,7 @@ class PageService {
      * @var ApiService $apiService
      */
     protected $apiService;
-    
+
     /**
      * Template Service
      * @var TemplateService $templateService
@@ -46,9 +49,8 @@ class PageService {
      */
     public function setApiService(ApiService $apiService) {
         $this->apiService = $apiService;
-    }    
-   
-    
+    }
+
     /**
      * Returns the Template Service
      * @return TemplateService
@@ -56,7 +58,7 @@ class PageService {
     public function getTemplateService() {
         return $this->templateService;
     }
-    
+
     /**
      * Sets the Template Service
      * @param TemplateService $templateService
@@ -64,14 +66,12 @@ class PageService {
     public function setTemplateService(TemplateService $templateService) {
         $this->templateService = $templateService;
     }
-    
-    
 
     public function __construct(TemplateService $templateService, ApiService $apiService) {
         $this->setTemplateService($templateService);
         $this->setApiService($apiService);
     }
-     
+
     /**
      * Fetchs the page content from Columnis Api
      * 
@@ -85,7 +85,6 @@ class PageService {
         try {
             $response = $this->getApiService()->request($uri);
             /* @var $response ApiResponse */
-            
             $data = $response->getData();
             $page->setData($data);
 
@@ -93,12 +92,14 @@ class PageService {
             $template = $templateService->createFromData($data['pagina']);
 
             $page->setTemplate($template);
-        } 
-        catch (ApiRequestException $e) {
+        } catch (ApiRequestException $e) {
             return false;
+        }catch (PathNotFoundException $e) {
+            throw new PageWithoutTemplateException($e->getMessage(),0, $e);
+        } catch (TemplateNameNotSetException $e) {            
+            throw new PageWithoutTemplateException($e->getMessage(),0, $e);
         }
-        return ($response->getStatusCode() == 200);
+        return true;
     }
-    
-    
+
 }
