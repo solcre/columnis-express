@@ -23,10 +23,10 @@ use PHPUnit_Framework_TestCase;
 class PageServiceTest extends PHPUnit_Framework_TestCase {
     
     /**
-     * @covers PageService::getApiService
-     * @covers PageService::setApiService
-     * @covers PageService::getTemplateService
-     * @covers PageService::setTemplateService
+     * @covers Columnis\Service\PageService::getApiService
+     * @covers Columnis\Service\PageService::setApiService
+     * @covers Columnis\Service\PageService::getTemplateService
+     * @covers Columnis\Service\PageService::setTemplateService
      * 
      */
     public function testConstructor() {

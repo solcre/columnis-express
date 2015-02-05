@@ -24,10 +24,10 @@ use Guzzle\Http\Client as GuzzleClient;
 class ApiServiceTest extends PHPUnit_Framework_TestCase {
     
     /**
-     * @covers ApiService::setHttpClient
-     * @covers ApiService::setClientNumber
-     * @covers ApiService::getHttpClient
-     * @covers ApiService::getClientNumber
+     * @covers Columnis\Service\ApiService::setHttpClient
+     * @covers Columnis\Service\ApiService::setClientNumber
+     * @covers Columnis\Service\ApiService::getHttpClient
+     * @covers Columnis\Service\ApiService::getClientNumber
      * 
      */
     public function testConstructor() {

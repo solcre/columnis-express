@@ -25,8 +25,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         return Bootstrap::getTestFilesDir() . 'public' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'example-template';
     }
     /**
-     * @covers TemplateService::setTemplatesPathStack
-     * @covers TemplateService::getTemplatesPathStack
+     * @covers Columnis\Service\TemplateService::setTemplatesPathStack
+     * @covers Columnis\Service\TemplateService::getTemplatesPathStack
      * 
      */
     public function testConstructor() {
