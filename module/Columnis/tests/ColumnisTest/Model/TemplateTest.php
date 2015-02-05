@@ -24,10 +24,12 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $template = new Template();
         $this->assertInstanceOf('Columnis\Model\Template', $template);
     }
-    
+    private function getExampleTemplatePath() {
+        return Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'example-template';
+    }
     public function testSetPathUsesAbsolutePaths() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -55,7 +57,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testGetMainFile() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -68,7 +70,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testGetDefinitionFile() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -83,7 +85,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
      */
     public function testGetParsedDefinition() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -102,7 +104,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testIsValid() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -131,7 +133,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testIsValidWithNonExistantDefinitionFile() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -147,7 +149,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testIsValidWithNonExistantMainFile() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -163,7 +165,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
     public function testParseDefinition() {
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -182,8 +184,9 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
      * @covers Columnis\Model\Template::searchAssets
      */
     public function testGetAssets() {
+        
         $template = new Template();
-        $path = Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'example-template';
+        $path = $this->getExampleTemplatePath();
         $template->setPath($path);
         $name = 'example-template';
         $template->setName($name);
@@ -193,7 +196,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
         $searchAssets = array(
             'css' => array(
-                realpath($path . DIRECTORY_SEPARATOR . 'css/example.css')
+                realpath($path . DIRECTORY_SEPARATOR . 'css/example.css'),
+                realpath($path . DIRECTORY_SEPARATOR . 'css/example2.css')
             ),
             'js' => array(
                 realpath($path . DIRECTORY_SEPARATOR . 'js/example.js')
@@ -201,16 +205,10 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         );
         $definedAssets = array(
             'css' => array(
-                'masterslider/style/masterslider.css',
-                'masterslider/skins/default/style.css',
-                'owlcarousel/owl.carousel.css',
-                'owlcarousel/owl.theme.css',
-                'jquery.bxsliderEDIT.css'
+                'jquery-ui.css'
             ),
             'js' => array(
-                'masterslider.min.js',
-                'jquery.bxslider.min.js',
-                'owl.carousel.js'
+                'jquery-1.8.2.min.js'
             )
         );
         

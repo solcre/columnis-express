@@ -37,6 +37,7 @@ class Bootstrap {
                 ),
             ),
             'modules' => array(
+                'AssetManager',
                 'Columnis'
             ),
         );
@@ -93,7 +94,7 @@ class Bootstrap {
         ));
     }
 
-    protected static function findParentPath($path) {
+    public static function findParentPath($path) {
         $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {

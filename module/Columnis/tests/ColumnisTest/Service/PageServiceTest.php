@@ -12,14 +12,114 @@
  * @author matias
  */
 
-namespace ColumnisTest\Model;
+namespace ColumnisTest\Service;
 
-use Columnis\Model\PageService;
-use PHPUnit_Framework_TestCase;
 use ColumnisTest\Bootstrap;
+use Columnis\Service\PageService;
+use Columnis\Model\Page;
+use Guzzle\Plugin\Mock\MockPlugin;
+use PHPUnit_Framework_TestCase;
 
 class PageServiceTest extends PHPUnit_Framework_TestCase {
-    public function testFetch() {
+    
+    /**
+     * @covers PageService::getApiService
+     * @covers PageService::setApiService
+     * @covers PageService::getTemplateService
+     * @covers PageService::setTemplateService
+     * 
+     */
+    public function testConstructor() {
+        $serviceManager = Bootstrap::getServiceManager();
         
+        $templateService = $serviceManager->get('TemplateService');
+        $apiService = $serviceManager->get('ApiService');
+        
+        $pageService = new PageService($templateService, $apiService);
+        
+        $this->assertInstanceOf('Columnis\Service\PageService', $pageService);
+        $this->assertSame($templateService, $pageService->getTemplateService());
+        $this->assertSame($apiService, $pageService->getApiService());
+        
+    }    
+    public function testFetch() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        $pageService = $serviceManager->get('PageService');
+        /* @var $pageService PageService */
+        
+        $apiService = $pageService->getApiService();
+        
+        $plugin = new MockPlugin();
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate.mock');
+        $mockedClient = $apiService->getHttpClient();
+        $mockedClient->addSubscriber($plugin);
+        
+        $page = new Page();
+        $page->setId(1);
+        
+        $this->assertTrue($pageService->fetch($page));
+        $this->assertInternalType('array', $page->getData());
+        $this->assertInstanceOf('Columnis\Model\Template', $page->getTemplate());
+    }
+    public function testFetchWithInvalidStatuscode() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        $pageService = $serviceManager->get('PageService');
+        /* @var $pageService PageService */
+        
+        $apiService = $pageService->getApiService();
+        
+        $plugin = new MockPlugin();
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'forbidden.mock');
+        $mockedClient = $apiService->getHttpClient();
+        $mockedClient->addSubscriber($plugin);
+        
+        $page = new Page();
+        $page->setId(1);
+        
+        $this->assertFalse($pageService->fetch($page));
+    }
+    /**
+     * @expectedException \Columnis\Exception\Page\PageWithoutTemplateException
+     */
+    public function testFetchWithNonExistantTemplate() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        $pageService = $serviceManager->get('PageService');
+        /* @var $pageService \Columnis\Service\PageService */
+        
+        $apiService = $pageService->getApiService();
+        
+        $plugin = new MockPlugin();
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-bad-template.mock');
+        $mockedClient = $apiService->getHttpClient();
+        $mockedClient->addSubscriber($plugin);
+        
+        $page = new Page();
+        $page->setId(1);
+        
+        $pageService->fetch($page);
+    }
+    /**
+     * @expectedException \Columnis\Exception\Page\PageWithoutTemplateException
+     */
+    public function testFetchWithoutTemplate() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        $pageService = $serviceManager->get('PageService');
+        /* @var $pageService \Columnis\Service\PageService */
+        
+        $apiService = $pageService->getApiService();
+        
+        $plugin = new MockPlugin();
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-invalid.mock');
+        $mockedClient = $apiService->getHttpClient();
+        $mockedClient->addSubscriber($plugin);
+        
+        $page = new Page();
+        $page->setId(1);
+        
+        $pageService->fetch($page);
     }
 }

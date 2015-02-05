@@ -23,6 +23,12 @@ class DirectoryTest extends PHPUnit_Framework_TestCase {
         sort($files);
         $this->assertEquals($files, $search);
     }
+    /**
+     * @expectedException \Exception
+     */
+    public function testRecursiveSearchByExtensionWithUnexistantPath() {
+        DirectoryUtils::recursiveSearchByExtension('some/unexistant/path', 'test');
+    }
     
     public function testIs_subpath() {
         $folder = Bootstrap::getRandString();

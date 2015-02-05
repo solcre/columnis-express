@@ -12,47 +12,86 @@
  * @author matias
  */
 
-namespace ColumnisTest\Model;
+namespace ColumnisTest\Service;
 
-use Columnis\Service\ApiService;
-use PHPUnit_Framework_TestCase;
 use ColumnisTest\Bootstrap;
-use Guzzle\Plugin\Mock\MockPlugin;
+use Columnis\Service\ApiService;
 use Columnis\Model\ApiResponse;
+use PHPUnit_Framework_TestCase;
+use Guzzle\Plugin\Mock\MockPlugin;
+use Guzzle\Http\Client as GuzzleClient;
 
 class ApiServiceTest extends PHPUnit_Framework_TestCase {
     
+    /**
+     * @covers ApiService::setHttpClient
+     * @covers ApiService::setClientNumber
+     * @covers ApiService::getHttpClient
+     * @covers ApiService::getClientNumber
+     * 
+     */
+    public function testConstructor() {
+        $httpClient = new GuzzleClient();
+        $clientNumber = '001';
+        
+        $apiService = new ApiService($httpClient, $clientNumber);
+        
+        $this->assertInstanceOf('Columnis\Service\ApiService', $apiService);
+        $this->assertEquals($clientNumber, $apiService->getClientNumber());
+        $this->assertSame($httpClient, $apiService->getHttpClient());
+        
+    }
     public function testRequest() {
         $serviceManager = Bootstrap::getServiceManager();
         
-        /* @var $apiService ApiService */
         $apiService = $serviceManager->get('ApiService');
+        /* @var $apiService ApiService */
         
         $plugin = new MockPlugin();        
-        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses/generate.mock');
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate.mock');
+        
         $mockedClient = $apiService->getHttpClient();
         $mockedClient->addSubscriber($plugin);
 
         $endpoint = '/pages/1/generate';
         $uri = $apiService->getUri($endpoint);
        
-        /* @var $apiResponse ApiResponse */
         $apiResponse = $apiService->request($uri);
-        
+        /* @var $apiResponse ApiResponse */
+               
         $this->assertInternalType('array', $apiResponse->getData());
         $this->assertEquals(200, $apiResponse->getStatusCode());
+    }
+    /**
+     * @expectedException \Columnis\Exception\Api\ApiRequestException
+     */
+    public function testRequestFail() {
+        $serviceManager = Bootstrap::getServiceManager();
+        
+        $apiService = $serviceManager->get('ApiService');
+        /* @var $apiService ApiService */
+        
+        $plugin = new MockPlugin();        
+        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'forbidden.mock');
+        
+        $mockedClient = $apiService->getHttpClient();
+        $mockedClient->addSubscriber($plugin);
+
+        $endpoint = '/non/existant/endpoint';
+        $uri = $apiService->getUri($endpoint);
+       
+        $apiService->request($uri);
     }
     public function testGetUri() {
         $serviceManager = Bootstrap::getServiceManager();
         
-        /* @var $apiService ApiService */
         $apiService = $serviceManager->get('ApiService');
+        /* @var $apiService ApiService */
         
         $endpoint = "/" . Bootstrap::getRandString();
         
         $clientNumber = $apiService->getClientNumber();
         
-        $this->assertEquals($clientNumber . '/columnis' . $endpoint, $apiService->getUri($endpoint));
-        
+        $this->assertEquals($clientNumber . '/columnis' . $endpoint, $apiService->getUri($endpoint));        
     }
 }

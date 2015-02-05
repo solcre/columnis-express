@@ -12,8 +12,31 @@
  */
 
 return array(
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../../_files/public/templates',
+        ),
+    ),
     'api_settings' => array(
         'client_number' => '001',
         'api_base_url' => 'http://api.columnis.dev/'
-    )
+    ),
+    'template_assets_resolver' => array(
+        'match_patterns' => array(
+            'template_name' => '/^templates\/([a-zA-Z0-9-_]+)\/(css|js)\/minified\.(css|js)$/',
+            'global_asset' => '/^(css|js)\/global\/.+\.css|js$/'
+        ),
+        'global_folder_name' => 'global'
+    ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                __DIR__ . '/../../_files/public/css',
+                __DIR__ . '/../../_files/public/js',
+            ),
+        ),
+        'resolvers' => array(
+            'TemplateAssetsResolver' => 2000,
+        ),
+    ),
 );
