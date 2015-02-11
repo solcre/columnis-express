@@ -44,7 +44,7 @@ class Directory
      * @param string $subpath
      * @return boolean
      */
-    public static function is_subpath($path, $subpath)
+    public static function isSubpath($path, $subpath)
     {
         $rpath = realpath($path);
         $rsubpath = realpath($subpath);

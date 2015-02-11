@@ -96,7 +96,9 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         $apiService = $pageService->getApiService();
         
         $plugin = new MockPlugin();
-        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-bad-template.mock');
+        $plugin->addResponse(
+            Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-bad-template.mock'
+        );
         $mockedClient = $apiService->getHttpClient();
         $mockedClient->addSubscriber($plugin);
         
@@ -118,7 +120,9 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         $apiService = $pageService->getApiService();
         
         $plugin = new MockPlugin();
-        $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-invalid.mock');
+        $plugin->addResponse(
+            Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-invalid.mock'
+        );
         $mockedClient = $apiService->getHttpClient();
         $mockedClient->addSubscriber($plugin);
         

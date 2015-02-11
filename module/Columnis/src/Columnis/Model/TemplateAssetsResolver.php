@@ -279,7 +279,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
-     * Generates the collection of global assets by iterating over the assets in the global assets directory and adds it to the Resolver
+     * Generates the collection of global assets by iterating over the assets
+     * in the global assets directory and adds it to the Resolver
      *
      * @param string $alias
      */
@@ -293,7 +294,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     }
 
     /**
-     * Generates the collection of the template assets by iterating over the assets in the template directory and adds it to the Resolver
+     * Generates the collection of the template assets by iterating over the assets
+     * in the template directory and adds it to the Resolver
      *
      * @param string $alias
      */
@@ -402,7 +404,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     {
         $allowedPaths = array_merge($this->getTemplatesPathStack(), $this->getAssetsPaths());
         foreach ($allowedPaths as $path) {
-            if (DirectoryUtils::is_subpath($path, $name)) {
+            if (DirectoryUtils::isSubpath($path, $name)) {
                 return true;
             }
         }

@@ -35,7 +35,8 @@ var windowHeight = 0;
 var sliderHeaderHeight = 0;
 var headerOffset = 20;
 
-function fixHeader() {
+function fixHeader()
+{
 
     if ($(window).scrollTop() < headerOffset ) {
         $('body').removeClass('fixedHeader');

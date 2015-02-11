@@ -33,7 +33,7 @@ class DirectoryTest extends PHPUnit_Framework_TestCase
         DirectoryUtils::recursiveSearchByExtension('some/unexistant/path', 'test');
     }
     
-    public function testIs_subpath()
+    public function testIsSubpath()
     {
         $folder = Bootstrap::getRandString();
         $subfolder = Bootstrap::getRandString();
@@ -47,7 +47,7 @@ class DirectoryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($create2);
 
 
-        $res = DirectoryUtils::is_subpath($path, $subpath);
+        $res = DirectoryUtils::isSubpath($path, $subpath);
         $this->assertTrue($res);
 
         $deleted = rmdir($subpath);

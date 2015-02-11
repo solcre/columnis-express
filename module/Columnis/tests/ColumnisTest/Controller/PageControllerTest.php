@@ -12,7 +12,7 @@ class PageControllerTest extends AbstractHttpControllerTestCase
     public function setUp()
     {
         $this->setApplicationConfig(
-                include 'config/application.config.php'
+            include 'config/application.config.php'
         );
         parent::setUp();
     }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,7 +18,6 @@ use ArrayObject;
 
 class HtmlCache extends Filesystem
 {
-
     protected $extension = '.html';
 
     public function getExtension()
@@ -61,7 +59,6 @@ class HtmlCache extends Filesystem
         }
         return $this->options;
     }
-
     /* FlushableInterface */
 
     /**
@@ -72,11 +69,11 @@ class HtmlCache extends Filesystem
      */
     public function flush()
     {
-        $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_PATHNAME;
-        $dir = $this->getOptions()->getCacheDir();
+        $flags       = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_PATHNAME;
+        $dir         = $this->getOptions()->getCacheDir();
         $clearFolder = null;
         $clearFolder = function ($dir) use (& $clearFolder, $flags) {
-            $it = new GlobIterator($dir . DIRECTORY_SEPARATOR . '*', $flags);
+            $it = new GlobIterator($dir.DIRECTORY_SEPARATOR.'*', $flags);
             foreach ($it as $pathname) {
                 if ($it->isDir()) {
                     $clearFolder($pathname);
@@ -91,12 +88,15 @@ class HtmlCache extends Filesystem
         $clearFolder($dir);
         $error = ErrorHandler::stop();
         if ($error) {
-            throw new Exception\RuntimeException("Flushing directory '{$dir}' failed", 0, $error);
+            throw new Exception\RuntimeException(
+                "Flushing directory '{$dir}' failed",
+                0,
+                $error
+            );
         }
 
         return true;
     }
-
     /* ClearExpiredInterface */
 
     /**
@@ -108,17 +108,17 @@ class HtmlCache extends Filesystem
      */
     public function clearExpired()
     {
-        $options = $this->getOptions();
+        $options   = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
+        $prefix    = ($namespace === '') ? '' : $namespace.$options->getNamespaceSeparator();
 
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_FILEINFO;
-        $path = $options->getCacheDir()
-                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-                . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
-        $glob = new GlobIterator($path, $flags);
-        $time = time();
-        $ttl = $options->getTtl();
+        $path  = $options->getCacheDir()
+            .str_repeat(DIRECTORY_SEPARATOR.$prefix.'*', $options->getDirLevel())
+            .DIRECTORY_SEPARATOR.$prefix.'*'.$this->getExtension();
+        $glob  = new GlobIterator($path, $flags);
+        $time  = time();
+        $ttl   = $options->getTtl();
 
         ErrorHandler::start();
         foreach ($glob as $entry) {
@@ -127,7 +127,7 @@ class HtmlCache extends Filesystem
                 $pathname = $entry->getPathname();
                 unlink($pathname);
 
-                $tagPathname = substr($pathname, 0, -4) . '.tag';
+                $tagPathname = substr($pathname, 0, -4).'.tag';
                 if (file_exists($tagPathname)) {
                     unlink($tagPathname);
                 }
@@ -140,7 +140,11 @@ class HtmlCache extends Filesystem
                 __FUNCTION__,
                 new ArrayObject(),
                 $result,
-                new Exception\RuntimeException('Failed to clear expired items', 0, $error)
+                new Exception\RuntimeException(
+                    'Failed to clear expired items',
+                    0,
+                    $error
+                )
             );
         }
 
@@ -163,19 +167,22 @@ class HtmlCache extends Filesystem
             return true;
         }
 
-        $tagCount = count($tags);
-        $options = $this->getOptions();
+        $tagCount  = count($tags);
+        $options   = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
+        $prefix    = ($namespace === '') ? '' : $namespace.$options->getNamespaceSeparator();
 
         $flags = GlobIterator::SKIP_DOTS | GlobIterator::CURRENT_AS_PATHNAME;
-        $path = $options->getCacheDir()
-                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-                . DIRECTORY_SEPARATOR . $prefix . '*.tag';
-        $glob = new GlobIterator($path, $flags);
+        $path  = $options->getCacheDir()
+            .str_repeat(DIRECTORY_SEPARATOR.$prefix.'*', $options->getDirLevel())
+            .DIRECTORY_SEPARATOR.$prefix.'*.tag';
+        $glob  = new GlobIterator($path, $flags);
 
         foreach ($glob as $pathname) {
-            $diff = array_diff($tags, explode("\n", $this->getFileContent($pathname)));
+            $diff = array_diff(
+                $tags,
+                explode("\n", $this->getFileContent($pathname))
+            );
 
             $rem = false;
             if ($disjunction && count($diff) < $tagCount) {
@@ -187,7 +194,7 @@ class HtmlCache extends Filesystem
             if ($rem) {
                 unlink($pathname);
 
-                $datPathname = substr($pathname, 0, -4) . $this->getExtension();
+                $datPathname = substr($pathname, 0, -4).$this->getExtension();
                 if (file_exists($datPathname)) {
                     unlink($datPathname);
                 }
@@ -196,7 +203,6 @@ class HtmlCache extends Filesystem
 
         return true;
     }
-
     /* IterableInterface */
 
     /**
@@ -206,12 +212,12 @@ class HtmlCache extends Filesystem
      */
     public function getIterator()
     {
-        $options = $this->getOptions();
+        $options   = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix = ($namespace === '') ? '' : $namespace . $options->getNamespaceSeparator();
-        $path = $options->getCacheDir()
-                . str_repeat(DIRECTORY_SEPARATOR . $prefix . '*', $options->getDirLevel())
-                . DIRECTORY_SEPARATOR . $prefix . '*' . $this->getExtension();
+        $prefix    = ($namespace === '') ? '' : $namespace.$options->getNamespaceSeparator();
+        $path      = $options->getCacheDir()
+            .str_repeat(DIRECTORY_SEPARATOR.$prefix.'*', $options->getDirLevel())
+            .DIRECTORY_SEPARATOR.$prefix.'*'.$this->getExtension();
         return new FilesystemIterator($this, $path, $prefix);
     }
 
@@ -224,8 +230,11 @@ class HtmlCache extends Filesystem
      * @return null|string Data on success, null on failure
      * @throws Exception\ExceptionInterface
      */
-    protected function internalGetItem(& $normalizedKey, & $success = null, & $casToken = null)
-    {
+    protected function internalGetItem(
+        & $normalizedKey,
+        & $success = null,
+        & $casToken = null
+    ) {
         if (!$this->internalHasItem($normalizedKey)) {
             $success = false;
             return null;
@@ -233,11 +242,11 @@ class HtmlCache extends Filesystem
 
         try {
             $filespec = $this->getFileSpec($normalizedKey);
-            $data = $this->getFileContent($filespec . $this->getExtension());
+            $data     = $this->getFileContent($filespec.$this->getExtension());
 
             // use filemtime + filesize as CAS token
             if (func_num_args() > 2) {
-                $casToken = filemtime($filespec . $this->getExtension()) . filesize($filespec . $this->getExtension());
+                $casToken = filemtime($filespec.$this->getExtension()).filesize($filespec.$this->getExtension());
             }
             $success = true;
             return $data;
@@ -256,12 +265,12 @@ class HtmlCache extends Filesystem
      */
     protected function internalGetItems(array & $normalizedKeys)
     {
-        $keys = $normalizedKeys; // Don't change argument passed by reference
+        $keys   = $normalizedKeys; // Don't change argument passed by reference
         $result = array();
         while ($keys) {
             // LOCK_NB if more than one items have to read
             $nonBlocking = count($keys) > 1;
-            $wouldblock = null;
+            $wouldblock  = null;
 
             // read items
             foreach ($keys as $i => $key) {
@@ -271,7 +280,11 @@ class HtmlCache extends Filesystem
                 }
 
                 $filespec = $this->getFileSpec($key);
-                $data = $this->getFileContent($filespec . $this->getExtension(), $nonBlocking, $wouldblock);
+                $data     = $this->getFileContent(
+                    $filespec.$this->getExtension(),
+                    $nonBlocking,
+                    $wouldblock
+                );
                 if ($nonBlocking && $wouldblock) {
                     continue;
                 } else {
@@ -290,7 +303,7 @@ class HtmlCache extends Filesystem
 
     protected function internalHasItem(& $normalizedKey)
     {
-        $file = $this->getFileSpec($normalizedKey) . $this->getExtension();
+        $file = $this->getFileSpec($normalizedKey).$this->getExtension();
         if (!file_exists($file)) {
             return false;
         }
@@ -301,7 +314,11 @@ class HtmlCache extends Filesystem
             $mtime = filemtime($file);
             $error = ErrorHandler::stop();
             if (!$mtime) {
-                throw new Exception\RuntimeException("Error getting mtime of file '{$file}'", 0, $error);
+                throw new Exception\RuntimeException(
+                    "Error getting mtime of file '{$file}'",
+                    0,
+                    $error
+                );
             }
 
             if (time() >= ($mtime + $ttl)) {
@@ -357,9 +374,9 @@ class HtmlCache extends Filesystem
             return false;
         }
 
-        $options = $this->getOptions();
+        $options  = $this->getOptions();
         $filespec = $this->getFileSpec($normalizedKey);
-        $file = $filespec . $this->getExtension();
+        $file     = $filespec.$this->getExtension();
 
         $metadata = array(
             'filespec' => $filespec,
@@ -387,11 +404,11 @@ class HtmlCache extends Filesystem
     protected function internalGetMetadatas(array & $normalizedKeys)
     {
         $options = $this->getOptions();
-        $result = array();
+        $result  = array();
 
         foreach ($normalizedKeys as $normalizedKey) {
             $filespec = $this->getFileSpec($normalizedKey);
-            $file = $filespec . $this->getExtension();
+            $file     = $filespec.$this->getExtension();
 
             $metadata = array(
                 'filespec' => $filespec,
@@ -427,14 +444,19 @@ class HtmlCache extends Filesystem
 
         // write data in non-blocking mode
         $wouldblock = null;
-        $this->putFileContent($filespec . $this->getExtension(), $value, true, $wouldblock);
+        $this->putFileContent(
+            $filespec.$this->getExtension(),
+            $value,
+            true,
+            $wouldblock
+        );
 
         // delete related tag file (if present)
-        $this->unlink($filespec . '.tag');
+        $this->unlink($filespec.'.tag');
 
         // Retry writing data in blocking mode if it was blocked before
         if ($wouldblock) {
-            $this->putFileContent($filespec . $this->getExtension(), $value);
+            $this->putFileContent($filespec.$this->getExtension(), $value);
         }
 
         return true;
@@ -449,7 +471,7 @@ class HtmlCache extends Filesystem
      */
     protected function internalSetItems(array & $normalizedKeyValuePairs)
     {
-        
+
         // create an associated array of files and contents to write
         $contents = array();
         foreach ($normalizedKeyValuePairs as $key => & $value) {
@@ -457,16 +479,16 @@ class HtmlCache extends Filesystem
             $this->prepareDirectoryStructure($filespec);
 
             // *.ext file
-            $contents[$filespec . $this->getExtension()] = & $value;
+            $contents[$filespec.$this->getExtension()] = & $value;
 
             // *.tag file
-            $this->unlink($filespec . '.tag');
+            $this->unlink($filespec.'.tag');
         }
 
         // write to disk
         while ($contents) {
             $nonBlocking = count($contents) > 1;
-            $wouldblock = null;
+            $wouldblock  = null;
 
             foreach ($contents as $file => & $content) {
                 $this->putFileContent($file, $content, $nonBlocking, $wouldblock);
@@ -515,15 +537,18 @@ class HtmlCache extends Filesystem
      * @see    getItem()
      * @see    setItem()
      */
-    protected function internalCheckAndSetItem(& $token, & $normalizedKey, & $value)
-    {
+    protected function internalCheckAndSetItem(
+        & $token,
+        & $normalizedKey,
+        & $value
+    ) {
         if (!$this->internalHasItem($normalizedKey)) {
             return false;
         }
 
         // use filemtime + filesize as CAS token
-        $file = $this->getFileSpec($normalizedKey) . $this->getExtension();
-        $check = filemtime($file) . filesize($file);
+        $file  = $this->getFileSpec($normalizedKey).$this->getExtension();
+        $check = filemtime($file).filesize($file);
         if ($token !== $check) {
             return false;
         }
@@ -589,10 +614,14 @@ class HtmlCache extends Filesystem
         $filespec = $this->getFileSpec($normalizedKey);
 
         ErrorHandler::start();
-        $touch = touch($filespec . $this->getExtension());
+        $touch = touch($filespec.$this->getExtension());
         $error = ErrorHandler::stop();
         if (!$touch) {
-            throw new Exception\RuntimeException("Error touching file '{$filespec}.'" . $this->getExtension(), 0, $error);
+            throw new Exception\RuntimeException(
+                "Error touching file '{$filespec}.'".$this->getExtension(),
+                0,
+                $error
+            );
         }
 
         return true;
@@ -650,21 +679,21 @@ class HtmlCache extends Filesystem
     protected function internalRemoveItem(& $normalizedKey)
     {
         $filespec = $this->getFileSpec($normalizedKey);
-        if (!file_exists($filespec . $this->getExtension())) {
+        if (!file_exists($filespec.$this->getExtension())) {
             return false;
         } else {
-            $this->unlink($filespec . $this->getExtension());
-            $this->unlink($filespec . '.tag');
+            $this->unlink($filespec.$this->getExtension());
+            $this->unlink($filespec.'.tag');
         }
         return true;
     }
 
     protected function getFileSpec($normalizedKey)
     {
-        $options = $this->getOptions();
+        $options   = $this->getOptions();
         $namespace = $options->getNamespace();
-        $prefix = ($namespace === '') ? '' : $namespace;
-        $path = $options->getCacheDir() . DIRECTORY_SEPARATOR;
-        return $path . $prefix . DIRECTORY_SEPARATOR . $normalizedKey;
+        $prefix    = ($namespace === '') ? '' : $namespace;
+        $path      = $options->getCacheDir().DIRECTORY_SEPARATOR;
+        return $path.$prefix.DIRECTORY_SEPARATOR.$normalizedKey;
     }
 }

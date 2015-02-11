@@ -7,9 +7,6 @@ use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 use RuntimeException;
 
-error_reporting(E_ALL);
-chdir(__DIR__);
-
 /**
  * Test bootstrap, for setting up autoloading
  */
@@ -79,8 +76,8 @@ class Bootstrap
 
         if (!$zf2Path) {
             throw new RuntimeException(
-            'Unable to load ZF2. Run `php composer.phar install` or'
-            . ' define a ZF2_PATH environment variable.'
+                'Unable to load ZF2. Run `php composer.phar install` or'
+                . ' define a ZF2_PATH environment variable.'
             );
         }
 
@@ -125,6 +122,3 @@ class Bootstrap
         return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
     }
 }
-
-Bootstrap::init();
-Bootstrap::chroot();

@@ -36,7 +36,10 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
-        $this->assertEquals('sometemplate', $templateAssetsResolver->matchTemplateName('templates/sometemplate/css/minified.css'));
+        $this->assertEquals(
+            'sometemplate',
+            $templateAssetsResolver->matchTemplateName('templates/sometemplate/css/minified.css')
+        );
         $this->assertFalse($templateAssetsResolver->matchTemplateName('path/that/does/not/match/pattern/asset.css'));
     }
 
@@ -57,7 +60,9 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
-        $this->assertFalse($templateAssetsResolver->isTemplateAsset('path/to/templates/example-template/stylesheets/example.css'));
+        $this->assertFalse(
+            $templateAssetsResolver->isTemplateAsset('path/to/templates/example-template/stylesheets/example.css')
+        );
     }
 
     public function testIsTemplateAssetWithInvalidTemplate()
@@ -107,9 +112,12 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $expectedAssets = array(
-            'jquery-ui.css', // Defined Assets
-            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css'), // Search assets
-            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example2.css') // Search assets
+            // Defined Assets
+            'jquery-ui.css',
+            // Search assets
+            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css'),
+            // Search assets
+            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example2.css')
         );
 
         $templateAssetsResolver->loadTemplateCollection('templates/example-template/css/minified.css');

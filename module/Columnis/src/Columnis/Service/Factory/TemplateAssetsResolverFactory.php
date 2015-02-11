@@ -25,17 +25,18 @@ class TemplateAssetsResolverFactory implements FactoryInterface
         }
         $templateAssetsResolver = new TemplateAssetsResolver($assetsPaths, $templatesPathStack);
 
-        if (isset($config['template_assets_resolver']['match_patterns']['template_name'])) {
-            $templateAssetsResolver->setPatternTemplateName($config['template_assets_resolver']['match_patterns']['template_name']);
+        $resolverCfg = $config['template_assets_resolver'];
+        if (isset($resolverCfg['match_patterns']['template_name'])) {
+            $templateAssetsResolver->setPatternTemplateName($resolverCfg['match_patterns']['template_name']);
         }
-        if (isset($config['template_assets_resolver']['match_patterns']['global_asset'])) {
-            $templateAssetsResolver->setPatternGlobalAssets($config['template_assets_resolver']['match_patterns']['global_asset']);
+        if (isset($resolverCfg['match_patterns']['global_asset'])) {
+            $templateAssetsResolver->setPatternGlobalAssets($resolverCfg['match_patterns']['global_asset']);
         }
-        if (isset($config['template_assets_resolver']['global_folder_name'])) {
-            $templateAssetsResolver->setGlobalFolderName($config['template_assets_resolver']['global_folder_name']);
+        if (isset($resolverCfg['global_folder_name'])) {
+            $templateAssetsResolver->setGlobalFolderName($resolverCfg['global_folder_name']);
         }
-        if (isset($config['template_assets_resolver']['public_path'])) {
-            $templateAssetsResolver->setPublicPath($config['template_assets_resolver']['public_path']);
+        if (isset($resolverCfg['public_path'])) {
+            $templateAssetsResolver->setPublicPath($resolverCfg['public_path']);
         }
         
         
