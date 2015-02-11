@@ -343,12 +343,10 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         // Check if we are resolving an asset defined with an absolute path
         if ($name === realpath($name)) {
             return $this->resolveAbsolutePath($name);
-        }
-        // Check if it is an asset that is used globally in all pages
+        } // Check if it is an asset that is used globally in all pages
         elseif ($this->isGlobalAsset($name)) {
             $this->loadGlobalCollection($name);
-        }
-        // Check if it is an asset from a template
+        } // Check if it is an asset from a template
         elseif ($this->isTemplateAsset($name)) {
             $this->loadTemplateCollection($name);
         }

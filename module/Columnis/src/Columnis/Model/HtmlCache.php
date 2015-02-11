@@ -137,7 +137,10 @@ class HtmlCache extends Filesystem
         if ($error) {
             $result = false;
             return $this->triggerException(
-                            __FUNCTION__, new ArrayObject(), $result, new Exception\RuntimeException('Failed to clear expired items', 0, $error)
+                __FUNCTION__,
+                new ArrayObject(),
+                $result,
+                new Exception\RuntimeException('Failed to clear expired items', 0, $error)
             );
         }
 
@@ -256,7 +259,6 @@ class HtmlCache extends Filesystem
         $keys = $normalizedKeys; // Don't change argument passed by reference
         $result = array();
         while ($keys) {
-
             // LOCK_NB if more than one items have to read
             $nonBlocking = count($keys) > 1;
             $wouldblock = null;

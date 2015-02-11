@@ -12,7 +12,6 @@ use Columnis\Exception\Api\ClientNumberNotSetException;
 use Columnis\Exception\Api\ApiBaseUrlNotSetException;
 use Columnis\Service\ApiService;
 
-
 class ApiServiceFactory implements FactoryInterface
 {
 
