@@ -18,16 +18,20 @@ use Columnis\Model\Template;
 use PHPUnit_Framework_TestCase;
 use ColumnisTest\Bootstrap;
 
-class TemplateTest extends PHPUnit_Framework_TestCase {
+class TemplateTest extends PHPUnit_Framework_TestCase
+{
 
-    public function testConstructor() {
+    public function testConstructor()
+    {
         $template = new Template();
         $this->assertInstanceOf('Columnis\Model\Template', $template);
     }
-    private function getExampleTemplatePath() {
+    private function getExampleTemplatePath()
+    {
         return Bootstrap::getTestFilesDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'example-template';
     }
-    public function testSetPathUsesAbsolutePaths() {
+    public function testSetPathUsesAbsolutePaths()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -37,13 +41,14 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $property = new \ReflectionProperty($template, 'path');
         $property->setAccessible(true);
         
-        $this->assertEquals(realpath($path), $property->getValue($template));        
+        $this->assertEquals(realpath($path), $property->getValue($template));
     }
     
     /**
      * @expectedException \Columnis\Exception\Templates\PathNotFoundException
      */
-    public function testSetPathMustReceiveValidPath() {
+    public function testSetPathMustReceiveValidPath()
+    {
         $template = new Template();
         $name = 'example-template';
         $template->setName($name);
@@ -55,7 +60,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $template->setPath($path);
     }
 
-    public function testGetMainFile() {
+    public function testGetMainFile()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -68,7 +74,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($name . DIRECTORY_SEPARATOR . $mainFile, $template->getMainFile(false));
     }
 
-    public function testGetDefinitionFile() {
+    public function testGetDefinitionFile()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -83,7 +90,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Columnis\Model\Template::parseDefinition
      */
-    public function testGetParsedDefinition() {
+    public function testGetParsedDefinition()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -102,7 +110,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($parsedDefinition, $template->getParsedDefinition());
     }
 
-    public function testIsValid() {
+    public function testIsValid()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -111,11 +120,13 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
 
         $this->assertTrue($template->isValid());
     }
-    public function testIsValidWithoutPathSet() {
+    public function testIsValidWithoutPathSet()
+    {
         $template = new Template();
         $this->assertFalse($template->isValid());
     }
-    public function testIsValidWithNonExistantPath() {
+    public function testIsValidWithNonExistantPath()
+    {
         $template = new Template();
         $name = 'example-template';
         $template->setName($name);
@@ -131,7 +142,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($template->isValid());
     }
 
-    public function testIsValidWithNonExistantDefinitionFile() {
+    public function testIsValidWithNonExistantDefinitionFile()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -147,7 +159,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         rename($newName, $template->getDefinitionFile());
     }
 
-    public function testIsValidWithNonExistantMainFile() {
+    public function testIsValidWithNonExistantMainFile()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -163,7 +176,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         rename($newName, $template->getMainFile());
     }
 
-    public function testParseDefinition() {
+    public function testParseDefinition()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -183,8 +197,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
      * @covers Columnis\Model\Template::getDefinedAssets
      * @covers Columnis\Model\Template::searchAssets
      */
-    public function testGetAssets() {
-        
+    public function testGetAssets()
+    {
         $template = new Template();
         $path = $this->getExampleTemplatePath();
         $template->setPath($path);
@@ -213,12 +227,10 @@ class TemplateTest extends PHPUnit_Framework_TestCase {
         );
         
         $expectedDefinedAssets = $definedAssets[$extension];
-        $expectedSearchAssets = $searchAssets[$extension];        
+        $expectedSearchAssets = $searchAssets[$extension];
         sort($expectedSearchAssets);
         
-        $expectedAssets = array_merge($expectedDefinedAssets, $expectedSearchAssets);        
+        $expectedAssets = array_merge($expectedDefinedAssets, $expectedSearchAssets);
         $this->assertEquals($expectedAssets, $template->getAssets($extension));
     }
-
-    
 }

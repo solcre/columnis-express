@@ -21,16 +21,18 @@ use PHPUnit_Framework_TestCase;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Client as GuzzleClient;
 
-class ApiServiceTest extends PHPUnit_Framework_TestCase {
+class ApiServiceTest extends PHPUnit_Framework_TestCase
+{
     
     /**
      * @covers Columnis\Service\ApiService::setHttpClient
      * @covers Columnis\Service\ApiService::setClientNumber
      * @covers Columnis\Service\ApiService::getHttpClient
      * @covers Columnis\Service\ApiService::getClientNumber
-     * 
+     *
      */
-    public function testConstructor() {
+    public function testConstructor()
+    {
         $httpClient = new GuzzleClient();
         $clientNumber = '001';
         
@@ -39,15 +41,15 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Columnis\Service\ApiService', $apiService);
         $this->assertEquals($clientNumber, $apiService->getClientNumber());
         $this->assertSame($httpClient, $apiService->getHttpClient());
-        
     }
-    public function testRequest() {
+    public function testRequest()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $apiService = $serviceManager->get('ApiService');
         /* @var $apiService ApiService */
         
-        $plugin = new MockPlugin();        
+        $plugin = new MockPlugin();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate.mock');
         
         $mockedClient = $apiService->getHttpClient();
@@ -65,13 +67,14 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Api\ApiRequestException
      */
-    public function testRequestFail() {
+    public function testRequestFail()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $apiService = $serviceManager->get('ApiService');
         /* @var $apiService ApiService */
         
-        $plugin = new MockPlugin();        
+        $plugin = new MockPlugin();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'forbidden.mock');
         
         $mockedClient = $apiService->getHttpClient();
@@ -82,7 +85,8 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase {
        
         $apiService->request($uri);
     }
-    public function testGetUri() {
+    public function testGetUri()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $apiService = $serviceManager->get('ApiService');
@@ -92,6 +96,6 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase {
         
         $clientNumber = $apiService->getClientNumber();
         
-        $this->assertEquals($clientNumber . '/columnis' . $endpoint, $apiService->getUri($endpoint));        
+        $this->assertEquals($clientNumber . '/columnis' . $endpoint, $apiService->getUri($endpoint));
     }
 }

@@ -20,16 +20,18 @@ use Columnis\Model\Page;
 use Guzzle\Plugin\Mock\MockPlugin;
 use PHPUnit_Framework_TestCase;
 
-class PageServiceTest extends PHPUnit_Framework_TestCase {
+class PageServiceTest extends PHPUnit_Framework_TestCase
+{
     
     /**
      * @covers Columnis\Service\PageService::getApiService
      * @covers Columnis\Service\PageService::setApiService
      * @covers Columnis\Service\PageService::getTemplateService
      * @covers Columnis\Service\PageService::setTemplateService
-     * 
+     *
      */
-    public function testConstructor() {
+    public function testConstructor()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $templateService = $serviceManager->get('TemplateService');
@@ -40,9 +42,9 @@ class PageServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Columnis\Service\PageService', $pageService);
         $this->assertSame($templateService, $pageService->getTemplateService());
         $this->assertSame($apiService, $pageService->getApiService());
-        
-    }    
-    public function testFetch() {
+    }
+    public function testFetch()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $pageService = $serviceManager->get('PageService');
@@ -62,7 +64,8 @@ class PageServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $page->getData());
         $this->assertInstanceOf('Columnis\Model\Template', $page->getTemplate());
     }
-    public function testFetchWithInvalidStatuscode() {
+    public function testFetchWithInvalidStatuscode()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $pageService = $serviceManager->get('PageService');
@@ -83,7 +86,8 @@ class PageServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Page\PageWithoutTemplateException
      */
-    public function testFetchWithNonExistantTemplate() {
+    public function testFetchWithNonExistantTemplate()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $pageService = $serviceManager->get('PageService');
@@ -104,7 +108,8 @@ class PageServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Page\PageWithoutTemplateException
      */
-    public function testFetchWithoutTemplate() {
+    public function testFetchWithoutTemplate()
+    {
         $serviceManager = Bootstrap::getServiceManager();
         
         $pageService = $serviceManager->get('PageService');

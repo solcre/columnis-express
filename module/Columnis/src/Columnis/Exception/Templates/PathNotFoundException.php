@@ -10,6 +10,6 @@ namespace Columnis\Exception\Templates;
 
 use Columnis\Exception\Exception;
 
-class PathNotFoundException extends \RuntimeException implements Exception {
-    
+class PathNotFoundException extends \RuntimeException implements Exception
+{
 }

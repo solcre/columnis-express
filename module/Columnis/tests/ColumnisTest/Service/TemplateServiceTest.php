@@ -19,17 +19,20 @@ use Columnis\Service\TemplateService;
 use Columnis\Model\Template;
 use PHPUnit_Framework_TestCase;
 
-class TemplateServiceTest extends PHPUnit_Framework_TestCase {
+class TemplateServiceTest extends PHPUnit_Framework_TestCase
+{
 
-    private function getExampleTemplatePath() {
+    private function getExampleTemplatePath()
+    {
         return Bootstrap::getTestFilesDir() . 'public' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'example-template';
     }
     /**
      * @covers Columnis\Service\TemplateService::setTemplatesPathStack
      * @covers Columnis\Service\TemplateService::getTemplatesPathStack
-     * 
+     *
      */
-    public function testConstructor() {
+    public function testConstructor()
+    {
         $templatePathStack = array(
             'path/to/templates'
         );
@@ -40,7 +43,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $templateService->getTemplatesPathStack());
     }
 
-    public function testGetExistantTemplatePath() {
+    public function testGetExistantTemplatePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -54,7 +58,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(realpath($path), realpath($templateService->getExistantTemplatePath($templateName)));
     }
 
-    public function testGetExistantTemplatePathWithInvalidFolderContents() {
+    public function testGetExistantTemplatePathWithInvalidFolderContents()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -68,7 +73,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($templateService->getExistantTemplatePath($templateName));
     }
 
-    public function testGetExistantTemplatePathWithInvalidPath() {
+    public function testGetExistantTemplatePathWithInvalidPath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -83,7 +89,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($templateService->getExistantTemplatePath($templateName));
     }
 
-    public function testValidTemplate() {
+    public function testValidTemplate()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -97,7 +104,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($templateService->validTemplate($path));
     }
 
-    public function testValidTemplateWithInvalidTemplatePath() {
+    public function testValidTemplateWithInvalidTemplatePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -111,7 +119,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($templateService->validTemplate($path));
     }
 
-    public function testValidTemplateWithInvalidFolderContents() {
+    public function testValidTemplateWithInvalidFolderContents()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -125,7 +134,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($templateService->validTemplate($path));
     }
 
-    public function testCreateFromData() {
+    public function testCreateFromData()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -146,7 +156,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Templates\TemplateNameNotSetException
      */
-    public function testCreateFromDataWithoutTemplateName() {
+    public function testCreateFromDataWithoutTemplateName()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -161,7 +172,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Templates\TemplateNameNotSetException
      */
-    public function testCreateFromDataWithEmptyTemplateName() {
+    public function testCreateFromDataWithEmptyTemplateName()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -174,7 +186,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
         $templateService->createFromData($data);
     }
 
-    public function testCreateFromDataWithTemplatePath() {
+    public function testCreateFromDataWithTemplatePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -198,7 +211,8 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Columnis\Exception\Templates\PathNotFoundException
      */
-    public function testCreateFromDataWithInvalidTemplatePath() {
+    public function testCreateFromDataWithInvalidTemplatePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateService = $serviceManager->get('TemplateService');
@@ -213,5 +227,4 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase {
 
         $templateService->createFromData($data);
     }
-
 }

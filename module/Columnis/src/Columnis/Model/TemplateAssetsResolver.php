@@ -15,12 +15,13 @@ use SplFileInfo;
  * Collections are strictly checked by mime-type,
  * and added to an AssetCollection when all checks passed.
  */
-class TemplateAssetsResolver extends CollectionResolver implements MimeResolverAwareInterface {
+class TemplateAssetsResolver extends CollectionResolver implements MimeResolverAwareInterface
+{
 
     /**
      * The assets paths
-     * 
-     * @var array  
+     *
+     * @var array
      */
     protected $assetsPaths = array();
 
@@ -33,45 +34,46 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * The templates paths
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $templatesPathStack = array();
 
     /**
      * The name of the folder inside the assets paths that will generate the global.css and global.js
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $globalFolderName;
 
     /*
      * Regex Pattern to match (first group) the template name
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $patternTemplateName;
 
-    /* 
+    /*
      * Regex Pattern to match (in any group) if a filename is inside a global assets folder
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $patternGlobalAssets;
     
     /**
      * Path to the public dir
-     * 
+     *
      * @var string
      */
     protected $publicPath;
 
     /**
      * Get the Paths where assets are allowed
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    public function getAssetsPaths() {
+    public function getAssetsPaths()
+    {
         return $this->assetsPaths;
     }
 
@@ -80,7 +82,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @param array $assetsPaths
      */
-    public function setAssetsPaths(Array $assetsPaths = null) {
+    public function setAssetsPaths(Array $assetsPaths = null)
+    {
         $this->assetsPaths = $assetsPaths;
     }
 
@@ -89,7 +92,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @param MimeResolver $resolver
      */
-    public function setMimeResolver(MimeResolver $resolver) {
+    public function setMimeResolver(MimeResolver $resolver)
+    {
         $this->mimeResolver = $resolver;
     }
 
@@ -98,34 +102,38 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @return MimeResolver
      */
-    public function getMimeResolver() {
+    public function getMimeResolver()
+    {
         return $this->mimeResolver;
     }
 
     /**
      * Retrieve paths to templates
-     * 
+     *
      * @return array
      */
-    public function getTemplatesPathStack() {
+    public function getTemplatesPathStack()
+    {
         return $this->templatesPathStack;
     }
 
     /**
      * Set the templates paths
-     * 
+     *
      * @param array $templatesPathStack
      */
-    public function setTemplatesPathStack(Array $templatesPathStack) {
+    public function setTemplatesPathStack(Array $templatesPathStack)
+    {
         $this->templatesPathStack = $templatesPathStack;
     }
 
     /**
      * Get the name of the global folder
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    public function getGlobalFolderName() {
+    public function getGlobalFolderName()
+    {
         return $this->globalFolderName;
     }
 
@@ -134,61 +142,68 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @param string $globalFolderName
      */
-    public function setGlobalFolderName($globalFolderName = '') {
+    public function setGlobalFolderName($globalFolderName = '')
+    {
         $this->globalFolderName = $globalFolderName;
     }
 
     /**
      * Get the pattern to match the template name
-     * 
+     *
      * @return string
      */
-    public function getPatternTemplateName() {
+    public function getPatternTemplateName()
+    {
         return $this->patternTemplateName;
     }
 
     /**
      * Get the pattern to match if a file is a global asset
-     * 
+     *
      * @return string
      */
-    public function getPatternGlobalAssets() {
+    public function getPatternGlobalAssets()
+    {
         return $this->patternGlobalAssets;
     }
 
     /**
      * Set the pattern to match the template name
-     * 
+     *
      * @param string $patternTemplateName
      */
-    public function setPatternTemplateName($patternTemplateName) {
+    public function setPatternTemplateName($patternTemplateName)
+    {
         $this->patternTemplateName = $patternTemplateName;
     }
 
     /**
      * Set the pattern to match if a file is a global asset
-     * 
+     *
      * @param string $patternGlobalAssets
      */
-    public function setPatternGlobalAssets($patternGlobalAssets) {
+    public function setPatternGlobalAssets($patternGlobalAssets)
+    {
         $this->patternGlobalAssets = $patternGlobalAssets;
     }
     
     /**
      * Returns the public path
-     * 
+     *
      * @return string
      */
-    public function getPublicPath() {
+    public function getPublicPath()
+    {
         return $this->publicPath;
     }
 
     /**
      * Sets the public path
-     * 
+     *
      * @param string $publicPath
      */
-    public function setPublicPath($publicPath) {
+    public function setPublicPath($publicPath)
+    {
         $this->publicPath = $publicPath;
     }
 
@@ -200,7 +215,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param array $assetsPaths
      * @param array $templatesPathStack
      */
-    public function __construct(Array $assetsPaths, Array $templatesPathStack) {
+    public function __construct(Array $assetsPaths, Array $templatesPathStack)
+    {
         parent::__construct();
         $this->setAssetsPaths($assetsPaths);
         $this->setTemplatesPathStack($templatesPathStack);
@@ -208,11 +224,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      *  Adds a collection of assets with an alias
-     * 
+     *
      * @param string $alias
      * @param array $assets
      */
-    public function addToCollections($alias, Array $assets) {
+    public function addToCollections($alias, Array $assets)
+    {
         $collections = $this->getCollections();
         $collections[$alias] = $assets;
         $this->setCollections($collections);
@@ -220,11 +237,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns the template name if the requested asset belongs to a template
-     * 
+     *
      * @param string $alias
      * @return boolean|array
      */
-    public function matchTemplateName($alias) {
+    public function matchTemplateName($alias)
+    {
         $pattern = $this->getPatternTemplateName();
         $matches = array();
         if (preg_match($pattern, $alias, $matches)) {
@@ -235,11 +253,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns true if the asset belongs to a template
-     * 
+     *
      * @param string $alias
      * @return boolean
      */
-    public function isTemplateAsset($alias) {
+    public function isTemplateAsset($alias)
+    {
         $template = $this->matchTemplateName($alias);
         if (!$template) {
             return false;
@@ -249,21 +268,23 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns true if the asset is used globally
-     * 
+     *
      * @param string $name
      * @return boolean
      */
-    public function isGlobalAsset($name) {
+    public function isGlobalAsset($name)
+    {
         $pattern = $this->getPatternGlobalAssets();
         return (preg_match($pattern, $name) > 0);
     }
 
     /**
      * Generates the collection of global assets by iterating over the assets in the global assets directory and adds it to the Resolver
-     * 
+     *
      * @param string $alias
      */
-    public function loadGlobalCollection($alias) {
+    public function loadGlobalCollection($alias)
+    {
         $paths = $this->getGlobalAssetsPaths();
 
         $extension = pathinfo($alias, PATHINFO_EXTENSION);
@@ -273,10 +294,11 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Generates the collection of the template assets by iterating over the assets in the template directory and adds it to the Resolver
-     * 
+     *
      * @param string $alias
      */
-    public function loadTemplateCollection($alias) {
+    public function loadTemplateCollection($alias)
+    {
         $templateName = $this->matchTemplateName($alias);
         if ($templateName !== false) {
             $path = $this->getExistantTemplatePath($templateName);
@@ -294,11 +316,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Resolves assets with absolute path
-     * 
+     *
      * @param string $path
      * @return FileAsset
      */
-    public function resolveAbsolutePath($path) {
+    public function resolveAbsolutePath($path)
+    {
         if ($this->inAllowedPaths($path)) {
             $file = new SplFileInfo($path);
             if ($file->isReadable() && !$file->isDir()) {
@@ -315,11 +338,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * {@inheritDoc}
      */
-    public function resolve($name) {        
+    public function resolve($name)
+    {
         // Check if we are resolving an asset defined with an absolute path
         if ($name === realpath($name)) {
             return $this->resolveAbsolutePath($name);
-        }        
+        }
         // Check if it is an asset that is used globally in all pages
         elseif ($this->isGlobalAsset($name)) {
             $this->loadGlobalCollection($name);
@@ -338,11 +362,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     /**
      * Return the FIRST paths that contain a template with the specified name
      * (There should not be more than one posible template path)
-     * 
+     *
      * @param string $templateName
      * @return string
      */
-    public function getExistantTemplatePath($templateName) {
+    public function getExistantTemplatePath($templateName)
+    {
         $paths = $this->getTemplatesPathStack();
         foreach ($paths as $path) {
             $templatePath = $path . DIRECTORY_SEPARATOR . $templateName;
@@ -355,11 +380,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns true if it is a valid template
-     * 
+     *
      * @param string $templatePath
      * @return boolean
      */
-    public function validTemplate($templatePath) {
+    public function validTemplate($templatePath)
+    {
         if (!is_dir($templatePath)) {
             return false;
         }
@@ -370,11 +396,12 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns true if the asset is in an allowed path
-     * 
+     *
      * @param string $name The path to the asset
      * @return boolean If the asset is in an allowed path will return true.
      */
-    public function inAllowedPaths($name) {
+    public function inAllowedPaths($name)
+    {
         $allowedPaths = array_merge($this->getTemplatesPathStack(), $this->getAssetsPaths());
         foreach ($allowedPaths as $path) {
             if (DirectoryUtils::is_subpath($path, $name)) {
@@ -386,10 +413,11 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
 
     /**
      * Returns an array with the global assets path
-     * 
+     *
      * @return array
      */
-    public function getGlobalAssetsPaths() {
+    public function getGlobalAssetsPaths()
+    {
         $ret = array();
         $assetsPaths = $this->getAssetsPaths();
         $globalFolderName = $this->getGlobalFolderName();
@@ -404,7 +432,8 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @param string $extension
      * @return array|Traversable collections of assets
      */
-    public function generateCollection($paths, $extension) {
+    public function generateCollection($paths, $extension)
+    {
         $ret = array();
         foreach ($paths as $path) {
             if (!is_dir($path)) {
@@ -416,5 +445,4 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         sort($ret);
         return $ret;
     }
-
 }

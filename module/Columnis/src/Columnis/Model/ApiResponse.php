@@ -15,29 +15,32 @@ namespace Columnis\Model;
 
 use Guzzle\Http\Message\Response as GuzzleResponse;
 
-class ApiResponse {
+class ApiResponse
+{
     
     /**
      * The response from Guzzle
-     * 
+     *
      * @var GuzzleResponse
      */
     private $response;
     
-    public function getData() {
+    public function getData()
+    {
         return $this->response->json();
     }
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->response->getStatusCode();
     }
     
     /**
      * Construct ApiResponse with GuzzleResponse
-     * 
+     *
      * @param GuzzleResponse $response
      */
-    public function __construct(GuzzleResponse $response) {
+    public function __construct(GuzzleResponse $response)
+    {
         $this->response = $response;
     }
-    
 }

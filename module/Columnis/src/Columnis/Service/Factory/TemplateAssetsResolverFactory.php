@@ -14,8 +14,7 @@ class TemplateAssetsResolverFactory implements FactoryInterface
      * @return TemplateAssetsResolver
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
-    {       
-        
+    {
         $config      = $serviceLocator->get('Config');
         
         if (isset($config['view_manager']['template_path_stack'])) {

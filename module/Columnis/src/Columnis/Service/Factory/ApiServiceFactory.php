@@ -13,14 +13,16 @@ use Columnis\Exception\Api\ApiBaseUrlNotSetException;
 use Columnis\Service\ApiService;
 
 
-class ApiServiceFactory implements FactoryInterface {
+class ApiServiceFactory implements FactoryInterface
+{
 
     /**
      * {@inheritDoc}
      *
      * @return Page
      */
-    public function createService(ServiceLocatorInterface $serviceLocator) {        
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
         $config = $serviceLocator->get('Config');
         $apiConfig = isset($config['api_settings']) ? $config['api_settings'] : array();
         
@@ -45,5 +47,4 @@ class ApiServiceFactory implements FactoryInterface {
         
         return new ApiService($httpClient, $clientNumber);
     }
-
 }

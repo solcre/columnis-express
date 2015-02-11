@@ -10,6 +10,6 @@ namespace Columnis\Exception\Templates;
 
 use Columnis\Exception\Exception;
 
-class TemplateNameNotSetException extends \RuntimeException implements Exception {
-    
+class TemplateNameNotSetException extends \RuntimeException implements Exception
+{
 }

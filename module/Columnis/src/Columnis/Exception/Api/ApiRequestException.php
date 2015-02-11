@@ -10,6 +10,6 @@ namespace Columnis\Exception\Api;
 
 use Columnis\Exception\Exception;
 
-class ApiRequestException extends \Exception implements Exception {
-    
+class ApiRequestException extends \Exception implements Exception
+{
 }

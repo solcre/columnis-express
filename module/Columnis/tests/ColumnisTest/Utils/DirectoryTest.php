@@ -6,9 +6,11 @@ use PHPUnit_Framework_TestCase;
 use Columnis\Utils\Directory as DirectoryUtils;
 use ColumnisTest\Bootstrap;
 
-class DirectoryTest extends PHPUnit_Framework_TestCase {
+class DirectoryTest extends PHPUnit_Framework_TestCase
+{
     
-    public function testRecursiveSearchByExtension() {
+    public function testRecursiveSearchByExtension()
+    {
         $files = array(
             Bootstrap::getTestFilesDir() . 'directory-tests/somefilefor.test',
             Bootstrap::getTestFilesDir() . 'directory-tests/anotherfilefor.test',
@@ -26,11 +28,13 @@ class DirectoryTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Exception
      */
-    public function testRecursiveSearchByExtensionWithUnexistantPath() {
+    public function testRecursiveSearchByExtensionWithUnexistantPath()
+    {
         DirectoryUtils::recursiveSearchByExtension('some/unexistant/path', 'test');
     }
     
-    public function testIs_subpath() {
+    public function testIs_subpath()
+    {
         $folder = Bootstrap::getRandString();
         $subfolder = Bootstrap::getRandString();
         $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $folder;
@@ -52,5 +56,4 @@ class DirectoryTest extends PHPUnit_Framework_TestCase {
         $deleted2 = rmdir($path);
         $this->assertTrue($deleted2);
     }
-
 }

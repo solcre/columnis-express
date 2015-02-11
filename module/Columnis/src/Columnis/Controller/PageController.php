@@ -7,16 +7,18 @@ use Zend\View\Model\ViewModel;
 use Columnis\Model\Page;
 use Columnis\Exception\Page\PageWithoutTemplateException;
 
-class PageController extends AbstractActionController {
+class PageController extends AbstractActionController
+{
 
-    public function indexAction() {
+    public function indexAction()
+    {
         $pageId = $this->params()->fromRoute('pageId');
         $page = $this->fetchPage($pageId);
 
         if ($page instanceof Page) {
             $viewVariables = $page->getData();
-            $template = $page->getTemplate();            
-            if ($template->isValid()) {                
+            $template = $page->getTemplate();
+            if ($template->isValid()) {
                 $view = new ViewModel();
                 $view->setTemplate($template->getMainFile(false));
                 $view->setVariables($viewVariables);
@@ -27,7 +29,8 @@ class PageController extends AbstractActionController {
         $this->getResponse()->setStatusCode(404);
     }
 
-    protected function fetchPage($pageId) {
+    protected function fetchPage($pageId)
+    {
         $page = new Page();
         $page->setId($pageId);
 
@@ -41,9 +44,7 @@ class PageController extends AbstractActionController {
         try {
             $pageService->fetch($page);
         } catch (PageWithoutTemplateException $e) {
-            
         }
         return $page;
     }
-
 }

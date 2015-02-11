@@ -10,6 +10,6 @@ namespace Columnis\Exception\Page;
 
 use Columnis\Exception\Exception;
 
-class PageWithoutTemplateException extends \RuntimeException implements Exception {
-    
+class PageWithoutTemplateException extends \RuntimeException implements Exception
+{
 }

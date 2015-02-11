@@ -21,7 +21,8 @@ use Columnis\Exception\Templates\PathNotFoundException;
 use Columnis\Exception\Templates\TemplateNameNotSetException;
 use Columnis\Exception\Page\PageWithoutTemplateException;
 
-class PageService {
+class PageService
+{
 
     /**
      * Api Service
@@ -39,7 +40,8 @@ class PageService {
      * Returns the Api Service
      * @return ApiService
      */
-    public function getApiService() {
+    public function getApiService()
+    {
         return $this->apiService;
     }
 
@@ -47,7 +49,8 @@ class PageService {
      * Sets the Api Service
      * @param ApiService $apiService
      */
-    public function setApiService(ApiService $apiService) {
+    public function setApiService(ApiService $apiService)
+    {
         $this->apiService = $apiService;
     }
 
@@ -55,7 +58,8 @@ class PageService {
      * Returns the Template Service
      * @return TemplateService
      */
-    public function getTemplateService() {
+    public function getTemplateService()
+    {
         return $this->templateService;
     }
 
@@ -63,22 +67,25 @@ class PageService {
      * Sets the Template Service
      * @param TemplateService $templateService
      */
-    public function setTemplateService(TemplateService $templateService) {
+    public function setTemplateService(TemplateService $templateService)
+    {
         $this->templateService = $templateService;
     }
 
-    public function __construct(TemplateService $templateService, ApiService $apiService) {
+    public function __construct(TemplateService $templateService, ApiService $apiService)
+    {
         $this->setTemplateService($templateService);
         $this->setApiService($apiService);
     }
 
     /**
      * Fetchs the page content from Columnis Api
-     * 
+     *
      * @param Page $page
      * @return boolean
      */
-    public function fetch(Page $page) {
+    public function fetch(Page $page)
+    {
         $id = $page->getId();
         $endpoint = '/pages/' . $id . '/generate';
         $uri = $this->getApiService()->getUri($endpoint);
@@ -94,12 +101,11 @@ class PageService {
             $page->setTemplate($template);
         } catch (ApiRequestException $e) {
             return false;
-        }catch (PathNotFoundException $e) {
-            throw new PageWithoutTemplateException($e->getMessage(),0, $e);
-        } catch (TemplateNameNotSetException $e) {            
-            throw new PageWithoutTemplateException($e->getMessage(),0, $e);
+        } catch (PathNotFoundException $e) {
+            throw new PageWithoutTemplateException($e->getMessage(), 0, $e);
+        } catch (TemplateNameNotSetException $e) {
+            throw new PageWithoutTemplateException($e->getMessage(), 0, $e);
         }
         return true;
     }
-
 }

@@ -6,14 +6,16 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Columnis\Service\PageService;
 
-class PageServiceFactory implements FactoryInterface {
+class PageServiceFactory implements FactoryInterface
+{
 
     /**
      * {@inheritDoc}
      *
      * @return Page
      */
-    public function createService(ServiceLocatorInterface $serviceLocator) {        
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
         $templateService = $serviceLocator->get('TemplateService');
         /* @var \Columnis\Service\TemplateService $templateService */
         
@@ -22,5 +24,4 @@ class PageServiceFactory implements FactoryInterface {
 
         return new PageService($templateService, $apiService);
     }
-
 }

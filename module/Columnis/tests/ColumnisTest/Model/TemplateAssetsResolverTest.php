@@ -6,9 +6,11 @@ use PHPUnit_Framework_TestCase;
 use ColumnisTest\Bootstrap;
 use Columnis\Model\TemplateAssetsResolver;
 
-class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
+class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
+{
 
-    public function testAddToCollections() {
+    public function testAddToCollections()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -27,7 +29,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertContains($assets, $collection);
     }
 
-    public function testMatchTemplateName() {
+    public function testMatchTemplateName()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -37,7 +40,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($templateAssetsResolver->matchTemplateName('path/that/does/not/match/pattern/asset.css'));
     }
 
-    public function testIsTemplateAsset() {
+    public function testIsTemplateAsset()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -46,7 +50,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($templateAssetsResolver->isTemplateAsset('templates/example-template/css/minified.css'));
     }
 
-    public function testIsTemplateAssetWithUnmatchedName() {
+    public function testIsTemplateAssetWithUnmatchedName()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -55,7 +60,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($templateAssetsResolver->isTemplateAsset('path/to/templates/example-template/stylesheets/example.css'));
     }
 
-    public function testIsTemplateAssetWithInvalidTemplate() {
+    public function testIsTemplateAssetWithInvalidTemplate()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -64,7 +70,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($templateAssetsResolver->isTemplateAsset('templates/directory-tests/css/example.css'));
     }
 
-    public function testIsGlobalAsset() {
+    public function testIsGlobalAsset()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -73,7 +80,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($templateAssetsResolver->isGlobalAsset('css/global/minified.css'));
     }
 
-    public function testLoadGlobalCollection() {
+    public function testLoadGlobalCollection()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -91,7 +99,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('css/global/minified.css', $collection);
     }
 
-    public function testLoadTemplateCollection() {
+    public function testLoadTemplateCollection()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -110,7 +119,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('templates/example-template/css/minified.css', $collection);
     }
 
-    public function testLoadTemplateCollectionWithUnmatchedName() {
+    public function testLoadTemplateCollectionWithUnmatchedName()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -123,7 +133,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($collectionExpected, $templateAssetsResolver->getCollections());
     }
 
-    public function testResolveAbsolutePath() {
+    public function testResolveAbsolutePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -138,7 +149,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Assetic\Asset\FileAsset', $asset);
     }
 
-    public function testResolveAbsolutePathWithNotAllowedPath() {
+    public function testResolveAbsolutePathWithNotAllowedPath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -153,7 +165,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($asset);
     }
 
-    public function testResolveWithAbsolutePath() {
+    public function testResolveWithAbsolutePath()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -168,7 +181,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Assetic\Asset\FileAsset', $asset);
     }
 
-    public function testResolve() {
+    public function testResolve()
+    {
         $serviceManager = Bootstrap::getServiceManager();
 
         $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
@@ -199,7 +213,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedSources, $sources);
     }
 
-    public function testTemplateExists() {
+    public function testTemplateExists()
+    {
         /*
           $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
           $templatesPathStack = $this->config['view_manager']['template_path_stack'];
@@ -268,7 +283,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
       }
      */
 
-    public function testGetTemplatePaths() {
+    public function testGetTemplatePaths()
+    {
         /*
           $assetsPaths = $this->config['asset_manager']['resolver_configs']['paths'];
           $templatesPathStack = array(
@@ -293,5 +309,4 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase {
           $this->assertEquals($equals, true);
          */
     }
-
 }

@@ -93,7 +93,7 @@ return array(
         ),
         'resolvers' => array(
             'TemplateAssetsResolver' => 2000,
-        ),
+        )
     ),
     'template_assets_resolver' => array(
         'match_patterns' => array(

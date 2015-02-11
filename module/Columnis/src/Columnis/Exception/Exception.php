@@ -3,5 +3,6 @@
 
 namespace Columnis\Exception;
 
-interface Exception {
+interface Exception
+{
 }

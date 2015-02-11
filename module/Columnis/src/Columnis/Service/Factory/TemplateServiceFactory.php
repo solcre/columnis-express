@@ -14,7 +14,7 @@ class TemplateServiceFactory implements FactoryInterface
      * @return Template
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
-    {   
+    {
         $templatesPathStack = array();
         
         $config      = $serviceLocator->get('Config');

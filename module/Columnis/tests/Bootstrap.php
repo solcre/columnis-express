@@ -13,11 +13,13 @@ chdir(__DIR__);
 /**
  * Test bootstrap, for setting up autoloading
  */
-class Bootstrap {
+class Bootstrap
+{
 
     protected static $serviceManager;
 
-    public static function init() {
+    public static function init()
+    {
         $zf2ModulePaths = array(dirname(dirname(__DIR__)));
         if (($path = static::findParentPath('vendor'))) {
             $zf2ModulePaths[] = $path;
@@ -48,16 +50,19 @@ class Bootstrap {
         static::$serviceManager = $serviceManager;
     }
 
-    public static function chroot() {
+    public static function chroot()
+    {
         $rootPath = dirname(static::findParentPath('module'));
         chdir($rootPath);
     }
 
-    public static function getServiceManager() {
+    public static function getServiceManager()
+    {
         return static::$serviceManager;
     }
 
-    protected static function initAutoloader() {
+    protected static function initAutoloader()
+    {
         $vendorPath = static::findParentPath('vendor');
 
         $zf2Path = getenv('ZF2_PATH');
@@ -94,7 +99,8 @@ class Bootstrap {
         ));
     }
 
-    public static function findParentPath($path) {
+    public static function findParentPath($path)
+    {
         $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
@@ -107,16 +113,17 @@ class Bootstrap {
         return $dir . '/' . $path;
     }
 
-    public static function getTestFilesDir() {
+    public static function getTestFilesDir()
+    {
         return dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
     }
 
-    public static function getRandString() {
+    public static function getRandString()
+    {
         $randNameAr = array_merge(range('a', 'z'), range(0, 9), array('-', '_'));
         shuffle($randNameAr);
         return implode('', array_splice($randNameAr, rand(0, (count($randNameAr) - 1))));
     }
-
 }
 
 Bootstrap::init();
