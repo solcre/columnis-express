@@ -5,5 +5,5 @@ chdir(__DIR__);
 
 include 'Bootstrap.php';
 
-Bootstrap::init();
-Bootstrap::chroot();
+ColumnisTest\Bootstrap::init();
+ColumnisTest\Bootstrap::chroot();
