@@ -11,7 +11,7 @@ class TemplateServiceFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return Template
+     * @return TemplateService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

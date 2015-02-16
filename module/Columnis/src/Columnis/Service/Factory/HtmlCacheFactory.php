@@ -8,7 +8,11 @@ use Columnis\Model\HtmlCache;
  
 class HtmlCacheFactory implements FactoryInterface
 {
- 
+    /**
+     * {@inheritDoc}
+     *
+     * @return HtmlCache
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         // Configure the cache

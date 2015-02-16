@@ -9,7 +9,11 @@ use Zend\Cache\StorageFactory;
 
 class CacheListenerFactory implements FactoryInterface
 {
- 
+    /**
+     * {@inheritDoc}
+     *
+     * @return CacheListener
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         // @@TODO Esto es correcto que vaya aca?

@@ -18,7 +18,7 @@ class ApiServiceFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return Page
+     * @return ApiService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

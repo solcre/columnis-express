@@ -12,7 +12,7 @@ class PageServiceFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return Page
+     * @return PageService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
