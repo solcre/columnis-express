@@ -35,6 +35,10 @@ class TemplateAssetsResolverFactory implements FactoryInterface
         if (isset($config['template_assets_resolver']['global_folder_name'])) {
             $templateAssetsResolver->setGlobalFolderName($config['template_assets_resolver']['global_folder_name']);
         }
+        if (isset($config['template_assets_resolver']['public_path'])) {
+            $templateAssetsResolver->setPublicPath($config['template_assets_resolver']['public_path']);
+        }
+        
         
         return $templateAssetsResolver;
     }

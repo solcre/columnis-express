@@ -6,7 +6,7 @@ use AssetManager\Resolver\CollectionResolver;
 use AssetManager\Resolver\MimeResolverAwareInterface;
 use AssetManager\Service\MimeResolver;
 use Assetic\Asset\FileAsset;
-use Assetic\Filter\CssMinFilter;
+use Assetic\Asset\AssetCollection;
 use Columnis\Utils\Directory as DirectoryUtils;
 use SplFileInfo;
 
@@ -32,25 +32,39 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     protected $mimeResolver;
 
     /**
-     * @var array The templates paths
+     * The templates paths
+     * 
+     * @var array 
      */
     protected $templatesPathStack = array();
 
     /**
-     *
-     * @var string The name of the folder inside the assets paths that will generate the global.css and global.js
+     * The name of the folder inside the assets paths that will generate the global.css and global.js
+     * 
+     * @var string 
      */
     protected $globalFolderName;
 
     /*
-     * @var string Regex Pattern to match (first group) the template name
+     * Regex Pattern to match (first group) the template name
+     * 
+     * @var string 
      */
     protected $patternTemplateName;
 
-    /*
-     * @var string Regex Pattern to match (in any group) if a filename is inside a global assets folder
+    /* 
+     * Regex Pattern to match (in any group) if a filename is inside a global assets folder
+     * 
+     * @var string 
      */
     protected $patternGlobalAssets;
+    
+    /**
+     * Path to the public dir
+     * 
+     * @var string
+     */
+    protected $publicPath;
 
     /**
      * Get the Paths where assets are allowed
@@ -159,7 +173,26 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     public function setPatternGlobalAssets($patternGlobalAssets) {
         $this->patternGlobalAssets = $patternGlobalAssets;
     }
+    
+    /**
+     * Returns the public path
+     * 
+     * @return string
+     */
+    public function getPublicPath() {
+        return $this->publicPath;
+    }
 
+    /**
+     * Sets the public path
+     * 
+     * @param string $publicPath
+     */
+    public function setPublicPath($publicPath) {
+        $this->publicPath = $publicPath;
+    }
+
+        
     /**
      * Constructor
      *
@@ -273,9 +306,6 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
                 $mimeType = $this->getMimeResolver()->getMimeType($filePath);
                 $asset = new FileAsset($filePath);
                 $asset->mimetype = $mimeType;
-                if ($file->getExtension() == 'css') {
-                    $asset->ensureFilter(new CssMinFilter());
-                }
                 return $asset;
             }
         }
@@ -298,7 +328,11 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         elseif ($this->isTemplateAsset($name)) {
             $this->loadTemplateCollection($name);
         }
-        return parent::resolve($name);
+        $resolve = parent::resolve($name);
+        if ($resolve instanceof AssetCollection) {
+            $resolve->setTargetPath($this->getPublicPath() . $resolve->getTargetPath());
+        }
+        return $resolve;
     }
         
     /**
