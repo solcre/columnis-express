@@ -63,9 +63,13 @@ cURL
 ### Libraries Used
 
 Zend Framework 2
+
 Guzzle -> Used to consume the Columnis API
+
 AssetsManager + Assetic + filters -> Used to manage and minify stylesheets and scripts
+
 Smarty -> Used as template engine.
+
 
 Configuration
 ----------------
