@@ -6,13 +6,25 @@
  * @see https://github.com/zendframework/ZFTool
  */
 
-$env = getenv('REDIRECT_APP_ENV') ?: 'production';
+$env = getenv('REDIRECT_APP_ENV') ? : 'production';
 
 return array(
+    'service_manager' => array(
+        'factories' => array(
+            'ModuleManager' => 'ConditionalLoader\Service\Factory\ModuleManagerFactory',
+        ),
+        'invokables' => array(
+            'AssetManagerResolver' => 'ColumnisExpress\ConditionResolver\AssetManagerResolver'
+        )
+    ),
     'modules' => array(
         'GkSmarty',
         'AssetManager',
         'Columnis'
+    ),
+    'modules_condition_resolvers' => array(
+        'AssetManager' => 'AssetManagerResolver',
+        //'GkSmarty' => 'GkSmartyResolver'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
@@ -23,9 +35,9 @@ return array(
             sprintf('config/autoload/{,*.}{global,%s,local}.php', $env)
         ),
         'config_cache_enabled' => ($env == 'production'),
-        'config_cache_key' => 'config-cache', 
+        'config_cache_key' => 'config-cache',
         'module_map_cache_enabled' => ($env == 'production'),
-        'module_map_cache_key' => 'module-map', 
+        'module_map_cache_key' => 'module-map',
         'cache_dir' => 'data/cache/module',
         'check_dependencies' => ($env != 'production'),
     )
