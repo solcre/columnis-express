@@ -6,7 +6,7 @@
  * @see https://github.com/zendframework/ZFTool
  */
 
-$env = getenv('REDIRECT_APP_ENV') ? : 'production';
+$env = getenv('APP_ENV') ? : getenv('REDIRECT_APP_ENV') ? : 'production';
 
 return array(
     'service_manager' => array(
@@ -18,9 +18,21 @@ return array(
         )
     ),
     'modules' => array(
-        'GkSmarty',
+        'ZF\Apigility',
+        'ZF\Apigility\Provider',
         'AssetManager',
-        'Columnis'
+        'ZF\ApiProblem',
+        'ZF\MvcAuth',
+        'ZF\OAuth2',
+        'ZF\Hal',
+        'ZF\ContentNegotiation',
+        'ZF\ContentValidation',
+        'ZF\Rest',
+        'ZF\Rpc',
+        'ZF\Versioning',
+        'ZF\DevelopmentMode',
+        'GkSmarty',
+        'Columnis',
     ),
     'modules_condition_resolvers' => array(
         'AssetManager' => 'AssetManagerResolver',

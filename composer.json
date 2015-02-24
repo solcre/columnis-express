@@ -28,7 +28,7 @@
         "zendframework/zendframework": "2.3.3",
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
-        "rwoverdijk/assetmanager": "dev-master",
+        "zfcampus/zf-apigility": "~1.0",
         "guzzle/guzzle": "dev-master",
         "guzzle/plugin-cache" : "dev-master",
         "cssmin/cssmin": "*",
@@ -38,7 +38,9 @@
     "require-dev": {
         "zendframework/zendframework": "2.*",
         "phpunit/phpunit": "4.*",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "2.*",
+        "zfcampus/zf-apigility-admin": "~1.0",
+        "zfcampus/zf-development-mode": "~2.0"
     },
     "autoload": {
         "psr-0": {
