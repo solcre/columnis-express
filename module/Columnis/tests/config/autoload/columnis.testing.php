@@ -10,16 +10,25 @@
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
-
 return array(
+    'service_manager' => array(
+        'shared' => array(
+            'Columnis\Service\ApiService' => false,
+            'Columnis\Service\PageService' => false,
+            'Columnis\Service\TemplateService' => false,
+            'Columnis\Model\TemplateAssetsResolver' => false
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
-            __DIR__ . '/../../_files/public/templates',
+            __DIR__.'/../../_files/public/templates',
         ),
     ),
-    'api_settings' => array(
-        'client_number' => '001',
-        'api_base_url' => 'http://api.columnis.dev/'
+    'columnis' => array(
+        'api_settings' => array(
+            'client_number' => '001',
+            'api_base_url' => 'http://api.columnis.dev/'
+        )
     ),
     'template_assets_resolver' => array(
         'match_patterns' => array(
@@ -31,12 +40,12 @@ return array(
     'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
-                __DIR__ . '/../../_files/public/css',
-                __DIR__ . '/../../_files/public/js',
+                __DIR__.'/../../_files/public/css',
+                __DIR__.'/../../_files/public/js',
             ),
         ),
         'resolvers' => array(
-            'TemplateAssetsResolver' => 2000,
+            'Columnis\Model\TemplateAssetsResolver' => 2000,
         ),
     ),
 );

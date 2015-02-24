@@ -13,7 +13,7 @@ class Module
         $moduleRouteListener->attach($eventManager);
          
         // get the cache listener service
-        $cacheListener = $e->getApplication()->getServiceManager()->get('CacheListener');
+        $cacheListener = $e->getApplication()->getServiceManager()->get('Columnis\Model\CacheListener');
 
         // attach the listeners to the event manager
         $e->getApplication()->getEventManager()->attach($cacheListener);

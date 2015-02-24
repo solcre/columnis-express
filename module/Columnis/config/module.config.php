@@ -26,12 +26,12 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Zend\Cache' => 'Zend\Cache\Service\StorageCacheFactory',
-            'HtmlCache' => 'Columnis\Service\Factory\HtmlCacheFactory',
-            'CacheListener' => 'Columnis\Service\Factory\CacheListenerFactory',
-            'ApiService' => 'Columnis\Service\Factory\ApiServiceFactory',
-            'PageService' => 'Columnis\Service\Factory\PageServiceFactory',
-            'TemplateService' => 'Columnis\Service\Factory\TemplateServiceFactory',
-            'TemplateAssetsResolver' => 'Columnis\Service\Factory\TemplateAssetsResolverFactory',
+            'Columnis\Model\HtmlCache' => 'Columnis\Service\Factory\HtmlCacheFactory',
+            'Columnis\Model\CacheListener' => 'Columnis\Service\Factory\CacheListenerFactory',
+            'Columnis\Model\TemplateAssetsResolver' => 'Columnis\Service\Factory\TemplateAssetsResolverFactory',
+            'Columnis\Service\ApiService' => 'Columnis\Service\Factory\ApiServiceFactory',
+            'Columnis\Service\PageService' => 'Columnis\Service\Factory\PageServiceFactory',
+            'Columnis\Service\TemplateService' => 'Columnis\Service\Factory\TemplateServiceFactory',
         ),
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -40,12 +40,6 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
-        'shared' => array(
-            'ApiService' => false,
-            'PageService' => false,
-            'TemplateService' => false,
-            'TemplateAssetsResolver' => false
-        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -92,7 +86,7 @@ return array(
             ),
         ),
         'resolvers' => array(
-            'TemplateAssetsResolver' => 2000,
+            'Columnis\Model\TemplateAssetsResolver' => 2000,
         )
     ),
     'template_assets_resolver' => array(
