@@ -23,7 +23,10 @@ class ApiServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Config');
-        $apiConfig = isset($config['api_settings']) ? $config['api_settings'] : array();
+        
+        $columnisConfig = isset($config['columnis']) ? $config['columnis'] : array();
+
+        $apiConfig = isset($columnisConfig['api_settings']) ? $columnisConfig['api_settings'] : array();
         
         if (!isset($apiConfig['client_number'])) {
             throw new ClientNumberNotSetException("There is no client_number set in local.php config file.");

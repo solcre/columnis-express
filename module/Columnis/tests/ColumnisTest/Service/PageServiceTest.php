@@ -34,8 +34,8 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $templateService = $serviceManager->get('TemplateService');
-        $apiService = $serviceManager->get('ApiService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
+        $apiService = $serviceManager->get('Columnis\Service\ApiService');
         
         $pageService = new PageService($templateService, $apiService);
         
@@ -47,7 +47,7 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $pageService = $serviceManager->get('PageService');
+        $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService PageService */
         
         $apiService = $pageService->getApiService();
@@ -68,7 +68,7 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $pageService = $serviceManager->get('PageService');
+        $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService PageService */
         
         $apiService = $pageService->getApiService();
@@ -90,7 +90,7 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $pageService = $serviceManager->get('PageService');
+        $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService \Columnis\Service\PageService */
         
         $apiService = $pageService->getApiService();
@@ -114,7 +114,7 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $pageService = $serviceManager->get('PageService');
+        $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService \Columnis\Service\PageService */
         
         $apiService = $pageService->getApiService();

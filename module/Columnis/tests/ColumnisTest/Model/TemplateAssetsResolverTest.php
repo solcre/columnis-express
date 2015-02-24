@@ -13,7 +13,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $assets = array(
@@ -33,7 +33,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $this->assertEquals(
@@ -47,7 +47,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $this->assertTrue($templateAssetsResolver->isTemplateAsset('templates/example-template/css/minified.css'));
@@ -57,7 +57,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $this->assertFalse(
@@ -69,7 +69,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $this->assertFalse($templateAssetsResolver->isTemplateAsset('templates/directory-tests/css/example.css'));
@@ -79,7 +79,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $this->assertTrue($templateAssetsResolver->isGlobalAsset('css/global/minified.css'));
@@ -89,7 +89,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $expectedAssets = array(
@@ -108,7 +108,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $expectedAssets = array(
@@ -131,7 +131,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $collectionExpected = $templateAssetsResolver->getCollections();
@@ -145,7 +145,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $templateAssetsResolver->setMimeResolver(new \AssetManager\Service\MimeResolver());
@@ -161,7 +161,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $templateAssetsResolver->setMimeResolver(new \AssetManager\Service\MimeResolver());
@@ -177,7 +177,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $templateAssetsResolver->setMimeResolver(new \AssetManager\Service\MimeResolver());
@@ -193,7 +193,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateAssetsResolver = $serviceManager->get('TemplateAssetsResolver');
+        $templateAssetsResolver = $serviceManager->get('Columnis\Model\TemplateAssetsResolver');
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $templateAssetsResolver->setMimeResolver($serviceManager->get('AssetManager\Service\MimeResolver'));

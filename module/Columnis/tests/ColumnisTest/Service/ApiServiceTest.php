@@ -46,7 +46,7 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $apiService = $serviceManager->get('ApiService');
+        $apiService = $serviceManager->get('Columnis\Service\ApiService');
         /* @var $apiService ApiService */
         
         $plugin = new MockPlugin();
@@ -71,7 +71,7 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $apiService = $serviceManager->get('ApiService');
+        $apiService = $serviceManager->get('Columnis\Service\ApiService');
         /* @var $apiService ApiService */
         
         $plugin = new MockPlugin();
@@ -89,7 +89,7 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
         
-        $apiService = $serviceManager->get('ApiService');
+        $apiService = $serviceManager->get('Columnis\Service\ApiService');
         /* @var $apiService ApiService */
         
         $endpoint = "/" . Bootstrap::getRandString();

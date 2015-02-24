@@ -35,7 +35,7 @@ class PageController extends AbstractActionController
         $page->setId($pageId);
 
         $serviceManager = $this->getServiceLocator();
-        $pageService = $serviceManager->get('PageService');
+        $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService \Columnis\Service\PageService */
 
         if (!$pageService->fetch($page)) {

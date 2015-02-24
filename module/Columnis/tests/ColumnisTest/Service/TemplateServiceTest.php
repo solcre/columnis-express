@@ -52,7 +52,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateName = 'example-template';
@@ -67,7 +67,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateName = 'directory-tests';
@@ -82,7 +82,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateService->setTemplatesPathStack(array(
@@ -98,7 +98,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateName = 'example-template';
@@ -113,7 +113,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateName = 'example-template';
@@ -128,7 +128,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $templateName = 'directory-tests';
@@ -143,7 +143,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $data = array(
@@ -165,7 +165,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $data = array(
@@ -181,7 +181,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $data = array(
@@ -195,7 +195,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $path = $this->getExampleTemplatePath();
@@ -220,7 +220,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     {
         $serviceManager = Bootstrap::getServiceManager();
 
-        $templateService = $serviceManager->get('TemplateService');
+        $templateService = $serviceManager->get('Columnis\Service\TemplateService');
         /* @var $templateService TemplateService */
 
         $path = 'unexistant/path/to/templates' . 'example-template';
