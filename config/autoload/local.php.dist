@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Local Configuration Override
  *
@@ -12,8 +13,30 @@
  */
 
 return array(
-    'api_settings' => array(
-        'client_number' => '001',
-        'api_base_url' => 'http://api.columnis.com/'
+    'columnis' => array(
+        'api_settings' => array(
+            'client_number' => '001',
+            'api_base_url' => 'http://api.columnis.com/'
+        )
+    ),
+    'asset_manager' => array(
+        'filters' => array(
+            'js' => array(
+                array(
+                    'filter' => 'JSMin',
+                ),
+            ),
+            'css' => array(
+                array(
+                    'filter' => 'CssMin',
+                ),
+                array(
+                    'filter' => 'CssRewrite',
+                ),
+            ),
+        ),
+    ),
+    'template_assets_resolver' => array(
+        'public_path' => getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR
     )
 );
