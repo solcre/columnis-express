@@ -38,5 +38,15 @@ return array(
     ),
     'template_assets_resolver' => array(
         'public_path' => getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR
-    )
+    ),
+    'zf-oauth2' => array(
+        'allow_implicit' => true,
+        'storage' => 'ZF\\OAuth2\\Adapter\\PdoAdapter',
+        'db' => array(
+            'dsn_type' => 'PDO',
+            'dsn' => 'mysql:dbname=express_api;host=localhost',
+            'username' => 'root',
+            'password' => '123',
+        ),
+    ),
 );

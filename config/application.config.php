@@ -33,6 +33,7 @@ return array(
         'ZF\DevelopmentMode',
         'GkSmarty',
         'Columnis',
+        'ExpressApi'
     ),
     'modules_condition_resolvers' => array(
         'AssetManager' => 'AssetManagerResolver',
