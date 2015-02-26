@@ -18,8 +18,8 @@ use ColumnisTest\Bootstrap;
 use Columnis\Service\ApiService;
 use Columnis\Model\ApiResponse;
 use PHPUnit_Framework_TestCase;
-use Guzzle\Plugin\Mock\MockPlugin;
-use Guzzle\Http\Client as GuzzleClient;
+use GuzzleHttp\Subscriber\Mock;
+use GuzzleHttp\Client as GuzzleClient;
 
 class ApiServiceTest extends PHPUnit_Framework_TestCase
 {
@@ -49,11 +49,11 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase
         $apiService = $serviceManager->get('Columnis\Service\ApiService');
         /* @var $apiService ApiService */
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate.mock');
         
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
 
         $endpoint = '/pages/1/generate';
         $uri = $apiService->getUri($endpoint);
@@ -74,11 +74,11 @@ class ApiServiceTest extends PHPUnit_Framework_TestCase
         $apiService = $serviceManager->get('Columnis\Service\ApiService');
         /* @var $apiService ApiService */
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'forbidden.mock');
         
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
 
         $endpoint = '/non/existant/endpoint';
         $uri = $apiService->getUri($endpoint);

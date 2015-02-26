@@ -17,7 +17,7 @@ namespace ColumnisTest\Service;
 use ColumnisTest\Bootstrap;
 use Columnis\Service\PageService;
 use Columnis\Model\Page;
-use Guzzle\Plugin\Mock\MockPlugin;
+use GuzzleHttp\Subscriber\Mock;
 use PHPUnit_Framework_TestCase;
 
 class PageServiceTest extends PHPUnit_Framework_TestCase
@@ -52,10 +52,10 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         
         $apiService = $pageService->getApiService();
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate.mock');
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
         
         $page = new Page();
         $page->setId(1);
@@ -73,10 +73,10 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         
         $apiService = $pageService->getApiService();
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'forbidden.mock');
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
         
         $page = new Page();
         $page->setId(1);
@@ -95,12 +95,12 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         
         $apiService = $pageService->getApiService();
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(
             Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-bad-template.mock'
         );
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
         
         $page = new Page();
         $page->setId(1);
@@ -119,12 +119,12 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         
         $apiService = $pageService->getApiService();
         
-        $plugin = new MockPlugin();
+        $plugin = new Mock();
         $plugin->addResponse(
             Bootstrap::getTestFilesDir().'api-responses' . DIRECTORY_SEPARATOR . 'generate-invalid.mock'
         );
         $mockedClient = $apiService->getHttpClient();
-        $mockedClient->addSubscriber($plugin);
+        $mockedClient->getEmitter()->attach($plugin);
         
         $page = new Page();
         $page->setId(1);
