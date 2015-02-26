@@ -42,6 +42,9 @@ class ZfCacheAdapter implements CacheStorageInterface {
         return $this->storageCache->removeItem($this->buildKey($url));
     }
 
+    /**
+     * @param string $url
+     */
     private function buildKey($url) {
         return md5($url);
     }
