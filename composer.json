@@ -29,8 +29,8 @@
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
         "zfcampus/zf-apigility": "~1.0",
-        "guzzle/guzzle": "dev-master",
-        "guzzle/plugin-cache" : "dev-master",
+        "guzzlehttp/guzzle": "~5.0",
+        "guzzlehttp/cache-subscriber": "0.2.*@dev",
         "cssmin/cssmin": "*",
         "mrclay/minify": "*",
         "solcre/zf2-conditional-loader": "dev-master"        

@@ -14,7 +14,7 @@ class PageController extends AbstractActionController
     {
         $pageId = $this->params()->fromRoute('pageId');
         $page = $this->fetchPage($pageId);
-
+        
         if ($page instanceof Page) {
             $viewVariables = $page->getData();
             $template = $page->getTemplate();

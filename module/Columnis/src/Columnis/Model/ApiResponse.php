@@ -13,7 +13,7 @@
  */
 namespace Columnis\Model;
 
-use Guzzle\Http\Message\Response as GuzzleResponse;
+use GuzzleHttp\Message\Response as GuzzleResponse;
 
 class ApiResponse
 {
