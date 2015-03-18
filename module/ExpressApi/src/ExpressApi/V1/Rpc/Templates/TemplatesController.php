@@ -15,10 +15,12 @@ class TemplatesController extends AbstractActionController {
         );
         if(is_dir($templatesPath)) {
             $dirContent = scandir($templatesPath);
-            foreach($dirContent as $content) {
-                $contentFile = $templatesPath.'/'.$content;
+            foreach($dirContent as $templateDir) {
+                $contentFile = $templatesPath.'/'.$templateDir;
                 if($this->validTemplate($contentFile)) {
                     $templateInfo = json_decode(file_get_contents($contentFile.'/'.self::$templateInfoFile));
+                    $templateInfo->id = $templateDir;
+                    $templateInfo->name = ucfirst(str_replace('_', ' ', $templateDir));
                     $templateData['templates'][] = $templateInfo;
                 }
             }
