@@ -37,7 +37,7 @@ class DirectoryTest extends PHPUnit_Framework_TestCase
     {
         $folder = Bootstrap::getRandString();
         $subfolder = Bootstrap::getRandString();
-        $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $folder;
+        $path = __DIR__ . DIRECTORY_SEPARATOR . $folder;
         $subpath = $path . DIRECTORY_SEPARATOR . $subfolder;
 
         $create = mkdir($path);

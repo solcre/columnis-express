@@ -62,7 +62,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
         $template->setName($name);
 
         do {
-            $path = dirname(__FILE__).DIRECTORY_SEPARATOR.Bootstrap::getRandString();
+            $path = __DIR__ . DIRECTORY_SEPARATOR.Bootstrap::getRandString();
         } while (is_dir($path));
 
         $template->setPath($path);
@@ -151,7 +151,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
         $template->setName($name);
 
         do {
-            $path = dirname(__FILE__).DIRECTORY_SEPARATOR.\ColumnisTest\Bootstrap::getRandString();
+            $path = __DIR__ . DIRECTORY_SEPARATOR.\ColumnisTest\Bootstrap::getRandString();
         } while (is_dir($path));
 
         $property = new \ReflectionProperty($template, 'path');

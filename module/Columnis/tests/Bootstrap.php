@@ -112,7 +112,7 @@ class Bootstrap
 
     public static function getTestFilesDir()
     {
-        return dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
+        return __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
     }
 
     public static function getRandString()

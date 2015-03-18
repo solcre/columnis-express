@@ -8,7 +8,7 @@
 
 $env = getenv('APP_ENV') ? : getenv('REDIRECT_APP_ENV') ? : 'production';
 
-return array(
+$conf = array(
     'service_manager' => array(
         'factories' => array(
             'ModuleManager' => 'ConditionalLoader\Service\Factory\ModuleManagerFactory',
@@ -20,7 +20,6 @@ return array(
     'modules' => array(
         'ZF\Apigility',
         'ZF\Apigility\Provider',
-        'AssetManager',
         'ZF\ApiProblem',
         'ZF\MvcAuth',
         'ZF\OAuth2',
@@ -30,7 +29,7 @@ return array(
         'ZF\Rest',
         'ZF\Rpc',
         'ZF\Versioning',
-        'ZF\DevelopmentMode',
+        'AssetManager',
         'GkSmarty',
         'Columnis',
         'ExpressApi'
@@ -55,3 +54,9 @@ return array(
         'check_dependencies' => ($env != 'production'),
     )
 );
+
+if ($env != 'production') {
+    $conf['modules'][] = 'ZF\DevelopmentMode';
+}
+
+return $conf;
