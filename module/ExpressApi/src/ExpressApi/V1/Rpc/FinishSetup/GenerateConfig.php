@@ -1,6 +1,6 @@
 <?php
 
-namespace ExpressApi\V1\Rpc\GenerateConfig;
+namespace ExpressApi\V1\Rpc\FinishSetup;
 
 class GenerateConfig {
 

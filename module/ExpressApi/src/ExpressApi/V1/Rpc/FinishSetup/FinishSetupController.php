@@ -1,20 +1,21 @@
 <?php
 
-namespace ExpressApi\V1\Rpc\GenerateConfig;
+namespace ExpressApi\V1\Rpc\FinishSetup;
 
 use Zend\Mvc\Controller\AbstractActionController;
 
-class GenerateConfigController extends AbstractActionController {
+class FinishSetupController extends AbstractActionController {
 
     const CLIENT_ID = 'express';
 
-    public function generateConfigAction() {
+    public function finishSetupAction() {
         $params = $this->bodyParams();
         $configDir = $this->getConfigurationPath();
         $configFile = $configDir.'local.php';
         $response = array(
             'success' => false
         );
+        $user = $this->getParam($params, 'user');
         $dbName = $this->getParam($params, 'dbname');
         $dbUser = $this->getParam($params, 'dbuser');
         $dbPassword = $this->getParam($params, 'dbpassword');
@@ -27,11 +28,14 @@ class GenerateConfigController extends AbstractActionController {
                 '<%api_base_url%>' => $apiBaseUrl,
                 '<%api_version%>' => $apiVersion,
                 '<%db_name%>' => $dbName,
+                '<%user%>' => $user,
                 '<%db_user%>' => $dbUser,
                 '<%db_password%>' => $dbPassword
             );
             $generateConfig = new GenerateConfig($configFile, $replaces);
-            $response['success'] = $generateConfig->generate();
+            $successGenerateConfig = $generateConfig->generate();
+            $successGenerateSymlinks = $this->generateSymlinks($user);
+            $response['success'] = $successGenerateConfig && $successGenerateSymlinks;
         }
         return $response;
     }
@@ -45,5 +49,24 @@ class GenerateConfigController extends AbstractActionController {
             return $params[$key];
         }
         return '';
+    }
+
+    private function generateSymlinks($user) {
+        $current = sprintf('/home2/%s/columnisexpress/current', $user);
+        $currentReal = readlink($current);
+        $target = str_replace('/home2/installer/cpanel3-skel/', '/home2/'.$user.'/', $currentReal);
+        $public = sprintf('/home2/%s/public_html', $user);
+        $success = false;
+        if(file_exists($current)) {
+            if(is_link($current)) {
+                if(unlink($current)) {
+                    $success = symlink($target, $current);
+                }
+            }
+        }
+        if($success) {
+            symlink($current.'/public', $public);
+        }
+        return $success;
     }
 }

@@ -39,8 +39,8 @@ return array(
         'storage' => 'ZF\\OAuth2\\Adapter\\PdoAdapter',
         'db' => array(
             'dsn_type' => 'PDO',
-            'dsn' => 'mysql:dbname=<%db_name%>;host=localhost',
-            'username' => '<%db_user%>',
+            'dsn' => 'mysql:dbname=<%user%>_<%db_name%>;host=localhost',
+            'username' => '<%user%>_<%db_user%>',
             'password' => '<%db_password%>',
         ),
     ),
