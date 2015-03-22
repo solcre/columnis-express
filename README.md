@@ -75,3 +75,6 @@ Apigility -> Used to retrieve templates and invalidate cache.
 
 Configuration
 ----------------
+
+1- Edit config/autoload/local.php.dist and save as local.php
+2- Create public folder based on public.dist folder
