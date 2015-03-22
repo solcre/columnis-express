@@ -71,6 +71,7 @@ AssetsManager + Assetic + filters -> Used to manage and minify stylesheets and s
 
 Smarty -> Used as template engine.
 
+Apigility -> Used to retrieve templates and invalidate cache.
 
 Configuration
 ----------------
