@@ -65,7 +65,7 @@ cURL
 
 Zend Framework 2
 
-Guzzle -> Used to consume the Columnis API
+Guzzle 5 -> Used to consume the Columnis API
 
 AssetsManager + Assetic + filters -> Used to manage and minify stylesheets and scripts
 
