@@ -34,8 +34,7 @@ class FinishSetupController extends AbstractActionController {
             );
             $generateConfig = new GenerateConfig($configFile, $replaces);
             $successGenerateConfig = $generateConfig->generate();
-            $successGenerateSymlinks = $this->generateSymlinks($user);
-            $response['success'] = $successGenerateConfig && $successGenerateSymlinks;
+            $response['success'] = $successGenerateConfig;
         }
         return $response;
     }
@@ -49,24 +48,5 @@ class FinishSetupController extends AbstractActionController {
             return $params[$key];
         }
         return '';
-    }
-
-    private function generateSymlinks($user) {
-        $current = sprintf('/home2/%s/columnisexpress/current', $user);
-        $currentReal = readlink($current);
-        $target = str_replace('/home2/installer/cpanel3-skel/', '/home2/'.$user.'/', $currentReal);
-        $public = sprintf('/home2/%s/public_html', $user);
-        $success = false;
-        if(file_exists($current)) {
-            if(is_link($current)) {
-                if(unlink($current)) {
-                    $success = symlink($target, $current);
-                }
-            }
-        }
-        if($success) {
-            symlink($current.'/public', $public);
-        }
-        return $success;
     }
 }
