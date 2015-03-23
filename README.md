@@ -65,12 +65,16 @@ cURL
 
 Zend Framework 2
 
-Guzzle -> Used to consume the Columnis API
+Guzzle 5 -> Used to consume the Columnis API
 
 AssetsManager + Assetic + filters -> Used to manage and minify stylesheets and scripts
 
 Smarty -> Used as template engine.
 
+Apigility -> Used to retrieve templates and invalidate cache.
 
 Configuration
 ----------------
+
+1- Edit config/autoload/local.php.dist and save as local.php
+2- Create public folder based on public.dist folder
