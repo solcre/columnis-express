@@ -73,22 +73,27 @@ class ApiService {
      * Performs a request to Columnis api
      *
      * @param string $uri
+     * @param Array $queryParams
+     * @param Array $params
      * @return ApiResponse
      * @trows ApiRequestException
      */
-    public function request($uri, $method = 'GET') {
+    public function request($uri, $method = 'GET', Array $queryParams = null, Array $params = null) {
         $options = array(
             'headers' => array(
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-        ));
+            ),
+            'query' => $queryParams,
+            'body' => $params
+        );
         try {
             $httpClient = $this->getHttpClient();
             $request = $httpClient->createRequest($method, $uri, $options);
             $response = $httpClient->send($request);
             $apiResponse = new ApiResponse($response);
         } catch(\GuzzleHttp\Exception\RequestException $e) {
-            
+
             throw new ApiRequestException('Api Request failed: '.$e->getMessage(), 0, $e);
         }
         return $apiResponse;

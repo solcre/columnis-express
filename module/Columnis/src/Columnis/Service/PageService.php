@@ -82,15 +82,16 @@ class PageService
      * Fetchs the page content from Columnis Api
      *
      * @param Page $page
+     * @param Array $params
      * @return boolean
      */
-    public function fetch(Page $page)
+    public function fetch(Page $page, Array $params = null)
     {
         $id = $page->getId();
         $endpoint = '/pages/' . $id . '/generate';
         $uri = $this->getApiService()->getUri($endpoint);
         try {
-            $response = $this->getApiService()->request($uri);
+            $response = $this->getApiService()->request($uri, 'GET', $params);
             /* @var $response ApiResponse */
             $data = $response->getData();
             $page->setData($data);

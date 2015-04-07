@@ -13,7 +13,8 @@ class PageController extends AbstractActionController
     public function indexAction()
     {
         $pageId = $this->params()->fromRoute('pageId');
-        $page = $this->fetchPage($pageId);
+        $queryParams = $this->params()->fromQuery();
+        $page = $this->fetchPage($pageId, $queryParams);
         
         if ($page instanceof Page) {
             $viewVariables = $page->getData();
@@ -29,7 +30,7 @@ class PageController extends AbstractActionController
         $this->getResponse()->setStatusCode(404);
     }
 
-    protected function fetchPage($pageId)
+    protected function fetchPage($pageId, Array $params = null)
     {
         $page = new Page();
         $page->setId($pageId);
@@ -38,11 +39,11 @@ class PageController extends AbstractActionController
         $pageService = $serviceManager->get('Columnis\Service\PageService');
         /* @var $pageService \Columnis\Service\PageService */
 
-        if (!$pageService->fetch($page)) {
+        if (!$pageService->fetch($page, $params)) {
             return null;
         }
         try {
-            $pageService->fetch($page);
+            $pageService->fetch($page, $params);
         } catch (PageWithoutTemplateException $e) {
         }
         return $page;
