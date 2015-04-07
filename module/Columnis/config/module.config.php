@@ -6,7 +6,7 @@ return array(
             'columnis' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/:lang/:seo{-}-:pageId',
+                    'route' => '[/:lang]/:seo{-}-:pageId',
                     'constraints' => array(
                         'lang' => 'espanol|english|portugues',
                         'seo' => '[a-zA-Z0-9-_]+',
