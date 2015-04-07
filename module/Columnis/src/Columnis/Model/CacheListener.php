@@ -41,7 +41,9 @@ class CacheListener extends AbstractListenerAggregate
             $cacheKey = $this->genCacheName($match);
 
             // get the cache page for this route
-            $data = $this->cacheService->getItem($cacheKey);
+            if(!empty($cacheKey)){
+                $data = $this->cacheService->getItem($cacheKey);
+            }
 
             // ensure we have found something valid
             if ($data !== null) {
@@ -69,7 +71,9 @@ class CacheListener extends AbstractListenerAggregate
 
             $this->setCacheDir($match);
             $cacheKey = $this->genCacheName($match);
-            $this->cacheService->setItem($cacheKey, $data);
+            if(!empty($cacheKey)){
+                $this->cacheService->setItem($cacheKey, $data);
+            }
         }
     }
 

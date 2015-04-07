@@ -21,6 +21,18 @@ return array(
                 ),
                 'may_terminate' => true,
             ),
+            'columnisDefault' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Columnis\Controller',
+                        'controller' => 'Page',
+                        'action' => 'index',
+                        'cache' => true
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(

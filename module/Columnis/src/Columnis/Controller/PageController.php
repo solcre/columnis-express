@@ -12,7 +12,7 @@ class PageController extends AbstractActionController
 
     public function indexAction()
     {
-        $pageId = $this->params()->fromRoute('pageId');
+        $pageId = (int)$this->params()->fromRoute('pageId');
         $queryParams = $this->params()->fromQuery();
         $page = $this->fetchPage($pageId, $queryParams);
         
