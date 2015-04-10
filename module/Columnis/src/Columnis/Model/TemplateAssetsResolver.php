@@ -59,7 +59,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      * @var string
      */
     protected $patternGlobalAssets;
-    
+
     /**
      * Path to the public dir
      *
@@ -186,7 +186,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
     {
         $this->patternGlobalAssets = $patternGlobalAssets;
     }
-    
+
     /**
      * Returns the public path
      *
@@ -207,7 +207,7 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         $this->publicPath = $publicPath;
     }
 
-        
+
     /**
      * Constructor
      *
@@ -355,10 +355,13 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
         $resolve = parent::resolve($name);
         if ($resolve instanceof AssetCollection) {
             $resolve->setTargetPath($this->getPublicPath() . $resolve->getTargetPath());
+            if (empty($resolve->mimetype)) {
+                $resolve->mimetype = $this->getMimeResolver()->getMimeType($name);
+            }
         }
         return $resolve;
     }
-        
+
     /**
      * Return the FIRST paths that contain a template with the specified name
      * (There should not be more than one posible template path)
