@@ -13,7 +13,12 @@ class PageController extends AbstractActionController
     public function indexAction()
     {
         $pageId = (int)$this->params()->fromRoute('pageId');
+        $lang = $this->params()->fromRoute('lang');
         $queryParams = $this->params()->fromQuery();
+        if(!is_array($queryParams)){
+            $queryParams = array();
+        }
+        $queryParams['lang'] = $lang;
         $page = $this->fetchPage($pageId, $queryParams);
         
         if ($page instanceof Page) {
