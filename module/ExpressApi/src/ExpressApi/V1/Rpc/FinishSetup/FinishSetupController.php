@@ -11,7 +11,7 @@ class FinishSetupController extends AbstractActionController {
     public function finishSetupAction() {
         $params = $this->bodyParams();
         $configDir = $this->getConfigurationPath();
-        $configFile = $configDir.'local.php';
+        $configFile = $configDir.'local.production.php';
         $response = array(
             'success' => false
         );
