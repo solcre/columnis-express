@@ -6,6 +6,8 @@ return array(
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => 'ExpressApi\\V1\\Rpc\\InvalidatePage\\InvalidatePageControllerFactory',
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => 'ExpressApi\\V1\\Rpc\\FinishSetup\\FinishSetupControllerFactory',
             'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'ExpressApi\\V1\\Rpc\\SetMode\\SetModeControllerFactory',
+            'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => 'ExpressApi\\V1\\Rpc\\GetMode\\GetModeControllerFactory',
+            'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => 'ExpressApi\\V1\\Rpc\\ClearCache\\ClearCacheControllerFactory',
         ),
     ),
     'router' => array(
@@ -50,6 +52,26 @@ return array(
                     ),
                 ),
             ),
+            'express-api.rpc.get-mode' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/express_api/modes',
+                    'defaults' => array(
+                        'controller' => 'ExpressApi\\V1\\Rpc\\GetMode\\Controller',
+                        'action' => 'getMode',
+                    ),
+                ),
+            ),
+            'express-api.rpc.clear-cache' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/express_api/cache/clear',
+                    'defaults' => array(
+                        'controller' => 'ExpressApi\\V1\\Rpc\\ClearCache\\Controller',
+                        'action' => 'clearCache',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -58,6 +80,8 @@ return array(
             1 => 'express.rpc.invalidate-page',
             2 => 'express-api.rpc.finish-setup',
             3 => 'express-api.rpc.set-mode',
+            4 => 'express-api.rpc.get-mode',
+            5 => 'express-api.rpc.clear-cache',
         ),
     ),
     'zf-rpc' => array(
@@ -89,6 +113,20 @@ return array(
             ),
             'route_name' => 'express-api.rpc.set-mode',
         ),
+        'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => array(
+            'service_name' => 'GetMode',
+            'http_methods' => array(
+                0 => 'GET',
+            ),
+            'route_name' => 'express-api.rpc.get-mode',
+        ),
+        'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => array(
+            'service_name' => 'ClearCache',
+            'http_methods' => array(
+                0 => 'POST',
+            ),
+            'route_name' => 'express-api.rpc.clear-cache',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
@@ -96,6 +134,8 @@ return array(
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'Json',
+            'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => 'Json',
+            'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => array(
@@ -118,6 +158,16 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
+            'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
+            'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => array(
@@ -133,6 +183,14 @@ return array(
                 1 => 'application/json',
             ),
             'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+            ),
+            'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+            ),
+            'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => array(
                 0 => 'application/vnd.express-api.v1+json',
                 1 => 'application/json',
             ),
@@ -184,11 +242,36 @@ return array(
                     ),
                 ),
             ),
+            'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => array(
+                'actions' => array(
+                    'getMode' => array(
+                        'GET' => false,
+                        'POST' => false,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+            'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => array(
+                'actions' => array(
+                    'clearCache' => array(
+                        'GET' => false,
+                        'POST' => true,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-content-validation' => array(
         'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => array(
             'input_filter' => 'ExpressApi\\V1\\Rpc\\FinishSetup\\Validator',
+        ),
+        'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => array(
+            'input_filter' => 'ExpressApi\\V1\\Rpc\\ClearCache\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -241,6 +324,17 @@ return array(
                 'filters' => array(),
                 'validators' => array(),
                 'description' => 'Cpanel user',
+            ),
+        ),
+        'ExpressApi\\V1\\Rpc\\ClearCache\\Validator' => array(
+            0 => array(
+                'name' => 'dir',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Name of cache to clear, separate with (,).',
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
         ),
     ),
