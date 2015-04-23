@@ -17,10 +17,9 @@ class ClearCacheController extends AbstractActionController {
         $params = $this->bodyParams();
         $dirs = array_key_exists('dir', $params) ? explode(';', $params['dir']) : array();
         $result = array(
-            'success' => false
+            'success' => true
         );
         if(is_array($dirs) && count($dirs)) {
-            $result['success'] = true;
             foreach($dirs as $dir) {
                 if(in_array($dir, $this->dirsWhiteList)) {
                     $result['success'] = $this->clearCacheDir($dir) && $result['success'];
