@@ -5,6 +5,7 @@ return array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => 'ExpressApi\\V1\\Rpc\\Templates\\TemplatesControllerFactory',
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => 'ExpressApi\\V1\\Rpc\\InvalidatePage\\InvalidatePageControllerFactory',
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => 'ExpressApi\\V1\\Rpc\\FinishSetup\\FinishSetupControllerFactory',
+            'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'ExpressApi\\V1\\Rpc\\SetMode\\SetModeControllerFactory',
         ),
     ),
     'router' => array(
@@ -39,6 +40,16 @@ return array(
                     ),
                 ),
             ),
+            'express-api.rpc.set-mode' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/express_api/modes/:mode_id/set',
+                    'defaults' => array(
+                        'controller' => 'ExpressApi\\V1\\Rpc\\SetMode\\Controller',
+                        'action' => 'setMode',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
@@ -46,6 +57,7 @@ return array(
             0 => 'express.rpc.templates',
             1 => 'express.rpc.invalidate-page',
             2 => 'express-api.rpc.finish-setup',
+            3 => 'express-api.rpc.set-mode',
         ),
     ),
     'zf-rpc' => array(
@@ -70,12 +82,20 @@ return array(
             ),
             'route_name' => 'express-api.rpc.finish-setup',
         ),
+        'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => array(
+            'service_name' => 'SetMode',
+            'http_methods' => array(
+                0 => 'POST',
+            ),
+            'route_name' => 'express-api.rpc.set-mode',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => 'Json',
+            'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => array(
@@ -93,6 +113,11 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
+            'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => array(
@@ -104,6 +129,10 @@ return array(
                 1 => 'application/json',
             ),
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => array(
+                0 => 'application/vnd.express-api.v1+json',
+                1 => 'application/json',
+            ),
+            'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => array(
                 0 => 'application/vnd.express-api.v1+json',
                 1 => 'application/json',
             ),
@@ -125,6 +154,28 @@ return array(
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => array(
                 'actions' => array(
                     'invalidatePage' => array(
+                        'GET' => false,
+                        'POST' => true,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+            'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => array(
+                'actions' => array(
+                    'finishSetup' => array(
+                        'GET' => false,
+                        'POST' => false,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+            'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => array(
+                'actions' => array(
+                    'setMode' => array(
                         'GET' => false,
                         'POST' => true,
                         'PATCH' => false,
