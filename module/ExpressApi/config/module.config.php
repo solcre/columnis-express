@@ -1,5 +1,11 @@
 <?php
+
 return array(
+    'service_manager' => array(
+        'factories' => array(
+            'ColumnisExpress\\Adapters\\ApiAdapter' => 'ColumnisExpress\\Adapters\\ApiAdapterFactory',
+        ),
+    ),
     'controllers' => array(
         'factories' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => 'ExpressApi\\V1\\Rpc\\Templates\\TemplatesControllerFactory',
