@@ -29,6 +29,7 @@ $conf = array(
         'ZF\Rest',
         'ZF\Rpc',
         'ZF\Versioning',
+        'ZfrCors',
         'AssetManager',
         'GkSmarty',
         'Columnis',

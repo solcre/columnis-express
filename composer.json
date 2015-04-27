@@ -33,7 +33,8 @@
         "guzzlehttp/cache-subscriber": "0.2.*@dev",
         "cssmin/cssmin": "*",
         "mrclay/minify": "*",
-        "solcre/zf2-conditional-loader": "dev-master"        
+        "solcre/zf2-conditional-loader": "dev-master",
+	"zfr/zfr-cors": "1.*"        
     },
     "require-dev": {
         "zendframework/zendframework": "2.*",
