@@ -3,6 +3,7 @@
 namespace ColumnisTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use ColumnisTest\Bootstrap;
 
 class PageControllerTest extends AbstractHttpControllerTestCase
 {
@@ -11,9 +12,7 @@ class PageControllerTest extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
-        $this->setApplicationConfig(
-            include 'config/application.config.php'
-        );
+        $this->setApplicationConfig(Bootstrap::getConfig());
         parent::setUp();
     }
 

@@ -93,8 +93,8 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
         /* @var $templateAssetsResolver TemplateAssetsResolver */
 
         $expectedAssets = array(
-            realpath(Bootstrap::getTestFilesDir() . 'public/css/global/global1.css'),
-            realpath(Bootstrap::getTestFilesDir() . 'public/css/global/global2.css')
+            realpath(Bootstrap::getTestFilesDir() . 'public.dist/css/global/global1.css'),
+            realpath(Bootstrap::getTestFilesDir() . 'public.dist/css/global/global2.css')
         );
 
         $templateAssetsResolver->loadGlobalCollection('css/global/minified.css');
@@ -115,9 +115,9 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
             // Defined Assets
             'jquery-ui.css',
             // Search assets
-            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css'),
+            realpath(Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example.css'),
             // Search assets
-            realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example2.css')
+            realpath(Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example2.css')
         );
 
         $templateAssetsResolver->loadTemplateCollection('templates/example-template/css/minified.css');
@@ -150,7 +150,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
 
         $templateAssetsResolver->setMimeResolver(new \AssetManager\Service\MimeResolver());
 
-        $path = realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css');
+        $path = realpath(Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example.css');
 
         $asset = $templateAssetsResolver->resolveAbsolutePath($path);
 
@@ -182,7 +182,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
 
         $templateAssetsResolver->setMimeResolver(new \AssetManager\Service\MimeResolver());
 
-        $path = realpath(Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css');
+        $path = realpath(Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example.css');
 
         $asset = $templateAssetsResolver->resolve($path);
 
@@ -213,9 +213,9 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
         }
 
         $expectedSources = array(
-            Bootstrap::getTestFilesDir() . 'public/css/jquery-ui.css',
-            Bootstrap::getTestFilesDir() . 'public/templates/example-template/css/example.css',
-            Bootstrap::getTestFilesDir() .  'public/templates/example-template/css/example2.css'
+            Bootstrap::getTestFilesDir() . 'public.dist/css/jquery-ui.css',
+            Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example.css',
+            Bootstrap::getTestFilesDir() .  'public.dist/templates/example-template/css/example2.css'
         );
         
         $this->assertEquals($expectedSources, $sources);
