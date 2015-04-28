@@ -14,9 +14,7 @@ class Bootstrap
 {
 
     protected static $serviceManager;
-
-    public static function init()
-    {
+    public static function getConfig() {
         $zf2ModulePaths = array(dirname(dirname(__DIR__)));
         if (($path = static::findParentPath('vendor'))) {
             $zf2ModulePaths[] = $path;
@@ -25,14 +23,11 @@ class Bootstrap
             $zf2ModulePaths[] = $path;
         }
 
-        static::initAutoloader();
-
-        // use ModuleManager to load this module and it's dependenciesç
-        $config = array(
+        return array(
             'module_listener_options' => array(
                 'module_paths' => $zf2ModulePaths,
                 'config_glob_paths' => array(
-                    'config/autoload/{,*.}{global,testing}.php',
+                    __DIR__ . '/config/autoload/{,*.}{global,testing}.php',
                 ),
             ),
             'modules' => array(
@@ -40,6 +35,14 @@ class Bootstrap
                 'Columnis'
             ),
         );
+
+    }
+    public static function init()
+    {
+        static::initAutoloader();
+
+        // use ModuleManager to load this module and it's dependenciesç
+        $config = static::getConfig();
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);

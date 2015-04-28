@@ -21,7 +21,7 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            __DIR__.'/../../_files/public/templates',
+            __DIR__.'/../../_files/public.dist/templates',
         ),
     ),
     'columnis' => array(
@@ -40,12 +40,18 @@ return array(
     'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
-                __DIR__.'/../../_files/public/css',
-                __DIR__.'/../../_files/public/js',
+                __DIR__.'/../../_files/public.dist/css',
+                __DIR__.'/../../_files/public.dist/js',
             ),
         ),
         'resolvers' => array(
             'Columnis\Model\TemplateAssetsResolver' => 2000,
         ),
+    ),
+    'cache' => array(
+        'adapter' => 'htmlcache',
+        'options' => array(
+            'cache_dir' => 'public.dist/pages'
+        )
     ),
 );

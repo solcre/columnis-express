@@ -30,7 +30,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
     {
         return Bootstrap::getTestFilesDir()
             . DIRECTORY_SEPARATOR
-            .'public'
+            .'public.dist'
             .DIRECTORY_SEPARATOR
             .'templates'
             .DIRECTORY_SEPARATOR

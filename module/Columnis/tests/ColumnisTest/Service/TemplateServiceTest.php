@@ -25,7 +25,7 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
     private function getExampleTemplatePath()
     {
         return Bootstrap::getTestFilesDir()
-            . 'public'
+            . 'public.dist'
             . DIRECTORY_SEPARATOR
             . 'templates'
             . DIRECTORY_SEPARATOR
@@ -59,7 +59,6 @@ class TemplateServiceTest extends PHPUnit_Framework_TestCase
 
         // Existant path
         $path = $this->getExampleTemplatePath();
-
         $this->assertEquals(realpath($path), realpath($templateService->getExistantTemplatePath($templateName)));
     }
 
