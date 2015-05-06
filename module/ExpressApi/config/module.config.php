@@ -14,6 +14,7 @@ return array(
             'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'ExpressApi\\V1\\Rpc\\SetMode\\SetModeControllerFactory',
             'ExpressApi\\V1\\Rpc\\GetMode\\Controller' => 'ExpressApi\\V1\\Rpc\\GetMode\\GetModeControllerFactory',
             'ExpressApi\\V1\\Rpc\\ClearCache\\Controller' => 'ExpressApi\\V1\\Rpc\\ClearCache\\ClearCacheControllerFactory',
+            'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => 'ExpressApi\\V1\\Rpc\\Statistics\\StatisticsControllerFactory',
         ),
     ),
     'router' => array(
@@ -25,6 +26,16 @@ return array(
                     'defaults' => array(
                         'controller' => 'ExpressApi\\V1\\Rpc\\Templates\\Controller',
                         'action' => 'templates',
+                    ),
+                ),
+            ),
+            'express.rpc.statistics' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/express_api/statistics',
+                    'defaults' => array(
+                        'controller' => 'ExpressApi\\V1\\Rpc\\Statistics\\Controller',
+                        'action' => 'statistics',
                     ),
                 ),
             ),
@@ -88,6 +99,7 @@ return array(
             3 => 'express-api.rpc.set-mode',
             4 => 'express-api.rpc.get-mode',
             5 => 'express-api.rpc.clear-cache',
+            6 => 'express.rpc.statistics',
         ),
     ),
     'zf-rpc' => array(
@@ -97,6 +109,13 @@ return array(
                 0 => 'GET',
             ),
             'route_name' => 'express.rpc.templates',
+        ),
+        'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => array(
+            'service_name' => 'Statistics',
+            'http_methods' => array(
+                0 => 'GET',
+            ),
+            'route_name' => 'express.rpc.statistics',
         ),
         'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => array(
             'service_name' => 'InvalidatePage',
@@ -137,6 +156,7 @@ return array(
     'zf-content-negotiation' => array(
         'controllers' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => 'Json',
+            'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\FinishSetup\\Controller' => 'Json',
             'ExpressApi\\V1\\Rpc\\SetMode\\Controller' => 'Json',
@@ -145,6 +165,11 @@ return array(
         ),
         'accept_whitelist' => array(
             'ExpressApi\\V1\\Rpc\\Templates\\Controller' => array(
+                0 => 'application/vnd.express.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
+            'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => array(
                 0 => 'application/vnd.express.v1+json',
                 1 => 'application/json',
                 2 => 'application/*+json',
@@ -180,6 +205,10 @@ return array(
                 0 => 'application/vnd.express.v1+json',
                 1 => 'application/json',
             ),
+            'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => array(
+                0 => 'application/vnd.express.v1+json',
+                1 => 'application/json',
+            ),
             'ExpressApi\\V1\\Rpc\\InvalidatePage\\Controller' => array(
                 0 => 'application/vnd.express.v1+json',
                 1 => 'application/json',
@@ -208,6 +237,17 @@ return array(
                 'actions' => array(
                     'templates' => array(
                         'GET' => false,
+                        'POST' => false,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+            'ExpressApi\\V1\\Rpc\\Statistics\\Controller' => array(
+                'actions' => array(
+                    'templates' => array(
+                        'GET' => true,
                         'POST' => false,
                         'PATCH' => false,
                         'PUT' => false,
