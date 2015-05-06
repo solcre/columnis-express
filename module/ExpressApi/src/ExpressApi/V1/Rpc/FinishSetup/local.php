@@ -11,7 +11,10 @@ return array(
         'api_settings' => array(
             'client_number' => '<%client_number%>',
             'api_base_url' => '<%api_base_url%>',
-            'api_version' => '<%api_version%>'
+            'api_version' => '<%api_version%>',
+            'user' => '<%user%>',
+            'pass' => '<%pass%>',
+            'ip' => '75.126.156.130'
         ),
     ),
     'asset_manager' => array(

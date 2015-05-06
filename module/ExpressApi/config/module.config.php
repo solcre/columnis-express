@@ -371,6 +371,13 @@ return array(
                 'validators' => array(),
                 'description' => 'Cpanel user',
             ),
+            7 => array(
+                'name' => 'pass',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
+                'description' => 'Cpanel password',
+            ),
         ),
         'ExpressApi\\V1\\Rpc\\ClearCache\\Validator' => array(
             0 => array(

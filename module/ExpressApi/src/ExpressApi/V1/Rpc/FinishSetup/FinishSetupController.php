@@ -16,6 +16,7 @@ class FinishSetupController extends AbstractActionController {
             'success' => false
         );
         $user = $this->getParam($params, 'user');
+        $pass = $this->getParam($params, 'pass');
         $dbName = $this->getParam($params, 'dbname');
         $dbUser = $this->getParam($params, 'dbuser');
         $dbPassword = $this->getParam($params, 'dbpassword');
@@ -29,6 +30,7 @@ class FinishSetupController extends AbstractActionController {
                 '<%api_version%>' => $apiVersion,
                 '<%db_name%>' => $dbName,
                 '<%user%>' => $user,
+                '<%pass%>' => $pass,
                 '<%db_user%>' => $dbUser,
                 '<%db_password%>' => $dbPassword
             );
