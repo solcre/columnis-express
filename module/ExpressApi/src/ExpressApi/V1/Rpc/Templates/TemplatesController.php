@@ -7,11 +7,13 @@ use Zend\Mvc\Controller\AbstractActionController;
 class TemplatesController extends AbstractActionController {
 
     private static $templateInfoFile = 'def.json';
+    private static $commonInfoFile = 'common.json';
 
     public function templatesAction() {
         $templatesPath = $this->getTemplatesPath();
         $templateData = array(
-            'templates' => array()
+            'templates' => array(),
+            'common' => array()
         );
         if(is_dir($templatesPath)) {
             $dirContent = scandir($templatesPath);
@@ -24,6 +26,7 @@ class TemplatesController extends AbstractActionController {
                     $templateData['templates'][] = $templateInfo;
                 }
             }
+            $templateData['common'] = json_decode(file_get_contents($templatesPath.'/'.self::$commonInfoFile));
         }
         return $templateData;
     }
