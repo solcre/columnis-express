@@ -1,5 +1,7 @@
 SetEnv APP_ENV development
 
+DirectoryIndex index.php index.html index.htm
+
 RewriteEngine On
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_URI} ^/(espanol|english|portugues)/(.+)-(\d+)$
