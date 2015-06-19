@@ -13,7 +13,9 @@ class StatisticsController extends AbstractActionController {
             'hdd_drive_usage' => 0,
             'band_width_usage' => 0,
             'panel_state' => '',
-            'mails_over_quota' => array()
+            'mails_over_quota' => array(),
+            'mails_count' => 0,
+            'mails_disk_usge' => 0
         );
         $this->setReleaseDate($statistics);
         $this->setHostingData($statistics);
@@ -52,6 +54,8 @@ class StatisticsController extends AbstractActionController {
             $data['hdd_drive_usage'] = $statistics->getHddDiskUsage();
             $data['band_width_usage'] = $statistics->getBandwidthUsage();
             $data['mails_over_quota'] = $statistics->getEmailsAccountsOverQuota();
+            $data['mails_count'] = $statistics->getEmailsAccountsCount();
+            $data['mails_disk_usge'] = $statistics->getEmailsAccountsDiskUsage();
         } catch(Exception $ex) {
             
         }

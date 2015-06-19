@@ -56,6 +56,31 @@ class Statistics {
         return $result;
     }
 
+    public function getEmailsAccountsDiskUsage() {
+        $result = 0;
+        // Report the raw disk usage
+        $emailsAccountsReport = json_decode($this->cpanel->getEmailAccounts());
+        if($emailsAccountsReport->cpanelresult && is_array($emailsAccountsReport->cpanelresult->data)) {
+            $data = $emailsAccountsReport->cpanelresult->data;
+            if(is_array($data) && count($data)) {
+                foreach($data as $emailInfo) {
+                    $result += (float) $emailInfo->diskused;
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function getEmailsAccountsCount() {
+        $result = 0;
+        // Report the raw disk usage
+        $emailsAccountsReport = json_decode($this->cpanel->getEmailAccounts());
+        if($emailsAccountsReport->cpanelresult && is_array($emailsAccountsReport->cpanelresult->data)) {
+            $result = count($emailsAccountsReport->cpanelresult->data);
+        }
+        return $result;
+    }
+
     private function formatBytes($bytes, $precision = 2) {
         $base = log($bytes, 1024);
         $suffixes = array('', ' KB', ' MB', ' GB', ' TB');
