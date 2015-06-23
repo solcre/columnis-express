@@ -56,8 +56,4 @@ $conf = array(
     )
 );
 
-if ($env != 'production') {
-    $conf['modules'][] = 'ZF\DevelopmentMode';
-}
-
 return $conf;
