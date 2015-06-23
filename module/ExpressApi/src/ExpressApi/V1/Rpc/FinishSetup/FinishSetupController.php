@@ -23,7 +23,6 @@ class FinishSetupController extends AbstractActionController {
         $clientCode = $this->getParam($params, 'client_number');
         $apiBaseUrl = $this->getParam($params, 'api_base_url');
         $apiVersion = $this->getParam($params, 'api_version');
-        $this->renameLocalConfig();
         if(!file_exists($configFile)) {
             $replaces = array(
                 '<%client_number%>' => $clientCode,
@@ -51,10 +50,5 @@ class FinishSetupController extends AbstractActionController {
             return $params[$key];
         }
         return '';
-    }
-
-    private function renameLocalConfig() {
-        $configDir = $this->getConfigurationPath();
-        rename($configDir.'/local.php.dist', $configDir.'/local.php');
     }
 }
