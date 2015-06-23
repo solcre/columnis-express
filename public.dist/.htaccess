@@ -1,4 +1,5 @@
 SetEnv APP_ENV development
+SetEnv APP_DIR /columnisexpress/current
 
 DirectoryIndex index.php index.html index.htm
 
