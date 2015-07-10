@@ -36,7 +36,7 @@ $conf = array(
         'ExpressApi'
     ),
     'modules_condition_resolvers' => array(
-        'AssetManager' => 'AssetManagerResolver',
+        //'AssetManager' => 'AssetManagerResolver',
         //'GkSmarty' => 'GkSmartyResolver'
     ),
     'module_listener_options' => array(
