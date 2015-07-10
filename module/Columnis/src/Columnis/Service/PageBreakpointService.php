@@ -107,6 +107,7 @@ class PageBreakpointService {
         $pageBreakpoint->setIdPage($idPage);
         $pageBreakpoint->setExtraData($extraData);
         $pageBreakpoint->setImages($images);
+        $pageBreakpoint->setTemplateHash($this->getBreakpointTemplateHash());
         $pageBreakpoint->setImageGroupsSizes($imageSizesGroups);
         $this->loadBreakpointsPath($pageBreakpoint); //Sets path
         $pathExist = $this->checkBreakpointPath($pageBreakpoint); //Check path exist, if not create it
@@ -162,6 +163,20 @@ class PageBreakpointService {
             return $breakpointFile;
         }
         return false;
+    }
+
+    /**
+     * Get the template file hash
+     * 
+     * @return string
+     */
+    protected function getBreakpointTemplateHash() {
+        $templatesPath = $this->getTemplatesPathStack()[1];
+        $templateFile = $templatesPath.DIRECTORY_SEPARATOR.PageBreakpoint::BREAKPOINT_FILE;
+        if(file_exists($templateFile)) {
+            $hash = md5_file($templateFile);
+        }
+        return $hash;
     }
 
     /**

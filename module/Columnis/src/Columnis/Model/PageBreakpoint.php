@@ -11,6 +11,7 @@ class PageBreakpoint {
 
     protected $idPage;
     protected $hash;
+    protected $templateHash;
     protected $images;
     protected $path;
     protected $extraData;
@@ -66,6 +67,24 @@ class PageBreakpoint {
      */
     public function getExtraData() {
         return $this->extraData;
+    }
+
+    /**
+     * Returns template hash
+     * 
+     * @return string
+     */
+    public function getTemplateHash() {
+        return $this->templateHash;
+    }
+
+    /**
+     * Sets templaet hash
+     * 
+     * @param string $templateHash
+     */
+    public function setTemplateHash($templateHash) {
+        $this->templateHash = $templateHash;
     }
 
     /**
@@ -133,7 +152,8 @@ class PageBreakpoint {
      * @return string
      */
     public function getFileName() {
-        return $this->getIdPage().'-'.$this->getHash().'.css';
+        $fileNameHash = md5($this->getHash().$this->getTemplateHash());
+        return $this->getIdPage().'-'.$fileNameHash.'.css';
     }
 
     /**
