@@ -150,7 +150,7 @@ class PageBreakpointService {
         try {
             //TemplatesConfig
             $templatesPath = $this->getTemplatesPathStack()[1];
-            if(file_exists($templatesPath.PageBreakpoint::BREAKPOINT_FILE)) {
+            if(file_exists($templatesPath.DIRECTORY_SEPARATOR.PageBreakpoint::BREAKPOINT_FILE)) {
                 //Get smarty object
                 $smarty = $this->getSmarty();
                 //Set templates path
