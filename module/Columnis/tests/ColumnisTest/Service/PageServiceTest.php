@@ -35,14 +35,12 @@ class PageServiceTest extends PHPUnit_Framework_TestCase
         $serviceManager = Bootstrap::getServiceManager();
         
         $templateService = $serviceManager->get('Columnis\Service\TemplateService');
-        $pageBreakpointService = $serviceManager->get('Columnis\Service\PageBreakpointService');
         $apiService = $serviceManager->get('Columnis\Service\ApiService');
         
-        $pageService = new PageService($templateService, $apiService, $pageBreakpointService);
+        $pageService = new PageService($templateService, $apiService);
         
         $this->assertInstanceOf('Columnis\Service\PageService', $pageService);
         $this->assertSame($templateService, $pageService->getTemplateService());
-        $this->assertSame($pageBreakpointService, $pageService->getPageBreakpointService());
         $this->assertSame($apiService, $pageService->getApiService());
     }
     public function testFetch()

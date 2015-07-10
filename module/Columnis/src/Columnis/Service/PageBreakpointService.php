@@ -3,7 +3,6 @@
 namespace Columnis\Service;
 
 use Columnis\Model\PageBreakpoint;
-use Columnis\Model\Page;
 use \Smarty;
 use \CssMin;
 
@@ -95,17 +94,18 @@ class PageBreakpointService {
     /**
      * Creats a PageBreakpoint file if not exist
      *
-     * @param Template $template
      * @param int $idPage
+     * @param array $extraData
      * @param string $hash
      * @param array $images
      * @param array $imageSizesGroups
      * @return string
      */
-    public function createPageBreakpoint($idPage, $hash, Array $images, Array $imageSizesGroups) {
+    public function createPageBreakpoint($idPage, Array $extraData, $hash, Array $images, Array $imageSizesGroups) {
         $pageBreakpoint = new PageBreakpoint();
         $pageBreakpoint->setHash($hash);
         $pageBreakpoint->setIdPage($idPage);
+        $pageBreakpoint->setExtraData($extraData);
         $pageBreakpoint->setImages($images);
         $pageBreakpoint->setImageGroupsSizes($imageSizesGroups);
         $this->loadBreakpointsPath($pageBreakpoint); //Sets path
@@ -121,6 +121,11 @@ class PageBreakpointService {
         return $pageBreakpoint->getFileName();
     }
 
+    /**
+     * Sets the path to pageBreakpoint object
+     * 
+     * @param PageBreakpoint $pageBreakpoint
+     */
     protected function loadBreakpointsPath(PageBreakpoint &$pageBreakpoint) {
         $assetsPaths = $this->getAssetsManagerPathStack();
         if(is_array($assetsPaths)) {
@@ -128,6 +133,12 @@ class PageBreakpointService {
         }
     }
 
+    /**
+     * Check Breakpoints directory, if not exist create it
+     * 
+     * @param PageBreakpoint $pageBreakpoint
+     * @return boolean
+     */
     protected function checkBreakpointPath(PageBreakpoint &$pageBreakpoint) {
         $path = $pageBreakpoint->getFullPath();
         if(!file_exists($path)) {
@@ -137,6 +148,13 @@ class PageBreakpointService {
         return true;
     }
 
+    /**
+     * Search on breakpoints dir the current breakpoint page file
+     * 
+     * @param int $idPage
+     * @param PageBreakpoint $pageBreakpoint
+     * @return boolean
+     */
     protected function getCurrentBreakpointFilename($idPage, PageBreakpoint $pageBreakpoint) {
         $breakpointFiles = glob($pageBreakpoint->getFullPath().$idPage."-*.css");
         if(is_array($breakpointFiles) && count($breakpointFiles)) {
@@ -146,6 +164,11 @@ class PageBreakpointService {
         return false;
     }
 
+    /**
+     * Create a new PageBreakpointFile
+     * 
+     * @param PageBreakpoint $pageBreakpoint
+     */
     protected function createBreakpointFile(PageBreakpoint $pageBreakpoint) {
         try {
             //TemplatesConfig
@@ -163,9 +186,16 @@ class PageBreakpointService {
                 file_put_contents($pageBreakpoint->getFullFileName(), CssMin::minify($breakpointContent));
             }
         } catch(\Exception $exc) {
+            
         }
     }
 
+    /**
+     * Remove the last breakpoint file
+     * 
+     * @param PageBreakpoint $pageBreakpoint
+     * @param string $currentFileName
+     */
     protected function invalidateCurrentBreakpointFile(PageBreakpoint $pageBreakpoint, $currentFileName) {
         try {
             //Parse full current breakpoint name
@@ -175,6 +205,7 @@ class PageBreakpointService {
                 unlink($invalidatePath);
             }
         } catch(\Exception $exc) {
+            
         }
     }
 }

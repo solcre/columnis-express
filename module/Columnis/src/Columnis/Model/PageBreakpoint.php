@@ -13,6 +13,7 @@ class PageBreakpoint {
     protected $hash;
     protected $images;
     protected $path;
+    protected $extraData;
     protected $imageGroupsSizes;
 
     /**
@@ -55,8 +56,24 @@ class PageBreakpoint {
      * Return the path of breakpoint file
      * @return string
      */
-    function getPath() {
+    public function getPath() {
         return $this->path;
+    }
+
+    /**
+     * Returns Extra data
+     * @return array
+     */
+    public function getExtraData() {
+        return $this->extraData;
+    }
+
+    /**
+     * Sets extra data
+     * @param array $extraData
+     */
+    public function setExtraData($extraData) {
+        $this->extraData = $extraData;
     }
 
     /**
@@ -135,6 +152,7 @@ class PageBreakpoint {
     public function getData() {
         $data = array(
             'idPage' => $this->getIdPage(),
+            'extra' => $this->getExtraData(),
             'images' => $this->getImages(),
             'imagesGroupsSizes' => $this->getImageGroupsSizes()
         );

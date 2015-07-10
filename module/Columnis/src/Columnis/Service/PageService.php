@@ -85,11 +85,11 @@ class PageService {
      * Sets the PageBreakpoint Service
      * @param PageBreakpointService $pageBreakpointService
      */
-    public function setPageBreakpointService(PageBreakpointService $pageBreakpointService) {
+    public function setPageBreakpointService(PageBreakpointService $pageBreakpointService = null) {
         $this->pageBreakpointService = $pageBreakpointService;
     }
 
-    public function __construct(TemplateService $templateService, ApiService $apiService, PageBreakpointService $pageBreakpointService) {
+    public function __construct(TemplateService $templateService, ApiService $apiService, PageBreakpointService $pageBreakpointService = null) {
         $this->setTemplateService($templateService);
         $this->setApiService($apiService);
         $this->setPageBreakpointService($pageBreakpointService);
@@ -116,9 +116,9 @@ class PageService {
             $template = $templateService->createFromData($dataPagina);
 
             $pageBreakpointService = $this->getPageBreakpointService();
-            if(is_array($dataPagina) && key_exists('idPagina', $dataPagina)) {
+            if(!empty($pageBreakpointService) && is_array($dataPagina) && key_exists('idPagina', $dataPagina)) {
                 $data['pagina']['breakpoint_file'] = $pageBreakpointService->createPageBreakpoint(
-                        $dataPagina['idPagina'], $dataPagina['breakpoints_hash'], $dataPagina['fotos'], $dataPagina['imageSizesGroups']
+                        $dataPagina['idPagina'], $data['sitio'], $dataPagina['breakpoints_hash'], $dataPagina['fotos'], $dataPagina['imageSizesGroups']
                 );
             }
 
