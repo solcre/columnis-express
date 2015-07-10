@@ -19,9 +19,12 @@ class PageServiceFactory implements FactoryInterface
         $templateService = $serviceLocator->get('Columnis\Service\TemplateService');
         /* @var \Columnis\Service\TemplateService $templateService */
         
+        $pageBreakpointService = $serviceLocator->get('Columnis\Service\PageBreakpointService');
+        /* @var \Columnis\Service\PageBreakpointService $pageBreakpointService */
+        
         $apiService = $serviceLocator->get('Columnis\Service\ApiService');
         /* @var \Columnis\Service\ApiService $apiService */
 
-        return new PageService($templateService, $apiService);
+        return new PageService($templateService, $apiService, $pageBreakpointService);
     }
 }

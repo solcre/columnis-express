@@ -21,8 +21,7 @@ use Columnis\Exception\Templates\PathNotFoundException;
 use Columnis\Exception\Templates\TemplateNameNotSetException;
 use Columnis\Exception\Page\PageWithoutTemplateException;
 
-class PageService
-{
+class PageService {
 
     /**
      * Api Service
@@ -37,11 +36,16 @@ class PageService
     protected $templateService;
 
     /**
+     * PageBreakpoint Service
+     * @var PageBreakpointService $pageBreakpointService
+     */
+    protected $pageBreakpointService;
+
+    /**
      * Returns the Api Service
      * @return ApiService
      */
-    public function getApiService()
-    {
+    public function getApiService() {
         return $this->apiService;
     }
 
@@ -49,8 +53,7 @@ class PageService
      * Sets the Api Service
      * @param ApiService $apiService
      */
-    public function setApiService(ApiService $apiService)
-    {
+    public function setApiService(ApiService $apiService) {
         $this->apiService = $apiService;
     }
 
@@ -58,8 +61,7 @@ class PageService
      * Returns the Template Service
      * @return TemplateService
      */
-    public function getTemplateService()
-    {
+    public function getTemplateService() {
         return $this->templateService;
     }
 
@@ -67,15 +69,30 @@ class PageService
      * Sets the Template Service
      * @param TemplateService $templateService
      */
-    public function setTemplateService(TemplateService $templateService)
-    {
+    public function setTemplateService(TemplateService $templateService) {
         $this->templateService = $templateService;
     }
 
-    public function __construct(TemplateService $templateService, ApiService $apiService)
-    {
+    /**
+     * Returns the PageBreakpoint Service
+     * @return PageBreakpointService
+     */
+    public function getPageBreakpointService() {
+        return $this->pageBreakpointService;
+    }
+
+    /**
+     * Sets the PageBreakpoint Service
+     * @param PageBreakpointService $pageBreakpointService
+     */
+    public function setPageBreakpointService(PageBreakpointService $pageBreakpointService) {
+        $this->pageBreakpointService = $pageBreakpointService;
+    }
+
+    public function __construct(TemplateService $templateService, ApiService $apiService, PageBreakpointService $pageBreakpointService) {
         $this->setTemplateService($templateService);
         $this->setApiService($apiService);
+        $this->setPageBreakpointService($pageBreakpointService);
     }
 
     /**
@@ -85,26 +102,33 @@ class PageService
      * @param Array $params
      * @return boolean
      */
-    public function fetch(Page $page, Array $params = null)
-    {
+    public function fetch(Page $page, Array $params = null) {
         $id = $page->getId();
-        $endpoint = '/pages/' . $id . '/generate';
+        $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
         try {
             $response = $this->getApiService()->request($uri, 'GET', $params);
             /* @var $response ApiResponse */
             $data = $response->getData();
-            $page->setData($data);
+            $dataPagina = $data['pagina'];
 
             $templateService = $this->getTemplateService();
-            $template = $templateService->createFromData($data['pagina']);
+            $template = $templateService->createFromData($dataPagina);
 
+            $pageBreakpointService = $this->getPageBreakpointService();
+            if(is_array($dataPagina) && key_exists('idPagina', $dataPagina)) {
+                $data['pagina']['breakpoint_file'] = $pageBreakpointService->createPageBreakpoint(
+                        $dataPagina['idPagina'], $dataPagina['breakpoints_hash'], $dataPagina['fotos'], $dataPagina['imageSizesGroups']
+                );
+            }
+
+            $page->setData($data);
             $page->setTemplate($template);
-        } catch (ApiRequestException $e) {
+        } catch(ApiRequestException $e) {
             return false;
-        } catch (PathNotFoundException $e) {
+        } catch(PathNotFoundException $e) {
             throw new PageWithoutTemplateException($e->getMessage(), 0, $e);
-        } catch (TemplateNameNotSetException $e) {
+        } catch(TemplateNameNotSetException $e) {
             throw new PageWithoutTemplateException($e->getMessage(), 0, $e);
         }
         return true;

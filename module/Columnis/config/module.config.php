@@ -43,6 +43,7 @@ return array(
             'Columnis\Model\TemplateAssetsResolver' => 'Columnis\Service\Factory\TemplateAssetsResolverFactory',
             'Columnis\Service\ApiService' => 'Columnis\Service\Factory\ApiServiceFactory',
             'Columnis\Service\PageService' => 'Columnis\Service\Factory\PageServiceFactory',
+            'Columnis\Service\PageBreakpointService' => 'Columnis\Service\Factory\PageBreakpointServiceFactory',
             'Columnis\Service\TemplateService' => 'Columnis\Service\Factory\TemplateServiceFactory',
         ),
         'abstract_factories' => array(
