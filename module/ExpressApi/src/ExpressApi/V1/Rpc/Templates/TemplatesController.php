@@ -45,12 +45,12 @@ class TemplatesController extends AbstractActionController {
     }
 
     private function validTemplate($completeName) {
-        $def = $completeName.'/'.self::$templateInfoFile;
+        $def = $completeName.DIRECTORY_SEPARATOR.self::$templateInfoFile;
         return is_dir($completeName) && file_exists($def);
     }
 
     private function validCommonTemplate($completeName) {
-        $def = $completeName.'/'.self::$commonInfoFile;
+        $def = $completeName.DIRECTORY_SEPARATOR.self::$commonInfoFile;
         return is_dir($completeName) && file_exists($def);
     }
 }
