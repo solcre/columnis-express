@@ -26,7 +26,9 @@ class TemplatesController extends AbstractActionController {
                     $templateData['templates'][] = $templateInfo;
                 }
             }
-            $templateData['common'] = json_decode(file_get_contents($templatesPath.'/'.self::$commonInfoFile));
+            if($this->validCommonTemplate($templatesPath)) {
+                $templateData['common'] = json_decode(file_get_contents($templatesPath.'/'.self::$commonInfoFile));
+            }
         }
         return $templateData;
     }
@@ -44,6 +46,11 @@ class TemplatesController extends AbstractActionController {
 
     private function validTemplate($completeName) {
         $def = $completeName.'/'.self::$templateInfoFile;
+        return is_dir($completeName) && file_exists($def);
+    }
+
+    private function validCommonTemplate($completeName) {
+        $def = $completeName.'/'.self::$commonInfoFile;
         return is_dir($completeName) && file_exists($def);
     }
 }
