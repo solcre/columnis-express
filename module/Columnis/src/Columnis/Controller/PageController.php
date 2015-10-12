@@ -46,7 +46,7 @@ class PageController extends AbstractActionController {
                 return null;
             }
         } catch(PageWithoutTemplateException $e) {
-            
+
         }
         return $page;
     }
@@ -60,29 +60,56 @@ class PageController extends AbstractActionController {
     }
 
     private function setPageAssets(Template $template, &$pageData) {
-        $jsAssets = $template->getAssets('js');
-        $cssAssets = $template->getAssets('css');
+        $excludes = $this->getExcludes();
+        $jsAssets = $template->getAssets('js', $excludes);
+        $cssAssets = $template->getAssets('css', $excludes);
+
         $paths = $this->getAssetsPath();
 
         if(count($paths)) {
             foreach($paths as $path) {
                 if(strpos($path, 'css') > -1) {
-                    $cssAssets = array_merge($cssAssets, $this->searchAssets($path, 'css'));
+                    $cssAssets = array_merge($cssAssets, $this->searchAssets($path, 'css', $excludes));
                     sort($cssAssets);
                 }
                 else if(strpos($path, 'js') > -1) {
-                    $jsAssets = array_merge($jsAssets, $this->searchAssets($path, 'js'));
+                    $jsAssets = array_merge($jsAssets, $this->searchAssets($path, 'js', $excludes));
                     sort($jsAssets);
                 }
             }
         }
         if(is_array($pageData) && $pageData['pagina']) {
-            $pageData['pagina']['scripts'] = $jsAssets;
-            $pageData['pagina']['stylesheets'] = $cssAssets;
+            $pageData['pagina']['scripts'] = $this->setPublicRelativePath($jsAssets);
+            $pageData['pagina']['stylesheets'] = $this->setPublicRelativePath($cssAssets);
         }
         return '';
     }
-
+    private function setPublicRelativePath(Array $assets = null) {
+        $ret = array();
+        if (count($assets) > 0) {
+            $publicPath = realpath($this->getPublicPath()) . DIRECTORY_SEPARATOR;
+            foreach($assets as $asset) {
+                $ret[] = str_replace($publicPath, '', $asset);
+            }
+        }
+        return $ret;
+    }
+    private function getPublicPath() {
+        $ret = array();
+        $config = $this->getServiceLocator()->get('Config');
+        if(is_array($config) && isset($config['template_assets_resolver'])) {
+            $ret = $config['template_assets_resolver']['public_path'];
+        }
+        return $ret;
+    }
+    private function getExcludes() {
+        $ret = array();
+        $config = $this->getServiceLocator()->get('Config');
+        if(is_array($config) && isset($config['template_assets_resolver'])) {
+            $ret = $config['template_assets_resolver']['search_exclude'];
+        }
+        return $ret;
+    }
     private function getAssetsPath() {
         $config = $this->getServiceLocator()->get('Config');
         if(is_array($config) &&
@@ -94,14 +121,11 @@ class PageController extends AbstractActionController {
         return array();
     }
 
-    private function searchAssets($path, $extension) {
+    private function searchAssets($path, $extension, Array $excludes = null) {
+        $assets = array();
         $assetPath = realpath($path.DIRECTORY_SEPARATOR.'fixed');
-        if(is_dir($assetPath)) {
-            $assetsPaths = Directory::recursiveSearchByExtension($assetPath, $extension);
-            $assets = array();
-            foreach($assetsPaths as $asset) {
-                $assets[] = str_replace($assetPath, $extension.DIRECTORY_SEPARATOR.'fixed', $asset);
-            }
+        if (is_dir($assetPath)) {
+            $assets = Directory::recursiveSearchByExtension($assetPath, $extension, $excludes);
         }
         return $assets;
     }
