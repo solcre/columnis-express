@@ -19,7 +19,7 @@ class Directory
      * @return array|Traversable collections of files
      * @throws \Exception
      */
-    public static function recursiveSearchByExtension($path, $extension)
+    public static function recursiveSearchByExtension($path, $extension, Array $excludes = null)
     {
         $files = array();
         if (!is_dir($path)) {
@@ -30,13 +30,13 @@ class Directory
         $iterator = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::LEAVES_ONLY);
 
         foreach ($iterator as $fileinfo) {
-            if ($fileinfo->getExtension() == $extension) {
+            if ($fileinfo->getExtension() == $extension && !Regex::matchesAny($fileinfo->getPathname(),$excludes)) {
                 $files[] = realpath($fileinfo->getPathname());
             }
         }
         return $files;
     }
-    
+
     /**
      * Checks if a path is inside another
      *
