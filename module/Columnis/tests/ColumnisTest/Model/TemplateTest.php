@@ -241,10 +241,10 @@ class TemplateTest extends PHPUnit_Framework_TestCase
         );
         $definedAssets = array(
             'css' => array(
-                'jquery-ui.css'
+                realpath(Bootstrap::getTestFilesDir() . 'public.dist/css/jquery-ui.css'),
             ),
             'js' => array(
-                'jquery-1.8.2.min.js'
+                realpath(Bootstrap::getTestFilesDir() . 'public.dist/js/jquery-1.8.2.min.js')
             )
         );
 

@@ -1,8 +1,8 @@
 {
     "css" : [
-        "jquery-ui.css"
+        "../../css/jquery-ui.css"
     ],
     "js" : [
-        "jquery-1.8.2.min.js"
+        "../../js/jquery-1.8.2.min.js"
     ]
 }

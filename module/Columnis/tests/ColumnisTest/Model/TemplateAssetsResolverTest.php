@@ -113,7 +113,7 @@ class TemplateAssetsResolverTest extends PHPUnit_Framework_TestCase
 
         $expectedAssets = array(
             // Defined Assets
-            'jquery-ui.css',
+            realpath(Bootstrap::getTestFilesDir() . 'public.dist/css/jquery-ui.css'),
             // Search assets
             realpath(Bootstrap::getTestFilesDir() . 'public.dist/templates/example-template/css/example.css'),
             // Search assets
