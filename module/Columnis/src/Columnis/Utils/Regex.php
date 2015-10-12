@@ -10,7 +10,7 @@ namespace Columnis\Utils;
 class Regex
 {
 
-    public function matchesAny($str, Array $expressions = null)
+    public static function matchesAny($str, Array $expressions = null)
     {
         if (count($expressions) > 0) {
             foreach ($expressions as $expression) {
