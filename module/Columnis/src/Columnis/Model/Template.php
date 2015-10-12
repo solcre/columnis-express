@@ -8,22 +8,23 @@ use Columnis\Exception\Templates\PathNotFoundException;
 class Template
 {
     const DEFINITION_FILE = 'def.json';
-    const MAIN_FILE = 'main.tpl';
-    
+    const MAIN_FILE       = 'main.tpl';
+
     protected $name;
     protected $path;
     protected $parsedDefinition;
-    
+
     /*
      * Returns the name of the template
      *
      * @return string
      */
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     /**
      * Sets the name of the template
      *
@@ -33,8 +34,8 @@ class Template
     {
         $this->name = $name;
     }
-    
-     /**
+
+    /**
      * Returns the absolute path for the template
      *
      * @return string
@@ -43,7 +44,7 @@ class Template
     {
         return $this->path;
     }
-    
+
     /**
      * Sets the path of the template
      *
@@ -57,11 +58,11 @@ class Template
         }
         $absPath = realpath($path);
         if (!$absPath) {
-            throw new PathNotFoundException('Path: ' . $path . ' does not exist.');
+            throw new PathNotFoundException('Path: '.$path.' does not exist.');
         }
         $this->path = $absPath;
     }
-    
+
     /**
      * Returns the definition of the template. If it is not parsed yet, it will call parseDefinition to parse it.
      *
@@ -74,14 +75,15 @@ class Template
         }
         return $this->parsedDefinition;
     }
-    
+
     /**
      * Constructor with no parameters needed
      */
     public function __construct()
     {
+
     }
-    
+
     /**
      * Returns the path to the definition file
      *
@@ -89,9 +91,9 @@ class Template
      */
     public function getDefinitionFile()
     {
-        return $this->getPath() . DIRECTORY_SEPARATOR . self::DEFINITION_FILE;
+        return $this->getPath().DIRECTORY_SEPARATOR.self::DEFINITION_FILE;
     }
-    
+
     /**
      * Returns the path to the main file
      *
@@ -100,7 +102,7 @@ class Template
      */
     public function getMainFile($withPath = true)
     {
-        return ($withPath ? $this->getPath() : $this->getName()) . DIRECTORY_SEPARATOR . self::MAIN_FILE;
+        return ($withPath ? $this->getPath() : $this->getName()).DIRECTORY_SEPARATOR.self::MAIN_FILE;
     }
 
     /**
@@ -124,33 +126,34 @@ class Template
         }
         return true;
     }
-    
+
     /**
      * Returns the defined assets + assets in the template folder
      *
      * @param string $extension
      * @return Array
      */
-    public function getAssets($extension)
+    public function getAssets($extension, Array $excludes = null)
     {
         $defined = $this->getDefinedAssets($extension);
-        $search = $this->searchAssets($extension);
+        $search  = $this->searchAssets($extension, $excludes);
         sort($search);
-        return array_merge($defined, $search);
+        $ret = array_merge($defined, $search);
+        return $ret;
     }
-    
+
     /**
      * Searchs for assets inside the template path
      *
      * @param string $extension
      * @return Array
      */
-    public function searchAssets($extension)
+    public function searchAssets($extension, Array $excludes = null)
     {
         $path = $this->getPath();
-        return DirectoryUtils::recursiveSearchByExtension($path, $extension);
+        return DirectoryUtils::recursiveSearchByExtension($path, $extension, $excludes);
     }
-    
+
     /**
      * Returns an array with the defined assets given an extension
      *
@@ -159,14 +162,19 @@ class Template
      */
     public function getDefinedAssets($extension)
     {
-        $ret = array();
+        $ret  = array();
         $data = $this->getParsedDefinition();
         if (is_array($data[$extension])) {
-            $ret = $data[$extension];
+            foreach($data[$extension] as $asset) {
+                $assetRealpath = realpath($this->getPath() . DIRECTORY_SEPARATOR . $asset);
+                if (!empty($assetRealpath)) {
+                    $ret[] = $assetRealpath;
+                }
+            }
         }
         return $ret;
     }
-    
+
     /**
      * Parses the definition file
      *
