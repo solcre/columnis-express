@@ -107,6 +107,10 @@ return array(
             'template_name' => '/^templates\/([a-zA-Z0-9-_]+)\/(css|js)\/minified\.(css|js)$/',
             'global_asset' => '/^(css|js)\/fixed\/.+\.(css|js)$/'
         ),
-        'global_folder_name' => 'fixed'
+        'global_folder_name' => 'fixed',
+        'search_exclude' => [
+            '/templates\/([a-zA-Z0-9-_]+)\/(css|js)\/minified\.(css|js)$/',
+            '/(css|js)\/fixed\/minified\.(css|js)$/',
+        ]
     ),
 );
