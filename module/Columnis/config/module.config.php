@@ -33,6 +33,21 @@ return array(
                     ),
                 ),
             ),
+            'columnisDefaultLang' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/:lang[/]',
+                    'constraints' => array(
+                        'lang' => 'espanol|english|portugues',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Columnis\Controller',
+                        'controller' => 'Page',
+                        'action' => 'index',
+                        'cache' => true
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
