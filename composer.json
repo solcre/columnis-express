@@ -10,10 +10,6 @@
     "homepage": "http://www.columnis.com/",
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/solcre/gk-smarty"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "cssmin/cssmin",
