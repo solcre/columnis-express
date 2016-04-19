@@ -14,7 +14,7 @@
             "package": {
                 "name": "cssmin/cssmin",
                 "version": "3.0.1",
-                "dist": { "url": "http://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
+                "dist": { "url": "https://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
                 "autoload": { "classmap": [ "cssmin-v3.0.1.php" ] }
             }
         }
