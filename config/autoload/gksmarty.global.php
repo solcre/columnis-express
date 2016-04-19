@@ -14,13 +14,15 @@ return array(
          * Directory for cached templates.
          */
         'cache_dir' => getcwd() . '/data/cache/templates',
-        /**
-         * Directory for cached templates.
-         */
-        'template_dir' => getcwd() . '/public/templates',
+        
         /**
          * Smarty engine options.
          */
-        'smarty_options' => array(),
+        'smarty_options' => array(
+            /**
+             * Directory for cached templates.
+             */
+            'template_dir' => getcwd() . '/public/templates'
+        ),
     ),
 );
