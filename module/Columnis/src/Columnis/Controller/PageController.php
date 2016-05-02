@@ -38,15 +38,16 @@ class PageController extends AbstractActionController {
     }
 
     protected function fetchPage($pageId, Array $params = null, $withBreakpoints = false) {
+        $accessToken = $this->getRequest()->getHeaders()->get('Cookie')->columnis_token;
         $page = new Page();
         $page->setId($pageId);
         $pageService = $this->getPageService($withBreakpoints);
         try {
-            if(!$pageService->fetch($page, $params)) {
+            if(!$pageService->fetch($page, $params, $accessToken)) {
                 return null;
             }
         } catch(PageWithoutTemplateException $e) {
-
+            
         }
         return $page;
     }

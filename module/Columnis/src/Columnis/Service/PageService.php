@@ -20,6 +20,7 @@ use Columnis\Exception\Api\ApiRequestException;
 use Columnis\Exception\Templates\PathNotFoundException;
 use Columnis\Exception\Templates\TemplateNameNotSetException;
 use Columnis\Exception\Page\PageWithoutTemplateException;
+use Columnis\Exception\Api\UnauthorizedException;
 
 class PageService {
 
@@ -102,16 +103,24 @@ class PageService {
      * @param Array $params
      * @return boolean
      */
-    public function fetch(Page $page, Array $params = null) {
+    public function fetch(Page $page, Array $params = null, $accessToken = null, $retry = 0) {
         $id = $page->getId();
         $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
+        $headers = array(
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        );
+        if (!empty($accessToken)) {
+            $headers['Authorization'] = sprintf('Bearer %s', $accessToken);
+        }
+        $options = $this->getApiService()->buildOptions($params, null, $headers);
         try {
-            $response = $this->getApiService()->request($uri, 'GET', $params);
+            $response = $this->getApiService()->request($uri, 'GET', $options);
             /* @var $response ApiResponse */
             $data = $response->getData();
             $dataPagina = $data['pagina'];
-
+            
             $templateService = $this->getTemplateService();
             $template = $templateService->createFromData($dataPagina);
 
@@ -122,8 +131,23 @@ class PageService {
                 );
             }
 
+            $data['pagina']['retry'] = $retry;
+
             $page->setData($data);
             $page->setTemplate($template);
+        } catch(UnauthorizedException $e) {
+            $ret = false;
+            if ($retry >= 0) {
+                $retry--;
+                $ret = $this->fetch($page, $params, null, $retry);
+            }
+            $data = $page->getData();
+            $data['authorization'] = array(
+                'error' => $e->getCode(),
+                'error_description' => $e->getMessage()
+            );
+            $page->setData($data);
+            return $ret;
         } catch(ApiRequestException $e) {
             return false;
         } catch(PathNotFoundException $e) {
