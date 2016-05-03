@@ -103,7 +103,7 @@ class PageService {
      * @param Array $params
      * @return boolean
      */
-    public function fetch(Page $page, Array $params = null, $accessToken = null, $retry = 0) {
+    public function fetch(Page $page, Array $queryString = null, $accessToken = null, $retry = 0) {
         $id = $page->getId();
         $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
@@ -114,7 +114,7 @@ class PageService {
         if (!empty($accessToken)) {
             $headers['Authorization'] = sprintf('Bearer %s', $accessToken);
         }
-        $options = $this->getApiService()->buildOptions($params, null, $headers);
+        $options = $this->getApiService()->buildOptions(array(), $queryString, $headers);
         try {
             $response = $this->getApiService()->request($uri, 'GET', $options);
             /* @var $response ApiResponse */
