@@ -16,6 +16,7 @@ namespace Columnis\Service;
 
 use Columnis\Model\Page;
 use Columnis\Model\ApiResponse;
+use Columnis\Model\PageLegacyData;
 use Columnis\Exception\Api\ApiRequestException;
 use Columnis\Exception\Templates\PathNotFoundException;
 use Columnis\Exception\Templates\TemplateNameNotSetException;
@@ -108,7 +109,7 @@ class PageService {
         $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
         $headers = array(
-            'Accept' => 'application/json',
+            'Accept' => 'application/vnd.columnis.v2+json',
             'Content-Type' => 'application/json'
         );
         if (!empty($accessToken)) {
@@ -119,18 +120,23 @@ class PageService {
             $response = $this->getApiService()->request($uri, 'GET', $options);
             /* @var $response ApiResponse */
             $data = $response->getData();
-            $dataPagina = $data['pagina'];
+            
+            $legacyData = (new PageLegacyData($data))->getData();            
+            $data = array_merge($data, $legacyData);
+   
+            //Get page data
+            $dataPagina = array_values($data['columnis.rest.pages'])[0];
             
             $templateService = $this->getTemplateService();
             $template = $templateService->createFromData($dataPagina);
 
-            $pageBreakpointService = $this->getPageBreakpointService();
-            if(!empty($pageBreakpointService) && is_array($dataPagina) && key_exists('idPagina', $dataPagina)) {
+            $pageBreakpointService = $this->getPageBreakpointService();            
+            if(!empty($pageBreakpointService) && is_array($dataPagina) && key_exists('id', $dataPagina)) {
                 $data['pagina']['breakpoint_file'] = $pageBreakpointService->createPageBreakpoint(
-                        $dataPagina['idPagina'], $data['sitio'], $dataPagina['breakpoints_hash'], $dataPagina['fotos'], $dataPagina['imageSizesGroups']
+                        $dataPagina['id'], $data['columnis.rest.configuration'], $data['breakpoints_hash'], $data['collected_pictures'], $data['columnis.rest.image_sizes_groups']
                 );
             }
-
+            
             $data['pagina']['retry'] = $retry;
 
             $page->setData($data);

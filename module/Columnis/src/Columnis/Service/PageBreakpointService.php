@@ -101,7 +101,7 @@ class PageBreakpointService {
      * @param array $imageSizesGroups
      * @return string
      */
-    public function createPageBreakpoint($idPage, Array $extraData, $hash, Array $images, Array $imageSizesGroups) {
+    public function createPageBreakpoint($idPage, $extraData, $hash, $images, $imageSizesGroups) {
         $pageBreakpoint = new PageBreakpoint();
         $pageBreakpoint->setHash($hash);
         $pageBreakpoint->setIdPage($idPage);
