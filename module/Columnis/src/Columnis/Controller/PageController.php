@@ -4,6 +4,7 @@ namespace Columnis\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Columnis\Model\Page;
 use Columnis\Model\Template;
 use Columnis\Utils\Directory;
@@ -24,6 +25,10 @@ class PageController extends AbstractActionController {
         if($page instanceof Page) {
             $viewVariables = $page->getData();
             $template = $page->getTemplate();
+            
+            if((bool)$queryParams['debug']){
+                return new JsonModel($viewVariables);
+            }
             if($template->isValid()) {
                 $this->setPageAssets($template, $viewVariables);
 

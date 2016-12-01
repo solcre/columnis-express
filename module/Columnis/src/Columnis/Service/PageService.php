@@ -121,8 +121,8 @@ class PageService {
             /* @var $response ApiResponse */
             $data = $response->getData();
             
-            $legacyData = (new PageLegacyData($data))->getData();            
-            $data = array_merge($data, $legacyData);
+//            $legacyData = (new PageLegacyData($data))->getData();            
+//            $data = array_merge($data, $legacyData);
    
             //Get page data
             $dataPagina = array_values($data['columnis.rest.pages'])[0];
