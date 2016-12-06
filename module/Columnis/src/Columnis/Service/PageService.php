@@ -132,12 +132,12 @@ class PageService {
 
             $pageBreakpointService = $this->getPageBreakpointService();            
             if(!empty($pageBreakpointService) && is_array($dataPagina) && key_exists('id', $dataPagina)) {
-                $data['pagina']['breakpoint_file'] = $pageBreakpointService->createPageBreakpoint(
+                $data['page']['breakpoint_file'] = $pageBreakpointService->createPageBreakpoint(
                         $dataPagina['id'], $data['columnis.rest.configuration'], $data['breakpoints_hash'], $data['collected_pictures'], $data['columnis.rest.image_sizes_groups']
                 );
             }
             
-            $data['pagina']['retry'] = $retry;
+            $data['page']['retry'] = $retry;
 
             $page->setData($data);
             $page->setTemplate($template);

@@ -85,8 +85,8 @@ class PageController extends AbstractActionController {
             }
         }
         if(is_array($pageData) && $pageData['pagina']) {
-            $pageData['pagina']['scripts'] = $this->setPublicRelativePath($jsAssets);
-            $pageData['pagina']['stylesheets'] = $this->setPublicRelativePath($cssAssets);
+            $pageData['page']['scripts'] = $this->setPublicRelativePath($jsAssets);
+            $pageData['page']['stylesheets'] = $this->setPublicRelativePath($cssAssets);
         }
         return '';
     }
