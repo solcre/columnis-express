@@ -8,17 +8,7 @@
         "Express"
     ],
     "homepage": "http://www.columnis.com/",
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "cssmin/cssmin",
-                "version": "3.0.1",
-                "dist": { "url": "https://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
-                "autoload": { "classmap": [ "cssmin-v3.0.1.php" ] }
-            }
-        }
-    ],
+    "repositories": [],
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.3",
