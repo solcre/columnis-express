@@ -17,7 +17,7 @@
         "zfcampus/zf-apigility": "~1.0",
         "guzzlehttp/guzzle": "~5.0",
         "guzzlehttp/cache-subscriber": "0.2.*@dev",
-        "cssmin/cssmin": "*",
+        "natxet/cssmin": "*",
         "mrclay/minify": "*",
         "solcre/zf2-conditional-loader": "dev-master",
 	"zfr/zfr-cors": "1.*"        
