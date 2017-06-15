@@ -108,12 +108,16 @@ class PageService {
         $id = $page->getId();
         $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
+        $lang = $this->getApiService()->parseLang($queryString['lang']);
         $headers = array(
             'Accept' => 'application/vnd.columnis.v2+json',
             'Content-Type' => 'application/json'
         );
         if (!empty($accessToken)) {
             $headers['Authorization'] = sprintf('Bearer %s', $accessToken);
+        }
+        if(!empty($lang)){
+            $headers['Accept-Language'] = $lang;
         }
         $options = $this->getApiService()->buildOptions(array(), $queryString, $headers);
         try {

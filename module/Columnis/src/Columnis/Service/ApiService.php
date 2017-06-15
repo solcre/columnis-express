@@ -141,4 +141,19 @@ class ApiService
     {
         return $this->getClientNumber().'/columnis'.$endpoint;
     }
+    
+    public function parseLang($fullLang){
+        $lang = 'es';
+        
+        switch($fullLang) {
+            case 'english':
+                $lang = 'en';
+                break;
+            case 'portugues':
+                $lang = 'pt';
+                break;
+        }
+        
+        return $lang;
+    }
 }
