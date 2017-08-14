@@ -70,20 +70,28 @@ class PageController extends AbstractActionController {
         $jsAssets = $template->getAssets('js', $excludes);
         $cssAssets = $template->getAssets('css', $excludes);
 
+        $fiexedJsAssets = array();
+        $fixedCssAssets = array();
+        
         $paths = $this->getAssetsPath();
-
+        
         if(count($paths)) {
             foreach($paths as $path) {
                 if(strpos($path, 'css') > -1) {
-                    $cssAssets = array_merge($cssAssets, $this->searchAssets($path, 'css', $excludes));
-                    sort($cssAssets);
+                    $fixedCssAssets = array_merge($fixedCssAssets, $this->searchAssets($path, 'css', $excludes));
+                    sort($fixedCssAssets);
                 }
                 else if(strpos($path, 'js') > -1) {
-                    $jsAssets = array_merge($jsAssets, $this->searchAssets($path, 'js', $excludes));
-                    sort($jsAssets);
+                    $fiexedJsAssets = array_merge($fiexedJsAssets, $this->searchAssets($path, 'js', $excludes));
+                    sort($fiexedJsAssets);
                 }
             }
         }
+        
+        //Merge fixed with templates
+        $jsAssets = array_merge($fiexedJsAssets, $jsAssets);
+        $cssAssets = array_merge($fixedCssAssets, $cssAssets);
+        
         if(is_array($pageData) && $pageData['page']) {
             $pageData['page']['scripts'] = $this->setPublicRelativePath($jsAssets);
             $pageData['page']['stylesheets'] = $this->setPublicRelativePath($cssAssets);
