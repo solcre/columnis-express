@@ -16,6 +16,10 @@ class PageService
 {
     private const GENERATE_PAGE_ENDPOINT = '/pages/:pageId/generate';
     private const COLUMNIS_PAGE_ENDPOINT_KEY = 'columnis.rest.pages';
+    private const COLUMNIS_CONFIGURATION_ENDPOINT_KEY = 'columnis.rest.configuration';
+    private const COLUMNIS_BREAKPOINTS_HASH_ENDPOINT_KEY = 'breakpoints_hash';
+    private const COLUMNIS_PICTURES_ENDPOINT_KEY = 'collected_pictures';
+    private const COLUMNIS_IMAGE_SIZE_GROUPS_ENDPOINT_KEY = 'columnis.rest.image_sizes_groups';
     private $apiService;
     private $templateService;
     private $pageBreakpointService;
@@ -61,7 +65,11 @@ class PageService
             $template = $this->templateService->createFromData($pageData);
             if ($withBreakpoints && \is_array($pageData) && array_key_exists('id', $pageData)) {
                 $data['page']['breakpoint_file'] = $this->pageBreakpointService->createPageBreakpoint(
-                    $pageData['id'], $data['columnis.rest.configuration'], $data['breakpoints_hash'], $data['collected_pictures'], $data['columnis.rest.image_sizes_groups']
+                    $pageData['id'],
+                    $data[self::COLUMNIS_CONFIGURATION_ENDPOINT_KEY],
+                    $data[self::COLUMNIS_BREAKPOINTS_HASH_ENDPOINT_KEY],
+                    $data[self::COLUMNIS_PICTURES_ENDPOINT_KEY],
+                    $data[self::COLUMNIS_IMAGE_SIZE_GROUPS_ENDPOINT_KEY]
                 );
             }
 
