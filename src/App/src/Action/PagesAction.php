@@ -69,6 +69,7 @@ class PagesAction implements ServerMiddlewareInterface
         try {
             return $this->pageService->fetch($pageId, $params, $withBreakpoints);
         } catch (PageWithoutTemplateException $e) {
+            throw $e;
         }
     }
 
