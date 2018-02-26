@@ -10,10 +10,9 @@ use function file_exists;
 class TemplateService
 {
     public const DEFINITION_FILE = 'def.json';
-    public const MAIN_FILE = 'main.tpl';
+    public const MAIN_FILE = 'main.twig';
     private static $templateInfoFile = 'def.json';
     private static $commonInfoFile = 'common.json';
-    private static $pathTemplates = __DIR__ . '/../../../../../public/templates';
     private $templatesPathStack;
     private $pageAssetService;
 
