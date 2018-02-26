@@ -4,9 +4,7 @@ namespace App\Domain\Entity;
 
 class Page
 {
-
     protected $id;
-    protected $updated;
     protected $data;
 
     /**
@@ -14,36 +12,22 @@ class Page
      */
     protected $template;
 
-    public function __construct()
-    {
-    }
-
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
 
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
-    public function setData($data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }
@@ -51,12 +35,12 @@ class Page
     /**
      * @return Template
      */
-    public function getTemplate()
+    public function getTemplate(): Template
     {
         return $this->template;
     }
 
-    public function setTemplate(Template $template)
+    public function setTemplate(Template $template): void
     {
         $this->template = $template;
     }
