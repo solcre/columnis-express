@@ -36,16 +36,16 @@ class PagesAction implements ServerMiddlewareInterface
     {
         $pageId = (int)$request->getAttribute('pageId');
         $lang = $request->getAttribute('lang');
-        $params = $request->getQueryParams();
-        $params['lang'] = $lang;
+        $queryParams = $request->getQueryParams();
+        $queryParams['lang'] = $lang;
         $cookies = $request->getCookieParams();
         $accessToken = null;
         if (!empty($cookies['columnis_token'])) {
             $accessToken = $cookies['columnis_token'];
         }
 
-        $params['accessToken'] = $accessToken;
-        $page = $this->fetchPage($pageId, $params, true);
+        $queryParams['accessToken'] = $accessToken;
+        $page = $this->fetchPage($pageId, $queryParams, true);
 
         if ($page instanceof Page) {
             $viewVariables = $page->getData();
@@ -57,7 +57,7 @@ class PagesAction implements ServerMiddlewareInterface
             if ($this->pageService->isValidTemplate($page)) {
                 $this->setPageAssets($page, $viewVariables);
                 $templateFilename = $this->getTemplateName($template);
-                return new HtmlResponse($this->templateRenderer->render('templates::' . $templateFilename, $viewVariables));
+                return new HtmlResponse($this->templateRenderer->render('templates::' . $templateFilename, ['data' => $viewVariables]));
             }
         }
 
