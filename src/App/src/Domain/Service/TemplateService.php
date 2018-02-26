@@ -148,7 +148,7 @@ class TemplateService
 
         //Merge fixed with templates
         $cssAssets = array_merge($fixedAssets['css'], $templateAssets['css']);
-        $jsAssets = array_merge($fixedAssets['js'], $templateAssets['css']);
+        $jsAssets = array_merge($fixedAssets['js'], $templateAssets['js']);
         return [
             'css' => $cssAssets,
             'js'  => $jsAssets,
@@ -200,5 +200,10 @@ class TemplateService
     public function getMainFile(Template $template, $withPath = true): string
     {
         return ($withPath ? $template->getPath() : $template->getName()) . DIRECTORY_SEPARATOR . self::MAIN_FILE;
+    }
+
+    public function getPublicPath(): string
+    {
+        return $this->pageAssetService->getPublicPath();
     }
 }

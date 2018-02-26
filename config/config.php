@@ -11,6 +11,7 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \AssetManager\Expressive\Module::class,
     // Include cache configuration
     new ArrayProvider($cacheConfig),
 

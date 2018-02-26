@@ -1,5 +1,6 @@
 <?php
 
+use AssetManager\Expressive\MiddleWare\AssetManagerMiddleware;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
 use Zend\Expressive\Helper\UrlHelperMiddleware;
 use Zend\Expressive\Middleware\ImplicitHeadMiddleware;
@@ -51,6 +52,8 @@ $app->pipe(UrlHelperMiddleware::class);
 // Register the dispatch middleware in the middleware pipeline
 $app->pipeDispatchMiddleware();
 
+// Register the Assetmanager middleware
+$app->pipe(AssetManagerMiddleware::class);
 // At this point, if no Response is returned by any middleware, the
 // NotFoundHandler kicks in; alternately, you can provide other fallback
 // middleware to execute.

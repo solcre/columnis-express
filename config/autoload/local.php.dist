@@ -1,0 +1,17 @@
+<?php
+return [
+    'asset_manager'            => [
+        'resolver_configs' => [
+            'paths' => [
+                __DIR__ . '/../../public/css',
+                __DIR__ . '/../../public/js',
+            ]
+        ]
+    ],
+    'template_assets_resolver' => [
+        'public_path' => getcwd() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR
+    ],
+    'template_path_stack'      => [
+        __DIR__ . '/../../public/templates/',
+    ],
+];

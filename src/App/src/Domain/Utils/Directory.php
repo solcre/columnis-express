@@ -24,7 +24,7 @@ class Directory
      * @return array|Traversable collections of files
      * @throws \Exception
      */
-    public static function recursiveSearchByExtension(string $path, string $extension, array $excludes = null): array
+    public static function recursiveSearchByExtension(string $path, string $extension, array $excludes = []): array
     {
         $files = [];
         if (!is_dir($path)) {

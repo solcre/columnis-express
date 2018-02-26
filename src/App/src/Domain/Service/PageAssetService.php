@@ -105,7 +105,7 @@ class PageAssetService
         return $publicRelativePath;
     }
 
-    private function getPublicPath(): string
+    public function getPublicPath(): string
     {
         if (\is_array($this->config) && isset($this->config['template_assets_resolver']['public_path'])) {
             return $this->config['template_assets_resolver']['public_path'];
@@ -132,13 +132,44 @@ class PageAssetService
         return $searchedAssets;
     }
 
-    private function getAssetsPath(): array
+    public function getAssetsPath(): array
     {
         if (\is_array($this->config['asset_manager']['resolver_configs']) && isset($this->config['asset_manager']['resolver_configs']['paths'])
         ) {
             return $this->config['asset_manager']['resolver_configs']['paths'];
         }
         return [];
+    }
+
+    public function getPatternGlobalAssets(): string
+    {
+        if ($this->config['template_assets_resolver']['match_patterns']) {
+            if (isset($this->config['template_assets_resolver']['match_patterns']['global_asset'])) {
+                return $this->config['template_assets_resolver']['match_patterns']['global_asset'];
+            }
+            throw new ConfigNotFoundException('Global assets key does not exists', 404);
+        }
+        throw new ConfigNotFoundException('match_patterns key does not exists', 404);
+    }
+
+    public function getTemplateNamePattern(): string
+    {
+        if ($this->config['template_assets_resolver']['match_patterns']) {
+            if (isset($this->config['template_assets_resolver']['match_patterns']['template_name'])) {
+                return $this->config['template_assets_resolver']['match_patterns']['template_name'];
+            }
+            throw new ConfigNotFoundException('template_name key does not exists', 404);
+        }
+        throw new ConfigNotFoundException('match_patterns key does not exists', 404);
+    }
+
+    public function getGlobalFolderName(): string
+    {
+        if (isset($this->config['template_assets_resolver']['global_folder_name'])) {
+            return $this->config['template_assets_resolver']['global_folder_name'];
+        }
+
+        throw new ConfigNotFoundException('global_folder_name key does not exists', 404);
     }
 
 }

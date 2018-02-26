@@ -8,10 +8,12 @@ use App\Domain\Service\Factory\ApiServiceFactory;
 use App\Domain\Service\Factory\PageAssetServiceFactory;
 use App\Domain\Service\Factory\PageBreakpointServiceFactory;
 use App\Domain\Service\Factory\PageServiceFactory;
+use App\Domain\Service\Factory\TemplateAssetsResolverFactory;
 use App\Domain\Service\Factory\TemplateServiceFactory;
 use App\Domain\Service\PageAssetService;
 use App\Domain\Service\PageBreakpointService;
 use App\Domain\Service\PageService;
+use App\Domain\Service\TemplateAssetsResolver;
 use App\Domain\Service\TemplateService;
 
 /**
@@ -54,7 +56,8 @@ class ConfigProvider
                 PageService::class            => PageServiceFactory::class,
                 ApiService::class             => ApiServiceFactory::class,
                 PageAssetService::class       => PageAssetServiceFactory::class,
-                PageBreakpointService::class  => PageBreakpointServiceFactory::class
+                PageBreakpointService::class  => PageBreakpointServiceFactory::class,
+                TemplateAssetsResolver::class => TemplateAssetsResolverFactory::class
             ],
         ];
     }
