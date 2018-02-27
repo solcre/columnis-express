@@ -172,4 +172,12 @@ class PageAssetService
         throw new ConfigNotFoundException('global_folder_name key does not exists', 404);
     }
 
+    public function getAssetsCacheDir(): ?string
+    {
+        if (isset($this->config['asset_manager']['cache_dir'])) {
+            return $this->config['asset_manager']['cache_dir'];
+        }
+        return null;
+    }
+
 }

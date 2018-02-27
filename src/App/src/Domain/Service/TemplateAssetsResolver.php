@@ -5,8 +5,11 @@ namespace App\Domain\Service;
 use App\Domain\Entity\Template;
 use App\Domain\Exception\ConfigNotFoundException;
 use App\Domain\Utils\Directory;
+use Assetic\Asset\AssetCache;
 use Assetic\Asset\AssetCollection;
+use Assetic\Asset\AssetInterface;
 use Assetic\Asset\FileAsset;
+use Assetic\Cache\FilesystemCache;
 use AssetManager\Core\Resolver\CollectionResolver;
 use AssetManager\Core\Resolver\MimeResolverAwareInterface;
 use AssetManager\Core\Service\MimeResolver;
@@ -80,14 +83,22 @@ class TemplateAssetsResolver extends CollectionResolver implements MimeResolverA
      *
      * @return FileAsset|null
      */
-    public function resolveAbsolutePath($path): ?FileAsset
+    public function resolveAbsolutePath($path): ?AssetInterface
     {
         if ($this->inAllowedPaths($path)) {
             $file = new SplFileInfo($path);
             if ($file->isReadable() && !$file->isDir()) {
                 $filePath = $file->getRealPath();
                 $mimeType = $this->getMimeResolver()->getMimeType($filePath);
+
+                $cacheDir = $this->pageAssetService->getAssetsCacheDir();
                 $asset = new FileAsset($filePath);
+                if ($cacheDir) {
+                    $asset = new AssetCache(
+                        $asset,
+                        new FilesystemCache($cacheDir)
+                    );
+                }
                 $asset->mimetype = $mimeType;
                 return $asset;
             }
