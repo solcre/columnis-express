@@ -1,0 +1,20 @@
+<?php
+
+
+use App\Domain\Service\TemplateAssetsResolver;
+
+return [
+    'columnis'                 => [
+        'api_settings' => [
+            'client_number' => '',
+            'api_base_url'  => '',
+            'api_version'   => '',
+            'user'          => '',
+            'pass'          => '',
+            'ip'            => ''
+        ],
+    ],
+    'asset_manager'            => [
+        'cache_dir' => '',
+    ],
+];
