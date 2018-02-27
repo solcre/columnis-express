@@ -22,7 +22,7 @@ return [
         'assets_url'      => '/',
         'assets_version'  => null,
         'extensions'      => [
-            'array' => new ArrayExtension()
+            'array' => 'ArrayExtension'
         ],
         'runtime_loaders' => [
             // runtime loader names or instances

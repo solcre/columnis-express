@@ -15,6 +15,7 @@ use App\Domain\Service\PageBreakpointService;
 use App\Domain\Service\PageService;
 use App\Domain\Service\TemplateAssetsResolver;
 use App\Domain\Service\TemplateService;
+use App\Domain\Utils\ArrayExtension;
 
 /**
  * The configuration provider for the App module
@@ -48,6 +49,7 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+                'ArrayExtension' => ArrayExtension::class
             ],
             'factories'  => [
                 Action\TemplatesAction::class => Action\Factory\TemplatesFactory::class,

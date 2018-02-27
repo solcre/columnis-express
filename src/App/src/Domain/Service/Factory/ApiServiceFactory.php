@@ -5,7 +5,12 @@ namespace App\Domain\Service\Factory;
 use App\Domain\Exception\Api\ApiBaseUrlNotSetException;
 use App\Domain\Exception\Api\ClientNumberNotSetException;
 use App\Domain\Service\ApiService;
+use Doctrine\Common\Cache\FilesystemCache;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 use Psr\Container\ContainerInterface;
 
 class ApiServiceFactory
@@ -25,20 +30,33 @@ class ApiServiceFactory
             throw new ApiBaseUrlNotSetException('There is no api_base_url set in local.php config file.');
         }
 
-        $clientNumber = $apiConfig['client_number'];
+        // Guzzle Configuration
         $apiUrl = $apiConfig['api_base_url'];
-        $httpClient = new GuzzleClient(['base_uri' => $apiUrl]);
+        $guzzleOptions = [
+            'base_uri' => $apiUrl
+        ];
+        $cacheConfig = $config['guzzle_cache'] ?? null;
+        if ($cacheConfig) {
+            // Create default HandlerStack
+            $stack = HandlerStack::create();
 
-//        $cacheConfig = isset($config['guzzle_cache']) ? $config['guzzle_cache'] : array();
-//        if(isset($cacheConfig['adapter'])) {
-//            $cache = StorageFactory::factory($cacheConfig);
-//            $zfCacheAdapter = new ZfCacheAdapter($cache);
-//            $cacheSubscriber = new CacheSubscriber($zfCacheAdapter, function(RequestInterface $request) use ($zfCacheAdapter){
-//                return !$zfCacheAdapter->contains($request);
-//            });
-//            $httpClient->getEmitter()->attach($cacheSubscriber);
-//        }
+            // Add this middleware to the top with `push`
+            $stack->push(
+                new CacheMiddleware(
+                    new PrivateCacheStrategy(
+                        new DoctrineCacheStorage(
+                            new FilesystemCache($cacheConfig['options']['cache_dir'])
+                        )
+                    )
+                ),
+                'cache'
+            );
+            $guzzleOptions['handler'] = $stack;
+        }
 
+        $httpClient = new GuzzleClient($guzzleOptions);
+
+        $clientNumber = $apiConfig['client_number'];
         return new ApiService($httpClient, $clientNumber);
     }
 }

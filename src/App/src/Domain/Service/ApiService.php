@@ -5,6 +5,7 @@ namespace App\Domain\Service;
 use App\Domain\Entity\ApiResponse;
 use App\Domain\Exception\Api\ApiRequestException;
 use App\Domain\Exception\Api\UnauthorizedException;
+use GuzzleHttp\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 use Psr\Http\Message\ResponseInterface;
@@ -12,10 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 class ApiService
 {
 
-    private const HTTP_METHODS
-        = [
-            'GET'
-        ];
     protected $httpClient;
     protected $clientNumber;
 
@@ -32,12 +29,13 @@ class ApiService
      * @param string $method
      * @param array  $options
      *
-     * @return ApiResponse
-     * @trows ApiRequestException
+     * @return ApiResponse|null
+     * @throws  \Exception
      */
-    public function request($uri, $method = 'GET', array $options = null)
+    public function request($uri, $method = 'GET', array $options = null): ?ApiResponse
     {
         $response = null;
+        $apiResponse = null;
         $mergedOptions = $this->mergeWithDefault($options);
         try {
             if ($method === 'GET') {
@@ -56,13 +54,14 @@ class ApiService
 
     protected function mergeWithDefault(array $options = null): array
     {
-        $defaults = array(
-            'headers' => array(
+        $defaults = [
+            'headers' => [
                 'Accept'       => 'application/vnd.columnis.v2+json',
                 'Content-Type' => 'application/json'
-            )
-        );
-        return array_replace_recursive($defaults, (is_array($options) ? $options : array()));
+            ],
+            'debug' => false
+        ];
+        return array_replace_recursive($defaults, (\is_array($options) ? $options : []));
     }
 
     protected function createException(GuzzleRequestException $e)
@@ -79,9 +78,9 @@ class ApiService
         }
     }
 
-    protected function parseAuthHeader($header)
+    protected function parseAuthHeader($header): array
     {
-        $matches = array();
+        $matches = [];
         $pattern = '/(?:Bearer |, )(\w+)="((?:[^\\"]+|\\.)*)"/';
         preg_match_all($pattern, $header, $matches);
         return array_combine($matches[1], $matches[2]);
@@ -90,9 +89,9 @@ class ApiService
     /**
      * Returns the Guzzle Client
      *
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
-    public function getHttpClient()
+    public function getHttpClient(): Client
     {
         return $this->httpClient;
     }
@@ -143,7 +142,7 @@ class ApiService
      *
      * @param string $clientNumber
      */
-    public function setClientNumber($clientNumber)
+    public function setClientNumber($clientNumber): void
     {
         $this->clientNumber = $clientNumber;
     }
