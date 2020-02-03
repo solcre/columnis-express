@@ -10,7 +10,7 @@
     "homepage": "http://www.columnis.com/",
     "repositories": [],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "zendframework/zendframework": "2.3.3",
         "zendframework/zftool": "dev-master",
         "gkralik/gk-smarty": "dev-master",
