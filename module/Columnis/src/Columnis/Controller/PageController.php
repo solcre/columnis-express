@@ -94,6 +94,8 @@ class PageController extends AbstractActionController
         } 
         $headersApi = $apiResponse->getHeaders();
         $headers = $this->getResponse()->getHeaders();
+
+        // Pass Api response headers to express response headers
 	if (isset($headersApi["X-Cache"]) && !empty($headersApi["X-Cache"])) {
 	    $headers->addHeaders([
 		"X-Cache" => $headersApi["X-Cache"]
