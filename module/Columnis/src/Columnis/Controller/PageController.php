@@ -85,11 +85,24 @@ class PageController extends AbstractActionController
         $page->setId($pageId);
         $pageService = $this->getPageService($withBreakpoints);
         try {
-            if (! $pageService->fetch($page, $params, $accessToken)) {
+            $apiResponse = $pageService->fetch($page, $params, $accessToken);
+            if(!$apiResponse) {
                 return null;
             }
-        } catch (PageWithoutTemplateException $e) {
-
+        } catch(PageWithoutTemplateException $e) {
+            
+        } 
+        $headersApi = $apiResponse->getHeaders();
+        $headers = $this->getResponse()->getHeaders();
+	if (isset($headersApi["X-Cache"]) && !empty($headersApi["X-Cache"])) {
+	    $headers->addHeaders([
+		"X-Cache" => $headersApi["X-Cache"]
+            ]);
+        }
+        if (isset($headersApi["Age"]) && !empty($headersApi["Age"])) {
+            $headers->addHeaders([
+                "Age" => $headersApi["Age"]
+            ]);
         }
         return $page;
     }

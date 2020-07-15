@@ -24,6 +24,9 @@ class ApiResponse
      * @var GuzzleResponse
      */
     private $response;
+    public function getHeaders() {
+	return $this->response->getHeaders();
+    }
     
     public function getData()
     {

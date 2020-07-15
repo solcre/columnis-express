@@ -5,7 +5,9 @@ namespace Columnis\Model;
 use Zend\Cache\Storage\StorageInterface;
 use GuzzleHttp\Subscriber\Cache\CacheStorageInterface;
 use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Message\Response;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Message\MessageFactory;
 
 class ZfCacheAdapter implements CacheStorageInterface {
 
@@ -23,30 +25,42 @@ class ZfCacheAdapter implements CacheStorageInterface {
     }
 
     public function contains(RequestInterface $request) {
-        return $this->storageCache->hasItem($this->buildKey($request->getUrl()));
+        $ret = $this->storageCache->hasItem($this->buildKey($request));
+        return $ret;
     }
 
     public function cache(RequestInterface $request, ResponseInterface $response) {
-        return $this->storageCache->setItem($this->buildKey($request->getUrl()), $response);
+        return $this->storageCache->setItem($this->buildKey($request), $response);
     }
 
     public function delete(RequestInterface $request) {
-        return $this->storageCache->removeItem($this->buildKey($request->getUrl()));
+        return $this->storageCache->removeItem($this->buildKey($request));
     }
 
     public function fetch(RequestInterface $request) {
-        return $this->storageCache->getItem($this->buildKey($request->getUrl()));
+        $message = $this->storageCache->getItem($this->buildKey($request));
+	
+	if (!$message) {
+	    return null;
+	}
+	
+	$factory = new MessageFactory();
+	$response = $factory->fromMessage($message);
+	
+	if ($response->getStatusCode() != 200) {
+	    return null;
+	}
+	        
+	return $response;
     }
 
     public function purge($url) {
+	// @@TODO REVISAR ESTE METODO
         return $this->storageCache->removeItem($this->buildKey($url));
     }
 
-    /**
-     * @param string $url
-     */
-    private function buildKey($url) {
-        return md5($url);
+    private function buildKey(RequestInterface $request) {        
+        return md5($request->getUrl());
     }
 }
 

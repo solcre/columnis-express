@@ -42,10 +42,16 @@ class ApiServiceFactory implements FactoryInterface {
         if(isset($cacheConfig['adapter'])) {
             $cache = StorageFactory::factory($cacheConfig);
             $zfCacheAdapter = new ZfCacheAdapter($cache);
-            $cacheSubscriber = new CacheSubscriber($zfCacheAdapter, function(RequestInterface $request) use ($zfCacheAdapter){
-                return !$zfCacheAdapter->contains($request);
-            });
-            $httpClient->getEmitter()->attach($cacheSubscriber);
+
+            CacheSubscriber::attach(
+                $httpClient,
+                [
+                    'storage' => $zfCacheAdapter,
+                    'can_cache' => function(RequestInterface $request) use ($zfCacheAdapter){
+                        return !$request->hasHeader('Authorization');
+                    }
+                ]
+            );
         }
 
         return new ApiService($httpClient, $clientNumber);

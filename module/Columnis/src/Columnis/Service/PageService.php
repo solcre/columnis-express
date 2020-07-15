@@ -109,6 +109,7 @@ class PageService {
         $endpoint = '/pages/'.$id.'/generate';
         $uri = $this->getApiService()->getUri($endpoint);
         $lang = $this->getApiService()->parseLang($queryString['lang']);
+        
         $headers = array(
             'Accept' => 'application/vnd.columnis.v2+json',
             'Content-Type' => 'application/json'
@@ -119,6 +120,7 @@ class PageService {
         if(!empty($lang)){
             $headers['Accept-Language'] = $lang;
         }
+        
         $options = $this->getApiService()->buildOptions(array(), $queryString, $headers);
         try {
             $response = $this->getApiService()->request($uri, 'GET', $options);
@@ -165,6 +167,6 @@ class PageService {
         } catch(TemplateNameNotSetException $e) {
             throw new PageWithoutTemplateException($e->getMessage(), 0, $e);
         }
-        return true;
+        return $response;
     }
 }
