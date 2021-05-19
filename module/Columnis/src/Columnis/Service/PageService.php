@@ -126,12 +126,9 @@ class PageService {
             $response = $this->getApiService()->request($uri, 'GET', $options);
             /* @var $response ApiResponse */
             $data = $response->getData();
-            
-//            $legacyData = (new PageLegacyData($data))->getData();            
-//            $data = array_merge($data, $legacyData);
-   
+
             //Get page data
-            $dataPagina = array_values($data['columnis.rest.pages'])[0];
+            $dataPagina = is_array($data['columnis.rest.pages']) ? array_values($data['columnis.rest.pages'])[0] : [];
             
             $templateService = $this->getTemplateService();
             $template = $templateService->createFromData($dataPagina);
