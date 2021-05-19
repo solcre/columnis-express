@@ -90,7 +90,7 @@ class PageController extends AbstractActionController
                 return null;
             }
         } catch(PageWithoutTemplateException $e) {
-            
+            return null;
         } 
         $headersApi = $apiResponse->getHeaders();
         $headers = $this->getResponse()->getHeaders();
