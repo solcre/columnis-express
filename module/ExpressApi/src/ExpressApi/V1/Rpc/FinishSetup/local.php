@@ -35,7 +35,7 @@ return array(
         ),
     ),
     'template_assets_resolver' => array(
-        'public_path' => getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR
+        'public_path' => getcwd().DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR
     ),
     'zf-oauth2' => array(
         'allow_implicit' => true,

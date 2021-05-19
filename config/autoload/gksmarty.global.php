@@ -22,7 +22,7 @@ return array(
             /**
              * Directory for cached templates.
              */
-            'template_dir' => getcwd() . '/public/templates'
+            'template_dir' => getcwd() . '/public_html/templates'
         ),
     ),
 );

@@ -97,20 +97,20 @@ return array(
             'error/index' => __DIR__ . '/../view/error/index.tpl',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../../../public/templates',
+            __DIR__ . '/../../../public_html/templates',
         ),
     ),
     'cache' => array(
         'adapter' => 'htmlcache',
         'options' => array(
-            'cache_dir' => 'public/pages'
+            'cache_dir' => 'public_html/pages'
         )
     ),
     'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
-                __DIR__ . '/../../../public/css',
-                __DIR__ . '/../../../public/js',
+                __DIR__ . '/../../../public_html/css',
+                __DIR__ . '/../../../public_html/js',
             ),
         ),
         'resolvers' => array(

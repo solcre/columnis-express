@@ -16,7 +16,7 @@ return array(
     'columnis' => array(
         'api_settings' => array(
             'client_number' => '001',
-            'api_base_url' => 'http://api.columnis.com/'
+            'api_base_url' => 'http://api2.columnis.com/'
         )
     ),
     'asset_manager' => array(
@@ -37,6 +37,6 @@ return array(
         ),
     ),
     'template_assets_resolver' => array(
-        'public_path' => getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR
+        'public_path' => getcwd().DIRECTORY_SEPARATOR.'public_html'.DIRECTORY_SEPARATOR
     ),
 );
