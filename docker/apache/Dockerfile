@@ -8,8 +8,8 @@ RUN apt-get update \
     && pecl install xdebug-2.5.5 \
     && docker-php-ext-install pdo_mysql mysqli mcrypt soap bcmath gd exif \
     && a2enmod rewrite headers \
-    && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
-    && mv /var/www/html /var/www/public \
+    && sed -i 's!/var/www/html!/var/www/public_html!g' /etc/apache2/sites-available/000-default.conf \
+    && mv /var/www/html /var/www/public_html \
     && curl -sS https://getcomposer.org/installer \
         | php -- --install-dir=/usr/local/bin --filename=composer \
     && echo "AllowEncodedSlashes On" >> /etc/apache2/apache2.conf
