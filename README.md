@@ -7,54 +7,53 @@
 [![Total Downloads](https://poser.pugx.org/solcre/columnis-express/downloads.svg)](https://packagist.org/packages/solcre/columnis-express)
 [![License](https://poser.pugx.org/solcre/columnis-express/license.svg)](https://packagist.org/packages/solcre/columnis-express)
 
-Columnis Express
-=======================
+# Columnis Express
 
-Introduction
-------------
+## Introduction
+
 Columnis Express is the new version of Columnis CMS. It is a simple ZF2 application that consumes Columnis API, assigns the data to the selected template engine and renders the request page.
 
-Installation
-------------
+## Installation
 
-Using Composer (recommended)
-----------------------------
-The recommended way to get a working copy of this project is to clone the repository
-and use `composer` to install dependencies using the `create-project` command:
+-  To run columnis-express on your computer you must have doker installed and running.
 
-    curl -s https://getcomposer.org/installer | php --
-    php composer.phar create-project solcre/columnis-express path/to/install
+-  Clone repository and run docker
 
-Alternately, clone the repository and manually invoke `composer` using the shipped
-`composer.phar`:
+```bash
+$ git clone https://github.com/solcre/columnis-express.git
+$ cd columnis-express
+$ docker-compose up -d
+```
 
-    cd my/project/dir
-    git clone git://github.com/solcre/columnis-express.git
-    cd columnis-express
-    php composer.phar self-update
-    php composer.phar install
+![run container done](https://s3.amazonaws.com/cdn.express-beta.solcre.com/images/Screen+Shot+2023-04-14+at+10.59.08.png)
 
-(The `self-update` directive is to ensure you have an up-to-date `composer.phar`
-available.)
+If the console gives you the following, we are on the right track **don't worry about the warning**
 
-Another alternative for downloading the project is to grab it via `curl`, and
-then pass it to `tar`:
+-  Rename local.php.dist to local.php
 
-    cd my/project/dir
-    curl -#L https://github.com/solcre/columnis-express/tarball/master | tar xz --strip-components=1
+```bash
+$ cd config/autoload
+$ mv local.php.dist local,php
+```
 
-You would then invoke `composer` to install dependencies per the previous
-example.
+-  Inside local.php change the client-number
+   ![local php](https://s3.amazonaws.com/cdn.express-beta.solcre.com/images/Screen+Shot+2023-04-14+at+11.14.25.png)
 
+-  Inside the docker terminal
 
-Using Git submodules
---------------------
-Alternatively, you can install using native git submodules:
+```bash
+php composer.phar install
+```
 
-    git clone git://github.com/solcre/columnis-express.git --recursive
+-  Open localhost:8080 in your browser and if you get something like this (img), everything is ok
+   ![404 columnis](https://s3.amazonaws.com/cdn.express-beta.solcre.com/images/Screen+Shot+2023-04-14+at+11.27.44.png)
 
-Requirements
-----------------
+-  Inside public_html paste all your project dir (templates, assets, css, etc) like this:
+   ![404 columnis](https://s3.amazonaws.com/cdn.express-beta.solcre.com/images/Screen+Shot+2023-04-14+at+11.30.55.png)
+
+   **Note:** for all this to work the .htacces, 404.html, index.php and php.ini files must be inside public_html and must never be modified, deleted or anything like that.
+
+-  Right now you can go back to localhost:8080 and you should see your web site 🥳🍾
 
 ### Server
 
@@ -72,9 +71,3 @@ AssetsManager + Assetic + filters -> Used to manage and minify stylesheets and s
 Smarty -> Used as template engine.
 
 Apigility -> Used to retrieve templates and invalidate cache.
-
-Configuration
-----------------
-
-1- Edit config/autoload/local.php.dist and save as local.php
-2- Create public folder based on public.dist folder
