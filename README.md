@@ -33,7 +33,7 @@ If the console gives you the following, we are on the right track **don't worry 
 
 ```bash
 $ cd config/autoload
-$ mv local.php.dist local,php
+$ mv local.php.dist local.php
 ```
 
 -  Inside local.php change the client-number
